@@ -1,6 +1,16 @@
-.wrapper{
+.registerWrapper{
 	display: flex;
-	justify-content: center;
+	flex-flow: column;
+	color: white;
+}
+/* .phoneInput{
+	display: flex;
 	align-items: center;
-	
+	gap: 20px;
+	font-size: 50px;
+} */
+.registerInfo{
+	font-size: small;
+	margin: 0;
+	text-align: start;
 }
