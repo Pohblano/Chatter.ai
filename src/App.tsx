@@ -50,8 +50,9 @@ function LayoutComponent() {
       {/* <main> */}
         {/* <Outlet/> */}
         {/* <Register/> */}
-        {/* <Loading/> */}
-        <Dashboard/>
+        <Loading/>
+        {/* <PhoneValidation/> */}
+        {/* <Dashboard/> */}
       {/* </main> */}
     </div>
   );

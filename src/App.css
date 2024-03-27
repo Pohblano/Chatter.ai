@@ -1,4 +1,4 @@
-p{
+*{
   font-family: sans-serif;
 }
 .App {
@@ -19,7 +19,7 @@ p{
 
 .App-Wrapper {
   background-color: #42a5f5;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

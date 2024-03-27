@@ -2,6 +2,20 @@
 	display: flex;
 	flex-flow: column;
 	color: white;
+
+
+	.MuiOtpInput-Box{
+		color: white;
+		
+	}
+	.registerInfo{
+		font-size: small;
+		margin: 0;
+		text-align: start;
+	}
+	
+
+
 }
 /* .phoneInput{
 	display: flex;
@@ -9,8 +23,3 @@
 	gap: 20px;
 	font-size: 50px;
 } */
-.registerInfo{
-	font-size: small;
-	margin: 0;
-	text-align: start;
-}
