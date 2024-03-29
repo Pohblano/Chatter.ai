@@ -17,13 +17,14 @@ function Register() {
 	const unknownFlag: MuiTelInputFlagElement = <i className="fas fa-globe-americas"></i>
 
 	useEffect(()=>{
-		fetch('/api/ml')
+		fetch('/api/chatGPT')
 			.then(res => console.log(res))
+			.catch(err => console.log(err))
 	}, [])
 
 	const handleChange = (newValue: string) => {
 		// if (!matchIsValidTel(newValue)) {
-		// 	setPhoneNumber(newValue)
+			setPhoneNumber(newValue)
 		// } else {
 		// 	setError('Entered more than 10digits')
 		// }
@@ -40,7 +41,7 @@ function Register() {
 	return (
 		<form onSubmit={handleSubmit} className='registerWrapper'>
 			
-		 	<h1><i className="fa-regular fa-comments"></i>  Chatter.ai</h1>
+		 	<h1><i className="fa-regular fa-comments underline"></i>  Chatter.ai</h1>
 
 		 	<div className='phoneInput'>
 		 		<MuiTelInput 
@@ -51,7 +52,7 @@ function Register() {
 		 		/>
 		 	</div>
 
-		 	<p className='registerInfo'><sub>*We'll be sending you a text. Don't worry this only happens once</sub></p>
+		 	<p className='registerInfo'><sub>* We'll be sending you a text.<br/>** Don't worry this only happens once</sub></p>
 		</form>
 	)
 	// helperText=

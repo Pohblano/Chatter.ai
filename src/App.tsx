@@ -49,8 +49,8 @@ function LayoutComponent() {
     <div className='App-Wrapper'>
       {/* <main> */}
         {/* <Outlet/> */}
-        {/* <Register/> */}
-        <Loading/>
+        <Register/>
+        {/* <Loading/> */}
         {/* <PhoneValidation/> */}
         {/* <Dashboard/> */}
       {/* </main> */}
