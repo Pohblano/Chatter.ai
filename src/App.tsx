@@ -49,10 +49,10 @@ function LayoutComponent() {
     <div className='App-Wrapper'>
       {/* <main> */}
         {/* <Outlet/> */}
-        <Register/>
+        {/* <Register/> */}
         {/* <Loading/> */}
         {/* <PhoneValidation/> */}
-        {/* <Dashboard/> */}
+        <Dashboard/>
       {/* </main> */}
     </div>
   );
