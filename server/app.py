@@ -6,8 +6,8 @@ from twilio.rest import Client
 # from openai import OpenAI
 
 import os
-import asyncio
-from openai import AsyncOpenAI
+# import asyncio
+from openai import OpenAI
 
 # def generate_otp():
 #     otp = ""
@@ -89,21 +89,30 @@ def verify_login_code():
 
 
 
-client = AsyncOpenAI(api_key = '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')
+client = OpenAI(api_key = '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')
 
-@app.route('/api/chatGPT', methods=['GET'])
+@app.route('/api/chatGPT', methods=['POST'])
 async def ai():
-    completion=await client.chat.completions.create(
+    if not request.get_json(silent=True):
+        return {"error": "missing valid JSON object in request body"}, 400
+
+    data = request.json
+    content = data.get('content')
+    date = data.get('date')
+    time = data.get('time')
+    author_type = data.get('author_type')
+
+    completion=client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-	    {
+        {
             "role": "system", 
             "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."
         },
-	    {
+        {
             "role": "user", 
-            "content": "Write me a small wedding engagement poem"
-        }],
+            "content": content
+        }]
     )
 
-    return jsonify({'response':completion.choices[0].message.content})
+    return jsonify({'response' : completion.choices[0].message.content})

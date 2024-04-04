@@ -6,16 +6,20 @@ import MainNav from "../MainNav/MainNav";
 import ChatRoom from "../ChatRoom/ChatRoom";
 // Styling
 import './Dashboard.scss'
+import { FormatLineSpacingSharp } from "@mui/icons-material";
 
+
+interface Entry {
+	content: string,
+	date: string,
+	time: string,
+	author_type: string
+}
 
 function Dashboard() {
-	const data = {
-		content: '',
-		timestamp: '',
-		user: ''
-	}
-	const [entry, setEntry] = useState(data)
-	const [response, setResponse] = useState(data)
+
+	const [entry, setEntry] = useState<Entry>()
+	const [response, setResponse] = useState({})
 	const [chat, setChat] = useState([])
 	const [active, setActive] = useState('')
 
@@ -23,28 +27,34 @@ function Dashboard() {
 	const handleMenuClick = (menuItem: string) => {
 		return () => {
 			setActive(menuItem)
-			console.log(`Clicked on ${menuItem}`);
 		};
 	};
 
 	// Handles text input changes
 	const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
 		const { name, value } = e.target;
-		setEntry((prevData) => ({
-			...prevData,
-			[name]: value,
-		}));
+		const date = new Date();
+		const data = {
+			content: value,
+			date: date.toDateString(),
+			time: date.toTimeString(),
+			author_type: 'user',
+		}
+		setEntry(data)
 	}
 
 	// Submits form data to backend to be processed
-	const handleSubmit = (e: { preventDefault: () => void; currentTarget: any; }) => {
+	const handleSubmit = (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
 		e.preventDefault();
-		const form = e.currentTarget;
-		console.log(form)
-		console.log(entry)
-		// if () {
+		if (entry.content) {
+			console.log(entry)
+			postData('http://127.0.0.1:5000/api/chatGPT', entry)
+				.then(res => {
+					console.log(res)
+				})
+				.catch(err => console.log(err))
 
-		// } else e.stopPropagation();
+		} else e.stopPropagation();
 	};
 
 	return (
@@ -61,7 +71,7 @@ function Dashboard() {
 								AI Chat
 								<svg width="16" height="17" viewBox="0 0 16 17" fill="none" className="text-token-text-tertiary"><path d="M11.3346 7.83203L8.00131 11.1654L4.66797 7.83203" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
 							</MenuButton>
-							<Menu >
+							<Menu>
 								<MenuItem onClick={handleMenuClick('Bard AI')}>Bard AI</MenuItem>
 								<MenuItem onClick={handleMenuClick('ChatGPT')}>ChatGPT
 								</MenuItem>
@@ -74,10 +84,12 @@ function Dashboard() {
 
 					<section className="chatBody">
 						<ChatRoom ai={active} chat={chat} />
-						
+
 						<div className="chatInputWrapper">
 							<form className="chatInput" onSubmit={handleSubmit}>
-								<TextareaAutosize className='chatTextarea' aria-label="empty textarea" maxRows={4}
+								<TextareaAutosize className='chatTextarea'
+									aria-label="empty textarea"
+									maxRows={4}
 									name="message"
 									onChange={handleInputChange}
 									placeholder="Message {Ai}..." />
@@ -98,3 +110,29 @@ function Dashboard() {
 
 export default Dashboard;
 
+
+async function postData(url: string, data: object) {
+	try {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json');
+		headers.append('Accept', 'application/json');
+		headers.append('Origin', 'http://192.168.100.2:5000');
+		const response = await fetch(url, {
+			method: 'POST',
+			mode: 'cors',
+			body: JSON.stringify(data),
+			headers: headers
+		});
+		if (response.ok) {
+			const data = await response.json();
+			console.log(data)
+			return data.response;
+		} else {
+			throw new Error('Error: Something went wrong with the API call');
+		}
+
+	} catch (error) {
+		console.error(error);
+		return 'Error: Something went wrong with the API call';
+	}
+}

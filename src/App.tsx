@@ -24,17 +24,21 @@ const router = createBrowserRouter([
         element: <PhoneValidation />,
       },
       {
+        path: 'loading',
+        element: <Loading />,
+      },
+      {
+        path: 'dashboard',
+        element: (
+          // <PrivateRoute>
+          <Dashboard />
+          // </PrivateRoute>
+        ),
+      },
+      {
         path: '*',
         element: <NotFoundPage />,
       },
-      // {
-      //   path: '/dashboard',
-      //   element: (
-      //     <PrivateRoute>
-      //       <DashboardPage />
-      //     </PrivateRoute>
-      //   ),
-      // },
     ],
   },
   {
@@ -47,13 +51,22 @@ const router = createBrowserRouter([
 function LayoutComponent() {
   return (
     <div className='App-Wrapper'>
-      {/* <main> */}
-        {/* <Outlet/> */}
-        {/* <Register/> */}
-        {/* <Loading/> */}
-        {/* <PhoneValidation/> */}
-        <Dashboard/>
-      {/* </main> */}
+      <nav>
+        <Link to='/register'>Register</Link>
+        <Link to='/loading'>Loading</Link>
+        <Link to='/validation'>PhoneValidation</Link>
+        <Link to='/dashboard'>Dashboard</Link>
+      </nav>
+
+      <Outlet />
+
+
+
+      {/* <Register/> */}
+      {/* <Loading/>
+        <PhoneValidation/> */}
+      {/* <Dashboard/> */}
+
     </div>
   );
 }
@@ -77,6 +90,6 @@ export default App;
 
 // function PrivateRoute({ children }) {
 //   const isAuthenticated = //Run authentication function
-//NAVIGATE TO CHAT COMPONENT
+// NAVIGATE TO CHAT COMPONENT
 //   return isAuthenticated ? children : <Navigate to="/" />;
 // }
