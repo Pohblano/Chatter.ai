@@ -6,7 +6,8 @@ import MainNav from "../MainNav/MainNav";
 import ChatRoom from "../ChatRoom/ChatRoom";
 // Styling
 import './Dashboard.scss'
-import { FormatLineSpacingSharp } from "@mui/icons-material";
+
+import {ChatApi} from '../../Api/ChatGPTApi'
 
 
 interface Entry {
@@ -48,11 +49,13 @@ function Dashboard() {
 		e.preventDefault();
 		if (entry.content) {
 			console.log(entry)
-			postData('http://127.0.0.1:5000/api/chatGPT', entry)
-				.then(res => {
-					console.log(res)
-				})
-				.catch(err => console.log(err))
+			ChatApi.chat(entry)
+				.then(res => console.log(res))
+			// postData('http://127.0.0.1:5000/api/chatGPT', entry)
+			// 	.then(res => {
+			// 		console.log(res)
+			// 	})
+			// 	.catch(err => console.log(err))
 
 		} else e.stopPropagation();
 	};
@@ -116,7 +119,8 @@ async function postData(url: string, data: object) {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/json');
 		headers.append('Accept', 'application/json');
-		headers.append('Origin', 'http://192.168.100.2:5000');
+		// headers.append('Origin', 'http://localhost:5000');
+		headers.append('Access-Control-Allow-Origin', '*')
 		const response = await fetch(url, {
 			method: 'POST',
 			mode: 'cors',

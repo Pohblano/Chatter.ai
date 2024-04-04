@@ -92,6 +92,7 @@
 		transition-duration: .15s;
 		transition-property: width;
 		transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+		background-color: white;
 
 
 		.mainChat {
@@ -151,7 +152,7 @@
 			}
 
 			.chatBody {
-				height: 95%;
+				height: 90%;
 				// display: grid;
 
 				// .chatRoom {
@@ -191,7 +192,7 @@
 
 				.chatInputWrapper {
 					// display: flex;
-					width: calc(100% - .5rem);
+					// width: calc(100% - .5rem);
 					padding-top: 0;
 
 					.chatInput {

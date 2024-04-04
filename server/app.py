@@ -1,31 +1,37 @@
 from flask import Flask, request, jsonify
-from twilio.rest import Client
+import random
 
 # ChatGPT libraries
-# import os
-# from openai import OpenAI
-
 import os
-# import asyncio
 from openai import OpenAI
-
-# def generate_otp():
-#     otp = ""
-#     for _ in range(4):
-#         otp += str(random.randint(0, 9))
-#     return otp
 
 
 app = Flask(__name__)
 
+
+
+
+
 # TODO: make this generate a random code and store it in the database
 def generate_login_code(phone_number: str) -> int:
-    return 1234
+    otp = ""
+    for _ in range(4):
+        otp += str(random.randint(0, 9))
+    return int(otp)
 
 
 # TODO: make this validate the code in the database for a given phone number
 def validate_login_code(code: int, phone_number: str) -> bool:
     return code == 1234
+
+
+# Add Access-Control-Allow-Origin header to responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    response.headers.add("Access-Control-Allow-Headers", 'Content-Type, access-control-allow-origin, Access-Control-Allow-Credentials')
+    return response
 
 
 @app.route("/api/send_login_code", methods=["POST"])
@@ -93,8 +99,8 @@ client = OpenAI(api_key = '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')
 
 @app.route('/api/chatGPT', methods=['POST'])
 async def ai():
-    if not request.get_json(silent=True):
-        return {"error": "missing valid JSON object in request body"}, 400
+    # if not request.get_json(silent=True):
+    #     return {"error": "missing valid JSON object in request body"}, 400
 
     data = request.json
     content = data.get('content')
@@ -107,7 +113,7 @@ async def ai():
     messages=[
         {
             "role": "system", 
-            "content": "You are a poetic assistant, skilled in explaining complex programming concepts with creative flair."
+            "content": "You are a helpful assistnat."
         },
         {
             "role": "user", 
@@ -115,4 +121,5 @@ async def ai():
         }]
     )
 
-    return jsonify({'response' : completion.choices[0].message.content})
+    return jsonify({'response' : completion.choices[0].message.content}), 200
+
