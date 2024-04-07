@@ -4,6 +4,7 @@ import random
 # ChatGPT libraries
 import os
 from openai import OpenAI
+from twilio.rest import Client
 
 
 app = Flask(__name__)
@@ -60,7 +61,7 @@ def send_login_code():
     account_sid = "AC1583468d0f68fae0d8e669747e4432da"
     auth_token = "f90ab474320826eab751dbc6275a14f6"
     client = Client(account_sid, auth_token)
-    client.messages.create(**{'from_': '+17244887744', 'body': f"Your login code is: {registration_code}", 'to': phone_number})
+    client.messages.create(**{'from_': '+17244887744', 'body': f"Your login code is: {login_code}", 'to': phone_number})
     
     # Step 5: Return a response
     return {'message': f"Registration code successfully sent to {phone_number}"}, 200
@@ -95,31 +96,34 @@ def verify_login_code():
 
 
 
-client = OpenAI(api_key = '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')
+client = OpenAI(api_key='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')
 
 @app.route('/api/chatGPT', methods=['POST'])
 async def ai():
-    # if not request.get_json(silent=True):
-    #     return {"error": "missing valid JSON object in request body"}, 400
-
+    if not request.get_json(silent=True):
+        return {"error": "missing valid JSON object in request body"}, 400
+    
     data = request.json
-    content = data.get('content')
-    date = data.get('date')
-    time = data.get('time')
-    author_type = data.get('author_type')
+    input = data.get("input")
 
-    completion=client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
+    if not input:
+        return {"error": "input is required"}, 400
+
+    response = client.chat.completions.create(
+      model="gpt-3.5-turbo",
+      messages=[
         {
-            "role": "system", 
-            "content": "You are a helpful assistnat."
+          "role": "system",
+          "content": "You are ChatGPT, a conversational LLM."
         },
         {
-            "role": "user", 
-            "content": content
-        }]
+          "role": "user",
+          "content": input
+        }
+      ],
+      max_tokens=64,  # this ensures we don't get too big of a response
     )
 
-    return jsonify({'response' : completion.choices[0].message.content}), 200
+    output = response.choices[0].message.content
+    return {"output": output}, 200
 
