@@ -16,6 +16,7 @@
     "@types/node": "^16.18.91",
     "@types/react": "^18.2.67",
     "@types/react-dom": "^18.2.22",
+    "axios": "^1.6.8",
     "cross-env": "^7.0.3",
     "mui-one-time-password-input": "^2.0.2",
     "mui-tel-input": "^5.1.2",
@@ -57,5 +58,4 @@
   "devDependencies": {
     "sass": "^1.72.0"
   }
-  
 }
