@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "a1c2bdbb-7f44-4f68-9f38-ed2bf479e36d"
+      }
+    },
+    "owner": "pohblano",
+    "slug": "chatterai"
+  }
+}

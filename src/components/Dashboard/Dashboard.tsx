@@ -29,6 +29,7 @@ function Dashboard() {
 		author_id: ''
 	}
 	const [entry, setEntry] = useState(initialData)
+	const [entryData, setEntryData] = useState<Entry>()
 	// const [response, setResponse] = useState('')
 	const [isLoading, setIsLoading] = useState(false);
 	const [chat, setChat] = useState([])
@@ -69,16 +70,14 @@ function Dashboard() {
 			entry.author_type = 'user'
 			chat.unshift(entry)
 			setChat(chat)
-
+			setEntry(initialData)
+			
 			try {
 				const response = await ChatApi.chat(entry)
-				
-				console.log(response)
-				
-				// chat.unshift(JSON.parse(response))
-				// setChat(chat)
-				// setIsLoading(false);
-				// console.log(chat)
+				chat.unshift(JSON.parse(response))
+				setChat(chat)
+				setIsLoading(false);
+				console.log(chat)
 				// setEntry(initialData)
 			} catch (error) {
 				console.log(error)
@@ -86,7 +85,6 @@ function Dashboard() {
 
 		} else e.stopPropagation();
 	};
-
 
 
 
