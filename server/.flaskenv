@@ -1,2 +1,2 @@
-FLASK_APP=app.py
+FLASK_APP=__init__
 FLASK_DEBUG=1

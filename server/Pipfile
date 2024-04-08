@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 twilio = "*"
+openai = "*"
+flask[async] = "*"
+Flask-SQLAlchemy = "*"
 
 [dev-packages]
 
