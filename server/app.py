@@ -1,15 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import random
 
 # ChatGPT libraries
 import os
 from openai import OpenAI
+import tiktoken
+
 
 
 app = Flask(__name__)
-
-
-
 
 
 # TODO: make this generate a random code and store it in the database
@@ -28,7 +27,7 @@ def validate_login_code(code: int, phone_number: str) -> bool:
 # Add Access-Control-Allow-Origin header to responses
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:3000')
+    response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
     response.headers.add("Access-Control-Allow-Headers", 'Content-Type, access-control-allow-origin, Access-Control-Allow-Credentials')
     return response
@@ -94,32 +93,103 @@ def verify_login_code():
 
 
 
+from typing import List
+from langchain_openai import ChatOpenAI
+from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
+from langchain.schema import HumanMessage
+from langchain.memory import ConversationBufferWindowMemory
+from langchain.agents import load_tools, AgentType, initialize_agent
+from langchain.callbacks.streaming_stdout_final_only import (
+    FinalStreamingStdOutCallbackHandler,
+)
+
+
+llm = ChatOpenAI(
+    openai_api_key='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',
+    temperature=1.1,
+    model_name="gpt-3.5-turbo",
+    streaming=True,  # ! important
+    callbacks=[StreamingStdOutCallbackHandler()]  # ! important
+)
+
+
+# initialize conversational memory
+memory = ConversationBufferWindowMemory(
+    memory_key="chat_history",
+    k=1,
+    return_messages=True,
+    output_key="output"
+)
+
+# create a single tool to see how it impacts streaming
+tools = load_tools(["llm-math"], llm=llm)
+
+# initialize the agent
+agent = initialize_agent(
+    agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
+    tools=tools,
+    llm=llm,
+    memory=memory,
+    verbose=True,
+    max_iterations=1,
+    early_stopping_method="generate",
+    return_intermediate_steps=False,
+    streaming=True
+)
+
+class CallbackHandler(StreamingStdOutCallbackHandler):
+    def __init__(self):
+        self.content: str = ""
+        self.final_answer: bool = False
+        self.response_tokens: List[str] = []
+
+    def on_llm_new_token(self, token: str, **kwargs: any) -> None:
+        self.content += token
+        if "Final Answer" in self.content:
+            # now we're in the final answer section, but don't print yet
+            self.final_answer = True
+            self.content = ""
+        if self.final_answer:
+            if '"action_input": "' in self.content:
+                if token not in ["}"]:
+                     self.response_tokens.append(token)
+
+    def get_response_tokens(self) -> List[str]:
+        return self.response_tokens
+
+agent.agent.llm_chain.llm.callbacks = [CallbackHandler()]
+
+
+
+
 
 client = OpenAI(api_key = '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')
 
 @app.route('/api/chatGPT', methods=['POST'])
 async def ai():
-    # if not request.get_json(silent=True):
-    #     return {"error": "missing valid JSON object in request body"}, 400
+    if not request.get_json(silent=True):
+        return {"error": "missing valid JSON object in request body"}, 400
 
     data = request.json
     content = data.get('content')
-    date = data.get('date')
-    time = data.get('time')
-    author_type = data.get('author_type')
+    if not content:
+        return {"error": "Need user input."}, 400
+    
+    user_entry = {
+        'content': content,
+        'date': data.get('date'),
+        'time': data.get('time'),
+        'author_type': data.get('author_type')
+    }
+    
 
-    completion=client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {
-            "role": "system", 
-            "content": "You are a helpful assistnat."
-        },
-        {
-            "role": "user", 
-            "content": content
-        }]
-    )
+    ai_entry = {
+        'content': agent.run(content),
+        'author_type': 'ai',
+        'time': '',
+        'date': ''
+    }
 
-    return jsonify({'response' : completion.choices[0].message.content}), 200
+
+    return jsonify(ai_entry), 200
 

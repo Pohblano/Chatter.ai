@@ -3,47 +3,102 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	height: 94%;
+	height: 100%;
 	justify-content: center;
-	
-	.chatRoomAIBox{
+
+	.chatRoomAIBox {
 		display: flex;
 		flex-flow: column;
 		color: #0d0d0d;
 		justify-content: center;
 		align-content: center;
-		> p {
-			font-size: 1.5rem;	
+
+		>p {
+			font-size: 1.5rem;
 			font-weight: 700;
 			margin: 0 0;
 		}
 	}
 
-	.chat{
+	.chat {
 		display: flex;
-		.entry{
+		height: 100%;
+		flex-flow: column;
+		flex-direction: column-reverse;
+		color: black;
+		font-size: 1rem;
+		padding: 0 24px;
+		overflow: overlay;
 
-			.ai{
+		.ai_entry{
+			align-self: end;
+		}
+		.entry {
+			align-items: flex-start;
+			display: inline-flex;
+			flex-direction: column;
+			margin-bottom: 2px;
 
+			>span {
+				box-sizing: content-box;
+				margin-bottom: 4px;
+				overflow-x: hidden;
+				position: relative;
+				text-overflow: ellipsis;
+				font-size: 12px;
+				font-weight: bold;
+				font-style: normal;
+				// line-height: 1;
+				letter-spacing: normal;
+				// width: 100%;
 			}
-			.user{
 
+			> .entry_content {
+				display: flex;
+				flex-direction: column;
+				position: relative;
+				width: fit-content;
+				max-width: 40rem;
+
+				.user_content, .ai_content {
+					background-color: #eeeeee;
+					position: relative;
+					display: inline-block;
+					box-sizing: content-box;
+					padding: 8px 12px;
+					border-radius: 0px 16px 16px 16px;
+					white-space: pre-line;
+					word-break: break-word;
+					font-size: 14px;
+					font-weight: normal;
+					font-stretch: normal;
+					font-style: normal;
+					line-height: 1.43;
+					letter-spacing: normal;
+					text-align: left;
+				}
+				.ai_content {
+					background-color: #B3E5FC;
+					border-radius: 16px 0px 16px 16px;
+				}
 			}
+			.ai_name {
+				align-self: end;
+				text-align: end;
+			}	
 		}
 	}
 }
 
-@media screen and (max-width: 992px) {
-	
-}
+@media screen and (max-width: 992px) {}
 
 @media screen and (max-width: 768px) {
-	.mainNav{
+	.mainNav {
 		display: none;
+	}
+	.entry_content{
+		max-width: 23rem!important;
 	}
 }
 
-@media screen and (max-width: 576px) {
-	
-}
-
+@media screen and (max-width: 576px) {}
