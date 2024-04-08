@@ -19,6 +19,7 @@
     "@uiw/react-md-editor": "^4.0.4",
     "axios": "^1.6.8",
     "cross-env": "^7.0.3",
+    "expo": "^50.0.14",
     "jquery": "^3.7.1",
     "mui-one-time-password-input": "^2.0.2",
     "mui-tel-input": "^5.1.2",

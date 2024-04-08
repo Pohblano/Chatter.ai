@@ -1,15 +1,14 @@
 // Libraries
 import React, { useEffect, useState } from 'react'
-import $ from 'jquery';
+
 import MDEditor from '@uiw/react-md-editor/nohighlight';
-import { Avatar } from '@mui/material'
+
 
 // Styling
 import './ChatRoom.scss'
 
 
 const ChatRoom = ({ ai, chat }) => {
-
 	const checkAuthor = (type: string) => (type === 'ai') ? 'ai' : 'user'
 
 	return (
@@ -33,11 +32,10 @@ const ChatRoom = ({ ai, chat }) => {
 								<div className='entry_content' >
 									<div className={`${checkAuthor(entry.author_type)}_content`}>
 										{
-											(checkAuthor(entry.author_type) === 'ai') ? 
-											<MDEditor.Markdown source={entry.content} style={{ whiteSpace: 'pre-wrap', backgroundColor:'unset' }} />
-											:
-											entry.content
-											
+											(checkAuthor(entry.author_type) === 'ai') ?
+												<MDEditor.Markdown source={entry.content} style={{ whiteSpace: 'pre-wrap', backgroundColor: 'unset' }} />
+												:
+												entry.content
 										}
 									</div>
 								</div>
@@ -45,29 +43,9 @@ const ChatRoom = ({ ai, chat }) => {
 							</div>
 						)}
 					</div>
-
 			}
-
 		</div>
 	)
 }
 
 export default ChatRoom
-
-// function formatAiResponse(response: string) {
-// 	// Regular expression to match code-like patterns
-// 	// const codePattern = /```[\s\S]*?```/g;
-// 	// const headerPattern = /\*\*[\s\S]*?\*\*/g;
-// 	// // Tests if the response contains code examples
-// 	// if(codePattern.test(response)){
-// 	// 	 // Replace code-like patterns with HTML code elements
-// 	// 	 console.log(response.matchAll(codePattern))
-// 	// 	//  const formattedResponse = response.replace(codePattern, '<code>$1</code>');
-
-// 	// 	//  return formattedResponse;
-// 	// }else{
-// 	// 	return response
-// 	// }
-
-// 	return marked(response)
-// }

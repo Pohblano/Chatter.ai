@@ -8,6 +8,6 @@ export const ChatApi = {
             data: entry,
             responseType: 'stream',
         })
-        return response
+        return response.data
     }
 }
