@@ -1,5 +1,5 @@
 // Library components
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown, Menu, MenuButton, MenuItem, TextareaAutosize } from "@mui/base";
 // Components
 import MainNav from "../MainNav/MainNav";
@@ -7,22 +7,33 @@ import ChatRoom from "../ChatRoom/ChatRoom";
 // Styling
 import './Dashboard.scss'
 
-import {ChatApi} from '../../Api/ChatGPTApi'
+import { ChatApi } from '../../Api/ChatGPTApi'
 
 
 interface Entry {
-	content: string,
-	date: string,
-	time: string,
-	author_type: string
+	id?: string,
+	content?: string,
+	date?: string,
+	time?: string,
+	author_type?: string,
+	author_id?: string,
 }
 
 function Dashboard() {
-
-	const [entry, setEntry] = useState<Entry>()
-	const [response, setResponse] = useState({})
+	const initialData = {
+		id: '',
+		content: '',
+		date: '',
+		time: '',
+		author_type: '',
+		author_id: ''
+	}
+	const [entry, setEntry] = useState(initialData)
+	// const [response, setResponse] = useState('')
+	const [isLoading, setIsLoading] = useState(false);
 	const [chat, setChat] = useState([])
 	const [active, setActive] = useState('')
+
 
 	// Handles AI selection button
 	const handleMenuClick = (menuItem: string) => {
@@ -34,31 +45,51 @@ function Dashboard() {
 	// Handles text input changes
 	const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
 		const { name, value } = e.target;
-		const date = new Date();
-		const data = {
-			content: value,
-			date: date.toDateString(),
-			time: date.toTimeString(),
-			author_type: 'user',
-		}
-		setEntry(data)
+		setEntry(prevState => ({
+			...prevState,
+			[name]: value,
+		}))
 	}
 
+	// Submits form upon the press of a key
+	const handleKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			handleSubmit(e);
+		}
+	};
+
 	// Submits form data to backend to be processed
-	const handleSubmit = (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
+	const handleSubmit = async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
 		e.preventDefault();
+		setIsLoading(true)
 		if (entry.content) {
-			console.log(entry)
-			ChatApi.chat(entry)
-				.then(res => console.log(res))
-			// postData('http://127.0.0.1:5000/api/chatGPT', entry)
-			// 	.then(res => {
-			// 		console.log(res)
-			// 	})
-			// 	.catch(err => console.log(err))
+			const date = new Date();
+			entry.date = date.toDateString()
+			entry.time = date.toTimeString()
+			entry.author_type = 'user'
+			chat.unshift(entry)
+			setChat(chat)
+
+			try {
+				const response = await ChatApi.chat(entry)
+				
+				console.log(response)
+				
+				// chat.unshift(JSON.parse(response))
+				// setChat(chat)
+				// setIsLoading(false);
+				// console.log(chat)
+				// setEntry(initialData)
+			} catch (error) {
+				console.log(error)
+			}
 
 		} else e.stopPropagation();
 	};
+
+
+
+
 
 	return (
 		<div className='dashboardWrapper'>
@@ -87,15 +118,17 @@ function Dashboard() {
 
 					<section className="chatBody">
 						<ChatRoom ai={active} chat={chat} />
-
 						<div className="chatInputWrapper">
 							<form className="chatInput" onSubmit={handleSubmit}>
 								<TextareaAutosize className='chatTextarea'
 									aria-label="empty textarea"
 									maxRows={4}
-									name="message"
+									name="content"
+									placeholder="Message {Ai}..."
+									value={entry.content}
 									onChange={handleInputChange}
-									placeholder="Message {Ai}..." />
+									onKeyPress={handleKeyPress}
+								/>
 								<button className="chatButton" type="submit">
 									<i className="fa-solid fa-arrow-up"></i>
 								</button>
@@ -113,30 +146,3 @@ function Dashboard() {
 
 export default Dashboard;
 
-
-async function postData(url: string, data: object) {
-	try {
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
-		headers.append('Accept', 'application/json');
-		// headers.append('Origin', 'http://localhost:5000');
-		headers.append('Access-Control-Allow-Origin', '*')
-		const response = await fetch(url, {
-			method: 'POST',
-			mode: 'cors',
-			body: JSON.stringify(data),
-			headers: headers
-		});
-		if (response.ok) {
-			const data = await response.json();
-			console.log(data)
-			return data.response;
-		} else {
-			throw new Error('Error: Something went wrong with the API call');
-		}
-
-	} catch (error) {
-		console.error(error);
-		return 'Error: Something went wrong with the API call';
-	}
-}

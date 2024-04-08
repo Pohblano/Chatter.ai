@@ -1,11 +1,17 @@
 // Libraries
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import $ from 'jquery';
+import MDEditor from '@uiw/react-md-editor/nohighlight';
+import { Avatar } from '@mui/material'
 
 // Styling
 import './ChatRoom.scss'
 
 
-const ChatRoom = ({ai, chat}) => {
+const ChatRoom = ({ ai, chat }) => {
+
+	const checkAuthor = (type: string) => (type === 'ai') ? 'ai' : 'user'
+
 	return (
 		<div className="chatRoom">
 			{
@@ -13,18 +19,33 @@ const ChatRoom = ({ai, chat}) => {
 					<div className="chatRoomAIBox">
 						<div>(image of AI)</div>
 						<p>How can I help you today?</p>
-					</div> 
+					</div>
 					:
 					<div className="chat">
-						{chat.map((entry, index) => {
-							<div className="entry">
-								<p className={(entry.user === 'bot')? 'ai':'user'}>
-									Messages go here
-								</p>
+						{chat.map((entry, index) =>
+
+							<div className={`${checkAuthor(entry.author_type)}_entry entry`} key={index}>
+
+								<span className={`${checkAuthor(entry.author_type)}_name`}>
+									{entry.author_type}
+								</span>
+
+								<div className='entry_content' >
+									<div className={`${checkAuthor(entry.author_type)}_content`}>
+										{
+											(checkAuthor(entry.author_type) === 'ai') ? 
+											<MDEditor.Markdown source={entry.content} style={{ whiteSpace: 'pre-wrap', backgroundColor:'unset' }} />
+											:
+											entry.content
+											
+										}
+									</div>
+								</div>
+
 							</div>
-						})}
+						)}
 					</div>
-			
+
 			}
 
 		</div>
@@ -32,3 +53,21 @@ const ChatRoom = ({ai, chat}) => {
 }
 
 export default ChatRoom
+
+// function formatAiResponse(response: string) {
+// 	// Regular expression to match code-like patterns
+// 	// const codePattern = /```[\s\S]*?```/g;
+// 	// const headerPattern = /\*\*[\s\S]*?\*\*/g;
+// 	// // Tests if the response contains code examples
+// 	// if(codePattern.test(response)){
+// 	// 	 // Replace code-like patterns with HTML code elements
+// 	// 	 console.log(response.matchAll(codePattern))
+// 	// 	//  const formattedResponse = response.replace(codePattern, '<code>$1</code>');
+
+// 	// 	//  return formattedResponse;
+// 	// }else{
+// 	// 	return response
+// 	// }
+
+// 	return marked(response)
+// }

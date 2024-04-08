@@ -1,13 +1,14 @@
 import axios from "axios"
 
 const api = axios.create({
-  withCredentials: true,
+  withCredentials: false,
   baseURL: "http://127.0.0.1:5000/api",
   headers: {
     'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Credentials': 'true',
     'accept': 'application/json',
-    // 'content-type': 'application/x-www-form-urlencoded',
+    'content-type': 'application/json',
+
    },
 });
 

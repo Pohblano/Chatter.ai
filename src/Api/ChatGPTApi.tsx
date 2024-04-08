@@ -1,13 +1,13 @@
 import api from './Api'
 
-
 export const ChatApi = {
     chat: async function (entry, cancel = false) {
         const response = await api.request({
             url: `/chatGPT`,
             method: "POST",
-            data: entry
+            data: entry,
+            responseType: 'stream',
         })
-        return response.data
+        return response
     }
 }
