@@ -1,16 +1,18 @@
 // Library components
 import React, { useEffect, useState, useCallback } from "react";
-import { Dropdown, Menu, MenuButton, MenuItem, TextareaAutosize } from "@mui/base";
+import {TextareaAutosize } from "@mui/base";
 
 // Components
-import MainNav from "../MainNav/MainNav";
-import ChatRoom from "../ChatRoom/ChatRoom";
+import MainNav from "../../components/MainNav/MainNav";
+import ChatRoom from "../../components/ChatRoom/ChatRoom";
+import AiSelect from "../../components/AiSelectButton/AiSelect";
 
 // Api
 import { ChatApi } from '../../Api/ChatGPTApi'
 
 // Styling
 import './Dashboard.scss'
+
 
 
 
@@ -150,27 +152,17 @@ function Dashboard() {
 			<div className="chatWrapper">
 				<main className="mainChat">
 					<div className="chatHeader">
-
-						<Dropdown>
-							<MenuButton>
-								AI Chat
-								<svg width="16" height="17" viewBox="0 0 16 17" fill="none" className="text-token-text-tertiary"><path d="M11.3346 7.83203L8.00131 11.1654L4.66797 7.83203" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
-							</MenuButton>
-							<Menu>
-								<MenuItem onClick={handleMenuClick('Bard AI')}>Bard AI</MenuItem>
-								<MenuItem onClick={handleMenuClick('ChatGPT')}>ChatGPT
-								</MenuItem>
-								<MenuItem onClick={handleMenuClick('Jasper AI')}>Jasper AI</MenuItem>
-							</Menu>
-						</Dropdown>
-
-
+						<AiSelect handleMenuClick={handleMenuClick}/>
 					</div>
 
 					<section className="chatBody">
 						<ChatRoom ai={active} chat={chat} response={response} isLoading={isLoading} />
+
 						<div className="chatInputWrapper">
 							<form className="chatInput" onSubmit={handleSubmit}>
+								<button className="chatNewButton" type="submit">
+									<i className="fa-solid fa-plus"></i>
+								</button>
 								<TextareaAutosize className='chatTextarea'
 									aria-label="empty textarea"
 									maxRows={4}

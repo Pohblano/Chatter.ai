@@ -1,0 +1,42 @@
+.base-Menu-root {
+	list-style: none;
+
+	&>ul {
+		padding-left: 1em;
+	}
+
+	.base-Menu-listbox {
+		font-family: "IBM Plex Sans", sans-serif;
+		font-size: 0.875rem;
+		box-sizing: border-box;
+		padding: 6px;
+		margin: 12px 0px;
+		min-width: 200px;
+		border-radius: 12px;
+		overflow: auto;
+		outline: 0px;
+		background: rgb(255, 255, 255);
+		border: 1px solid rgb(218, 226, 237);
+		color: rgb(28, 32, 37);
+		box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 6px;
+
+
+		.base-MenuItem-root {
+			list-style: none;
+			padding: 8px;
+			border-radius: 8px;
+			cursor: default;
+			user-select: none;
+
+			&:last-of-type {
+				border-bottom: none;
+			}
+
+			&:focus {
+				outline: rgb(153, 204, 243) solid 3px;
+				background-color: rgb(229, 234, 242);
+				color: rgb(28, 32, 37);
+			}
+		}
+	}
+}
