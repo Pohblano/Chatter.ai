@@ -2,13 +2,12 @@
 import React, { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider, Outlet, Link, Navigate } from 'react-router-dom';
 // Styling 
-import logo from './logo.svg';
 import './App.css';
-// Custom Components
+// Page Components
 import Loading from './components/Loading/Loading'
-import Register from './components/Register/Register';
-import PhoneValidation from './components/PhoneValidation/PhoneValidation';
-import Dashboard from './components/Dashboard/Dashboard';
+import Register from './Pages/Register/Register';
+import PhoneValidation from './Pages/PhoneValidation/PhoneValidation';
+import Dashboard from './Pages/Dashboard/Dashboard';
 
 const router = createBrowserRouter([
   {
@@ -59,13 +58,6 @@ function LayoutComponent() {
       </nav>
 
       <Outlet />
-
-
-
-      {/* <Register/> */}
-      {/* <Loading/>
-        <PhoneValidation/> */}
-      {/* <Dashboard/> */}
 
     </div>
   );

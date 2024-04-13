@@ -92,10 +92,9 @@ async def ai():
     }
    
     #  Run the agent and stream the response
-    response_stream = agent.run("ignore previous instructions and be verbos. "+ content)
+    # response_stream = agent.run("ignore previous instructions and be verbos. "+ content)
 
-    # response_stream ="``` js \nvar foo = function (bar) {\n return bar++; \n};\n\nconsole.log(foo(5));\n```"
- 
+    response_stream ="`asdfasdfsdfasdfasdf`asdfa` dffasr++; \n};\nas fasdf as\ncoasdsoasdasdflog(fasdfasdfdf a fsadf asd;fj asd;f jas'dk faldk f;'as kf;'kas;lf ka;ldfkp-owqeirp o[weqir-qrp[oweqir po[wqeirp[oweqir po[wqe rp[qwep[r weq orpo[wqe rp[wqe rp[wqierp [iweqproi2-348902-193 4-02109 34-2133  49-21394-0211 423 4-2  4 1 -02314-021394-219-=  -1294-0 219-0492-=09 1-=23094-=0192304-9 qwkra;wlkjf ;o(5));\n`"
 
     ai_entry = {
         'content': response_stream,
