@@ -5,6 +5,7 @@
 	overflow: hidden;
 	height: 100%;
 	justify-content: center;
+	margin: auto;
 
 	.chatRoomAIBox {
 		display: flex;
@@ -60,6 +61,9 @@
 				width: fit-content;
 				max-width: 40rem;
 
+				> p{
+					margin: 0;
+				}
 				.user_content, .ai_content {
 					background-color: #eeeeee;
 					position: relative;
@@ -76,6 +80,21 @@
 					line-height: 1.43;
 					letter-spacing: normal;
 					text-align: left;
+
+					#preview{
+						background-color: unset;
+						.md-editor-preview-wrapper{
+							padding: 0;
+							margin: 0;
+						}
+
+						pre{
+							margin: 0;
+							.md-editor-preview-wrapper{
+								background-color: unset;
+							}
+						}
+					}
 				}
 				.ai_content {
 					background-color: #B3E5FC;
@@ -89,16 +108,33 @@
 		}
 	}
 }
+@media screen and (max-width: 1440px) {
 
-@media screen and (max-width: 992px) {}
+}
 
+@media screen and (max-width: 992px) {
+	.chatRoom{
+		width: 100%;
+	}
+}
+@media screen and (min-width: 992px){
+	.chatRoom{
+		width: 60%;
+	}
+}
 @media screen and (max-width: 768px) {
 	.mainNav {
 		display: none;
 	}
+	
+	
 	.entry_content{
-		max-width: 23rem!important;
+		// max-width: 23rem!important;
 	}
+
+
 }
 
-@media screen and (max-width: 576px) {}
+@media screen and (max-width: 576px) {
+
+}

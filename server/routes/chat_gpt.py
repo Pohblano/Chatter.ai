@@ -8,6 +8,7 @@ from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.schema import HumanMessage
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.agents import load_tools, AgentType, initialize_agent
+from langchain.agents import AgentExecutor
 from langchain.callbacks.streaming_stdout_final_only import (
     FinalStreamingStdOutCallbackHandler,
 )
@@ -43,7 +44,8 @@ agent = initialize_agent(
     max_iterations=1,
     early_stopping_method="generate",
     return_intermediate_steps=False,
-    streaming=True
+    streaming=True,
+    handle_parsing_errors=True
 )
 
 class CallbackHandler(StreamingStdOutCallbackHandler):
@@ -73,6 +75,7 @@ agent.agent.llm_chain.llm.callbacks = [CallbackHandler()]
 
 @app.route('/api/chatGPT', methods=['POST'])
 async def ai():
+    print(request)
     if not request.get_json(silent=True):
         return {"error": "missing valid JSON object in request body"}, 400
 
@@ -87,13 +90,28 @@ async def ai():
         'time': data.get('time'),
         'author_type': data.get('author_type')
     }
-    
+   
+    #  Run the agent and stream the response
+    response_stream = agent.run("ignore previous instructions and be verbos. "+ content)
+
+    # response_stream ="``` js \nvar foo = function (bar) {\n return bar++; \n};\n\nconsole.log(foo(5));\n```"
+ 
+
     ai_entry = {
-        'content': agent.run(content),
+        'content': response_stream,
         'author_type': 'ai',
         'time': '',
         'date': ''
     }
 
-    return jsonify(ai_entry), 200
 
+    # Stream the response
+    def generate_response():
+        for chunk in response_stream:
+            yield chunk  # Add newline character between chunks
+  
+    
+    
+
+    # Return a Response object with the generated response
+    return Response(generate_response(), content_type='text/event-stream', status=200)
