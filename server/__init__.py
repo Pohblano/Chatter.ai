@@ -1,9 +1,11 @@
 import os
 
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+CORS(app) # This will enable CORS for all routes
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
@@ -20,17 +22,14 @@ import server.routes.send_login_code
 import server.routes.verify_login_code
 
 
-# Add Access-Control-Allow-Origin header to responses
-@app.after_request
-def after_request(response):
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    response.headers.add(
-        "Access-Control-Allow-Headers",
-        "Content-Type, access-control-allow-origin, Access-Control-Allow-Credentials",
-    )
-    return response
-
+# # Add Access-Control-Allow-Origin header to responses
+# @app.after_request
+# def after_request(response):
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     response.headers.add("Access-Control-Allow-Credentials", "true")
+#     response.headers.add("Access-Control-Allow-Headers", "*")
+#     response.headers.add("Access-Control-Allow-Methods", "*")
+#     return response
 
 # import database models
 from server.models.user import User

@@ -1,13 +1,17 @@
 // Library components
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Dropdown, Menu, MenuButton, MenuItem, TextareaAutosize } from "@mui/base";
+
 // Components
 import MainNav from "../MainNav/MainNav";
 import ChatRoom from "../ChatRoom/ChatRoom";
+
+// Api
+import { ChatApi } from '../../Api/ChatGPTApi'
+
 // Styling
 import './Dashboard.scss'
 
-import { ChatApi } from '../../Api/ChatGPTApi'
 
 
 interface Entry {
@@ -29,8 +33,8 @@ function Dashboard() {
 		author_id: ''
 	}
 	const [entry, setEntry] = useState(initialData)
-	const [entryData, setEntryData] = useState<Entry>()
-	// const [response, setResponse] = useState('')
+	// const [entryData, setEntryData] = useState<Entry>()
+	const [response, setResponse] = useState(initialData)
 	const [isLoading, setIsLoading] = useState(false);
 	const [chat, setChat] = useState([])
 	const [active, setActive] = useState('')
@@ -45,7 +49,9 @@ function Dashboard() {
 
 	// Handles text input changes
 	const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
+		// Grabbing input variable
 		const { name, value } = e.target;
+		// Updating state to prepare for form submission
 		setEntry(prevState => ({
 			...prevState,
 			[name]: value,
@@ -64,21 +70,71 @@ function Dashboard() {
 		e.preventDefault();
 		setIsLoading(true)
 		if (entry.content) {
+			// Setting up user object 
 			const date = new Date();
 			entry.date = date.toDateString()
 			entry.time = date.toTimeString()
 			entry.author_type = 'user'
+			// Updating state for render 
 			chat.unshift(entry)
 			setChat(chat)
 			setEntry(initialData)
-			
+
 			try {
+				// Fetching AI response. Expecting a stream
 				const response = await ChatApi.chat(entry)
-				chat.unshift(JSON.parse(response))
-				setChat(chat)
-				setIsLoading(false);
-				console.log(chat)
-				// setEntry(initialData)
+				// Create a new ReadableStream from the response data
+				const reader = response.body.getReader();
+				// Read data from the stream
+				const decoder = new TextDecoder();
+				// Stream variables
+				let chunk, text = '';
+				let charsReceived = 0;
+
+				// Setting up Ai response object
+				const obj = {
+					id: '',
+					author_id: '',
+					author_type: 'ai',
+					content: text,
+					date: '',
+					time: ''
+				};
+
+				// Read from the stream as chunks of data become available
+				let result = await reader.read();
+				// Anonymous function to control rate of speed in which stream is being converted to text
+				(async function loop(i) {
+					setTimeout(async function () {
+						setIsLoading(false);
+						// Decoding string and setting it into filler text
+						const decodedChunk = decoder.decode(result.value, { stream: true });
+						text += decodedChunk;
+
+						setResponse(prevState => ({
+							...obj,
+							['content']: text,
+						}))
+
+						// Returning reader for reiteration
+						result = await reader.read();
+
+						// Updating state for render once stream conversion is finished
+						if (result.done) {
+							obj.content = text
+							chat.unshift(obj)
+							setChat(chat)
+							setResponse(initialData)
+							console.log('DONE STREAMING')
+
+						}
+
+						// Control reiteration until stream conversion is done
+						if (!result.done) loop(result)
+					}, 25)
+				})(result)
+
+
 			} catch (error) {
 				console.log(error)
 			}
@@ -88,13 +144,10 @@ function Dashboard() {
 
 
 
-
 	return (
 		<div className='dashboardWrapper'>
 			<MainNav />
-
 			<div className="chatWrapper">
-
 				<main className="mainChat">
 					<div className="chatHeader">
 
@@ -115,7 +168,7 @@ function Dashboard() {
 					</div>
 
 					<section className="chatBody">
-						<ChatRoom ai={active} chat={chat} />
+						<ChatRoom ai={active} chat={chat} response={response} isLoading={isLoading} />
 						<div className="chatInputWrapper">
 							<form className="chatInput" onSubmit={handleSubmit}>
 								<TextareaAutosize className='chatTextarea'
@@ -133,11 +186,8 @@ function Dashboard() {
 							</form>
 						</div>
 					</section>
-
 				</main>
-
 			</div>
-
 		</div>
 	);
 }
