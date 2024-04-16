@@ -2,7 +2,7 @@
 import React from 'react'
 import {Menu, MenuButton, MenuItem, Dropdown} from '@mui/base'
 // Styling
-import './AiSelect.scss'
+import './AiSelectButton.scss'
 
 export default function AiSelect({handleMenuClick}) {
 	return (

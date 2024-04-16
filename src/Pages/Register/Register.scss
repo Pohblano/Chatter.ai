@@ -1,33 +1,57 @@
-.registerWrapper{
+.registerWrapper {
+    text-align: -webkit-center;
+    // height: 30rem;
+    // max-width: 29rem;
+    align-content: center;
+	height: 100vh;
 	display: flex;
-	flex-flow: column;
-	color: white;
-	align-items: center;
+    flex-flow: column;
+    gap: 275px;
+	> h1 {
+		font-size: revert;
+	}
+	>form{
+		max-width: 29rem;
+		// width: fit-content;
+	}
 
 
-	.MuiOtpInput-Box{
+	.MuiOtpInput-Box {
 		color: white;
-		
+
 	}
-	.registerInfo{
-		font-size: small;
-		// margin: 0;
-		text-align: start;
-	}
-	.MuiTelInput-TextField{
+
+	// .registerInfo {
+	// 	font-size: small;
+	// 	// margin: 0;
+	// 	text-align: start;
+	// }
+
+	.MuiTelInput-TextField {
+		width: -webkit-fill-available;
 		background-color: white;
 		border-radius: 10px;
 		border: none;
+		z-index: 50;
 	}
-	.MuiTelInput-IconButton{
+
+	.MuiTelInput-IconButton {
 		color: #42a5f5;
 	}
+	// teliinput input
+	.css-1o9s3wi-MuiInputBase-input-MuiOutlinedInput-input{
+		color: slategray;
+		font-weight: 700;
+		letter-spacing: 0.4px;
+	}
 
+	/* Utilities */
+	.error_message {
+		// width: ;
+		align-self: center;
+		position: relative;
+		bottom: 10px;
+	
+	}
 
 }
-/* .phoneInput{
-	display: flex;
-	align-items: center;
-	gap: 20px;
-	font-size: 50px;
-} */

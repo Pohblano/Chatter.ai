@@ -71,21 +71,21 @@
 	  opacity: 0;
 	  &:checked {
 		+ .button {
-		  &:after {
-			opacity: 0.15;
-			transform: scale(2) perspective(1px) translateZ(0);
-			backface-visibility: hidden;
-			transition: opacity .5s ease, transform .5s ease;
-		  }
+		//   &:after {
+		// 	opacity: 0.15;
+		// 	transform: scale(2) perspective(1px) translateZ(0);
+		// 	backface-visibility: hidden;
+		// 	transition: opacity 4s ease, transform 4s ease;
+		//   }
 		  .power-on,
 		  .power-off {
-			animation: click-animation .3s ease forwards;
-			transform: scale(1);
+			// animation: click-animation 5s ease forwards;
+			transform: scale(2);
 			.line {
 			  animation: line-animation .8s ease-in forwards;
 			}
 			.circle {
-			  transform: rotate(302deg);
+			//   transform: rotate(302deg);
 			}
 		  }
 		  .power-on {

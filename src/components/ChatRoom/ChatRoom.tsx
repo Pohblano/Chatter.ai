@@ -1,10 +1,11 @@
 // Libraries
-import React, { Suspense, useEffect, useState } from 'react'
+import React from 'react'
 import MDEditor from '@uiw/react-md-editor/nohighlight';
 // Components
 import { ChatMessage, FetchingMessage } from '../Utils/Messages'
 // Styling
 import './ChatRoom.scss'
+import { IconOpenAI } from '../Utils/Icons';
 
 
 const ChatRoom = ({ ai, chat, response, isLoading }) => {
@@ -14,8 +15,10 @@ const ChatRoom = ({ ai, chat, response, isLoading }) => {
 			{
 				(chat.length === 0) ?
 					<div className="chatRoomAIBox">
-						<div>(image of AI)</div>
-						<p>How can I help you today?</p>
+						<div className='h-12 w-12 mb-2'>
+							<IconOpenAI className='' />
+							</div>
+						<p>How can I assist you?</p>
 					</div>
 					:
 					<div className="chat">
