@@ -1,6 +1,6 @@
 import api from './Api'
 
-export const ChatApi = {
+export const chat_api = {
     c: async function (entry, cancel = false) {
         const response = await api.request({
             url: `/chatGPT`,

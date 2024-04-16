@@ -6,8 +6,9 @@ import './App.css';
 // Page Components
 import Loading from './components/Loading/Loading'
 import Register from './Pages/Register/Register';
-import PhoneValidation from './Pages/PhoneValidation/PhoneValidation';
+import Validate from './Pages/Validate/Validate';
 import Dashboard from './Pages/Dashboard/Dashboard';
+import NotFound from './Pages/NotFound/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,8 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: 'validation',
-        element: <PhoneValidation />,
+        path: 'validate',
+        element: <Validate />,
       },
       {
         path: 'loading',
@@ -36,13 +37,13 @@ const router = createBrowserRouter([
       },
       {
         path: '*',
-        element: <NotFoundPage />,
+        element: <NotFound />,
       },
     ],
   },
   {
     path: '*',
-    element: <NotFoundPage />,
+    element: <NotFound />,
   },
 ]);
 
@@ -53,19 +54,15 @@ function LayoutComponent() {
       <nav>
         <Link to='/register'>Register</Link>
         <Link to='/loading'>Loading</Link>
-        <Link to='/validation'>PhoneValidation</Link>
+        <Link to='/validate'>PhoneValidation</Link>
         <Link to='/dashboard'>Dashboard</Link>
+        <Link to='/llama'>NotFound</Link>
       </nav>
 
       <Outlet />
 
     </div>
   );
-}
-
-// 404 error
-function NotFoundPage() {
-  return <h1>404 - Page Not Found</h1>;
 }
 
 // Main app

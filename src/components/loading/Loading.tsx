@@ -1,25 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './Loading.scss'
 function Loading() {
-
-	// useEffect(() => {
-
-	//   fetch('http://127.0.0.1:5000/', {
-	//     method: 'PUT',
-	//     body: new FormData(),
-	//   });
-	// }
-	//   , [])
+	
+	useEffect(() => {
+		const checkbox = document.getElementById('checkBox')
+		checkbox.setAttribute('checked','')
+	}, [])
 
 	return (
 		<div className="loadingWrapper">
 			<div className="power-switch">
-				<input type="checkbox" />
+				<input id="checkBox" type="checkbox" />
 				<div className="button">
-					<svg className="power-off">
+					{/* <svg className="power-off">
 						<use href="#line" className="line" />
 						<use href="#circle" className="circle" />
-					</svg>
+					</svg> */}
 					<svg className="power-on">
 						<use href="#line" className="line" />
 						<use href="#circle" className="circle" />

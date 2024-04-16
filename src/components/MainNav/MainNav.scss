@@ -1,7 +1,7 @@
-.mainNav {
-	display: flex;
-	width: 260px;
-	overflow-x: hidden;
-	flex-shrink: 0;
-	background-color: #4fc3f7
+.mobile_menu{
+	position: fixed;
+    top: 43px;
+    z-index: 40;
+    right: 0px;
+	border: none;
 }

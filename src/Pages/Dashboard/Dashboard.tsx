@@ -1,19 +1,18 @@
 // Library components
 import React, { useEffect, useState, useCallback } from "react";
-import {TextareaAutosize } from "@mui/base";
+import { TextareaAutosize } from "@mui/base";
 
 // Components
 import MainNav from "../../components/MainNav/MainNav";
 import ChatRoom from "../../components/ChatRoom/ChatRoom";
-import AiSelect from "../../components/AiSelectButton/AiSelect";
+import AiSelect from "../../components/Utils/AiSelectButton/AiSelectButton";
 
 // Api
-import { ChatApi } from '../../Api/ChatGPTApi'
+import { chat_api } from '../../Api/ChatApi'
 
 // Styling
 import './Dashboard.scss'
-
-
+import { IconMessage } from "../../components/Utils/Icons";
 
 
 interface Entry {
@@ -84,7 +83,7 @@ function Dashboard() {
 
 			try {
 				// Fetching AI response. Expecting a stream
-				const response = await ChatApi.chat(entry)
+				const response = await chat_api.chat(entry)
 				// Create a new ReadableStream from the response data
 				const reader = response.body.getReader();
 				// Read data from the stream
@@ -152,7 +151,7 @@ function Dashboard() {
 			<div className="chatWrapper">
 				<main className="mainChat">
 					<div className="chatHeader">
-						<AiSelect handleMenuClick={handleMenuClick}/>
+						<AiSelect handleMenuClick={handleMenuClick} />
 					</div>
 
 					<section className="chatBody">
@@ -160,7 +159,7 @@ function Dashboard() {
 
 						<div className="chatInputWrapper">
 							<form className="chatInput" onSubmit={handleSubmit}>
-								<button className="chatNewButton" type="submit">
+								<button className="chatNewButton hover:chatter_input_hover" type="submit">
 									<i className="fa-solid fa-plus"></i>
 								</button>
 								<TextareaAutosize className='chatTextarea'
@@ -172,7 +171,7 @@ function Dashboard() {
 									onChange={handleInputChange}
 									onKeyPress={handleKeyPress}
 								/>
-								<button className="chatButton" type="submit">
+								<button className="chatButton hover:chatter_input_hover" type="submit">
 									<i className="fa-solid fa-arrow-up"></i>
 								</button>
 							</form>
