@@ -4,30 +4,44 @@ import { MuiOtpInput } from 'mui-one-time-password-input'
 import { Link } from 'react-router-dom'
 // Styling
 import './Validate.scss'
-
+import { auth_api } from '../../Api/AuthApi'
+import { useLocation } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 
 const Validate = () => {
+  const { search } = useLocation()
   const [oneTime, setOneTime] = useState<string>('')
+  const [timer, setTimer] = useState<number>()
   const [error, setError] = useState<object>({
     type: '',
     msg: ''
   })
-  const [timer, setTimer] = useState<number>()
+  const navigate = useNavigate()
 
   // Event triggered as value in input changes
   const handleChange = (newValue: string) => {
     setOneTime(newValue)
   }
 
+  ////SAVE USER PHONE NUMBER (AFTER VALIDATION) TO LOCAL STORAGE
   // Event triggered when finaly input is filled correctly 
-  const handleComplete = (value: string) => {
-    setError({
-      type: 'invalid',
-      msg: 'this code is invalid'
+  const handleComplete = (login_code: string) => {
+    const query = new URLSearchParams(search);
+    const phone_number = query.get("phone_number").replaceAll(" ", "");
+    auth_api.validate({ login_code, phone_number}).then((response) => {
+      if (response.status === 200) {
+        console.log('success')
+        navigate('./dashboard')
+        return
+      } else {
+        setError({
+          type: 'invalid',
+          msg: 'this code is invalid'
+        })
+      }
     })
   }
-
   // Event to validate and control user input
   const validateChar = (value: string, index: number) => {
     return matchIsNumeric(value)
@@ -47,7 +61,7 @@ const Validate = () => {
             onComplete={handleComplete}
             validateChar={validateChar}
             autoFocus
-            length={4}
+            length={6}
           />
         </div>
 

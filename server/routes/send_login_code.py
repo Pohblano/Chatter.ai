@@ -2,15 +2,35 @@ from flask import request
 from twilio.rest import Client
 import random
 
-from server import app
+from server import app, db
+from server.models.confirmation import Confirmation
+from server.models.user import User
 
 
 # TODO: make this generate a random code and store it in the database
-def generate_login_code(phone_number: str) -> int:
+def generate_login_code(phone_number: str) -> str:
     otp = ""
-    for _ in range(4):
+    for _ in range(6):
         otp += str(random.randint(0, 9))
-    return int(otp)
+
+    # store otp in the database
+    confirmation = Confirmation(code=otp)
+
+    # find or create user
+    user = User.query.get(phone_number)
+    if not user:
+        user = User(phone_number=phone_number)
+
+    # associate confirmation code with user
+    user.confirmation = confirmation
+
+    # TODO: delete old confirmations when adding a new one
+
+    db.session.add(confirmation)
+    db.session.add(user)
+    db.session.commit()
+
+    return otp
 
 
 @app.route("/api/send_login_code", methods=["POST"])
@@ -41,7 +61,7 @@ def send_login_code():
     client = Client(account_sid, auth_token)
     client.messages.create(
         **{
-            "from_": "+17244887744",
+            "from_": "+18449532146",
             "body": f"Your login code is: {login_code}",
             "to": phone_number,
         }
