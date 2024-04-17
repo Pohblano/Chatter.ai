@@ -12,6 +12,7 @@ import { ErrorMessage } from "../../components/Utils/Messages";
 import './Register.scss'
 // Api
 import { auth_api } from "../../Api/AuthApi";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,6 +25,7 @@ function Register() {
 	const [phoneNumber, setPhoneNumber] = useState<string>('')
 	const [error, setError] = useState<Error>()
 	const unknownFlag: MuiTelInputFlagElement = <i className="fas fa-globe-americas"></i>
+	const navigate = useNavigate()
 
 	const handleChange = (newValue: string, info: MuiTelInputInfo) => {
 		setPhoneNumber(newValue)
@@ -34,7 +36,14 @@ function Register() {
 	const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
 		e.preventDefault();
 		if (matchIsValidTel(phoneNumber)) {
-			
+			// TODO: send a post request to the server
+			auth_api.register({phone_number: phoneNumber.replaceAll(" ", "")})
+			.then((response) => {
+				if (response.status === 200) {
+					console.log('success')
+					return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
+				}
+			})
 		} else {
 			setError({type: 'invalid',msg: 'Sorry, that\'s and invalid number.'})
 		}
