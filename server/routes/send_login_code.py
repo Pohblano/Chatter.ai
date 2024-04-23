@@ -69,6 +69,7 @@ def send_login_code():
     #     }
     # )
 
+    app.logger.info(f"Sent login code {login_code} to {phone_number}")
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200
 
 
