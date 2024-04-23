@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect } from "react";
 import './Loading.scss'
 function Loading() {
 	
@@ -9,7 +9,7 @@ function Loading() {
 
 	return (
 		<div className="loadingWrapper">
-			<div className="power-switch">
+			<div className="power-switch animate-ping">
 				<input id="checkBox" type="checkbox" />
 				<div className="button">
 					{/* <svg className="power-off">

@@ -1,5 +1,5 @@
 // Libraries
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 // Customer Components
 import AiMarkdown from './AiMarkdown'
 import { IconX } from './Icons'
@@ -19,8 +19,6 @@ const ChatMessage = ({ checkAuthor, entry }) => {
 					{
 						(checkAuthor(entry.author_type) === 'ai') ?
 							<AiMarkdown content={entry.content} />
-
-
 							:
 							entry.content
 					}

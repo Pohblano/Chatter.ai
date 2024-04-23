@@ -1,31 +1,41 @@
 // Library components
-import React, { useEffect, useState, useCallback } from "react";
-import { TextareaAutosize } from "@mui/base";
+import React, { useEffect, useState } from "react";
 
 // Components
 import MainNav from "../../components/MainNav/MainNav";
 import ChatRoom from "../../components/ChatRoom/ChatRoom";
+import ChatInput from "../../components/ChatInput/ChatInput";
 import AiSelect from "../../components/Utils/AiSelectButton/AiSelectButton";
-
 // Api
 import { chat_api } from '../../Api/ChatApi'
-
+// Actions
+import { getFromLocalStorage, parseJwtToken, saveToLocalStorage } from "../../Actions/DashboardActions";
 // Styling
 import './Dashboard.scss'
-import { IconMessage } from "../../components/Utils/Icons";
 
-
+//Messages
 interface Entry {
-	id?: string,
-	content?: string,
-	date?: string,
-	time?: string,
-	author_type?: string,
-	author_id?: string,
+	id?: String,
+	content?: String,
+	date?: String,
+	time?: String,
+	author_type?: String,
+	author_id?: String,
+	conversation_id?: String
+}
+
+interface Conversation {
+	id?: Number,
+	date?: String,
+	time?: String,
+	ai_id?: String,
+	ai?: String,
+	user_id?: String,
+	user_phone_number?: String
 }
 
 function Dashboard() {
-	const initialData = {
+	const initialEntry = {
 		id: '',
 		content: '',
 		date: '',
@@ -33,13 +43,63 @@ function Dashboard() {
 		author_type: '',
 		author_id: ''
 	}
-	const [entry, setEntry] = useState(initialData)
-	// const [entryData, setEntryData] = useState<Entry>()
-	const [response, setResponse] = useState(initialData)
-	const [isLoading, setIsLoading] = useState(false);
-	const [chat, setChat] = useState([])
-	const [active, setActive] = useState('')
+	const initialConversation = {
+		date: '',
+		time: '',
+		ai_id: '',
+		ai: '',
+		user_id: '',
+		user_phone_number: ''
+	}
 
+	const [user_id, setUser] = useState<String>('')
+	// Single message object
+	const [entry, setEntry] = useState(initialEntry)
+	// AI response object
+	const [response, setResponse] = useState<Entry>(initialEntry)
+	// List of user conversation
+	const [conversations, setConversations] = useState([])
+	// Current conversation
+	const [conversation, setConversation] = useState<Conversation>(initialConversation)
+	// List of messages in conversation
+	const [messages, setMessages] = useState([])
+
+	const [isLoading, setIsLoading] = useState<Boolean>(false);
+
+	const [active, setActive] = useState<String>('')
+
+	useEffect(() => {
+		const recent = JSON.parse(getFromLocalStorage('recent_conversation'))
+		const token = getFromLocalStorage('jwtToken');
+		const { user } = parseJwtToken(token) // User phone number (string)
+		const data = {
+			user_id: user,
+			conversation_id: (recent) ? recent.id : ''
+		}
+
+		// Retrieves user conversations and is returned an array of conversation and the most recent conversation if one is not available in localStorage
+		chat_api.get_conversations(data)
+			.then((response) => {
+				const { recent_conversation, conversations, messages } = response.data
+				if (recent_conversation) {
+					saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
+					setConversation(prevState => ({
+						...prevState,
+						id: recent_conversation.id,
+						ai: recent_conversation.ai_id,
+						user_id: recent_conversation.user_phone_number,
+						user_phone_number: recent_conversation.user_phone_number,
+					}))
+
+				}else setConversation(recent)
+				setMessages(messages.reverse())
+				setConversations(conversations)
+				setUser(user)
+
+			}).catch(err =>{
+				console.log('There was an error retrieving conversations')
+			})
+	}, [])
 
 	// Handles AI selection button
 	const handleMenuClick = (menuItem: string) => {
@@ -48,106 +108,11 @@ function Dashboard() {
 		};
 	};
 
-	// Handles text input changes
-	const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
-		// Grabbing input variable
-		const { name, value } = e.target;
-		// Updating state to prepare for form submission
-		setEntry(prevState => ({
-			...prevState,
-			[name]: value,
-		}))
-	}
-
-	// Submits form upon the press of a key
-	const handleKeyPress = (e) => {
-		if (e.key === 'Enter') {
-			handleSubmit(e);
-		}
-	};
-
-	// Submits form data to backend to be processed
-	const handleSubmit = async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
-		e.preventDefault();
-		setIsLoading(true)
-		if (entry.content) {
-			// Setting up user object 
-			const date = new Date();
-			entry.date = date.toDateString()
-			entry.time = date.toTimeString()
-			entry.author_type = 'user'
-			// Updating state for render 
-			chat.unshift(entry)
-			setChat(chat)
-			setEntry(initialData)
-
-			try {
-				// Fetching AI response. Expecting a stream
-				const response = await chat_api.chat(entry)
-				// Create a new ReadableStream from the response data
-				const reader = response.body.getReader();
-				// Read data from the stream
-				const decoder = new TextDecoder();
-				// Stream variables
-				let chunk, text = '';
-				let charsReceived = 0;
-
-				// Setting up Ai response object
-				const obj = {
-					id: '',
-					author_id: '',
-					author_type: 'ai',
-					content: text,
-					date: '',
-					time: ''
-				};
-
-				// Read from the stream as chunks of data become available
-				let result = await reader.read();
-				// Anonymous function to control rate of speed in which stream is being converted to text
-				(async function loop(i) {
-					setTimeout(async function () {
-						setIsLoading(false);
-						// Decoding string and setting it into filler text
-						const decodedChunk = decoder.decode(result.value, { stream: true });
-						text += decodedChunk;
-
-						setResponse(prevState => ({
-							...obj,
-							['content']: text,
-						}))
-
-						// Returning reader for reiteration
-						result = await reader.read();
-
-						// Updating state for render once stream conversion is finished
-						if (result.done) {
-							obj.content = text
-							chat.unshift(obj)
-							setChat(chat)
-							setResponse(initialData)
-							console.log('DONE STREAMING')
-
-						}
-
-						// Control reiteration until stream conversion is done
-						if (!result.done) loop(result)
-					}, 25)
-				})(result)
-
-
-			} catch (error) {
-				console.log(error)
-			}
-
-		} else e.stopPropagation();
-	};
-
-
-
 	return (
 		<div className='dashboardWrapper'>
-			<MainNav />
+			{/* Main Navigation */}
+			<MainNav user={user_id} conversations={conversations} />
+			{/* Chat Room */}
 			<div className="chatWrapper">
 				<main className="mainChat">
 					<div className="chatHeader">
@@ -155,27 +120,26 @@ function Dashboard() {
 					</div>
 
 					<section className="chatBody">
-						<ChatRoom ai={active} chat={chat} response={response} isLoading={isLoading} />
 
-						<div className="chatInputWrapper">
-							<form className="chatInput" onSubmit={handleSubmit}>
-								<button className="chatNewButton hover:chatter_input_hover" type="submit">
-									<i className="fa-solid fa-plus"></i>
-								</button>
-								<TextareaAutosize className='chatTextarea'
-									aria-label="empty textarea"
-									maxRows={4}
-									name="content"
-									placeholder="Message {Ai}..."
-									value={entry.content}
-									onChange={handleInputChange}
-									onKeyPress={handleKeyPress}
-								/>
-								<button className="chatButton hover:chatter_input_hover" type="submit">
-									<i className="fa-solid fa-arrow-up"></i>
-								</button>
-							</form>
-						</div>
+						<ChatRoom
+							user={user_id}
+							ai={active}
+							messages={messages}
+							response={response}
+							isLoading={isLoading}
+							conversations={conversations}
+							conversation={conversation} />
+
+						<ChatInput
+							setEntry={setEntry}
+							setResponse={setResponse}
+							setIsLoading={setIsLoading}
+							setMessages={setMessages}
+							entry={entry}
+							user={user_id}
+							messages={messages}
+							conversation={conversation}
+							initialEntry={initialEntry} />
 					</section>
 				</main>
 			</div>

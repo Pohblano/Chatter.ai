@@ -1,14 +1,15 @@
 from flask import request
-
+import jwt
+from server import secret_key
 from server import app
 from server.models.user import User
 
 
-def validate_login_code(code: str, phone_number: str) -> bool:
+def validate_login_code(code: str, phone_number: str) -> bool: 
     user = User.query.get(phone_number)
     if not user:
         return False
-
+    
     return user.confirmation_code == code
 
 
@@ -21,6 +22,7 @@ def verify_login_code():
     phone_number = data.get("phone_number")
     login_code = data.get("login_code")
 
+
     # make sure phone_number and login_code are provided
     if not phone_number:
         return {"error": "phone_number is required"}, 400
@@ -31,6 +33,7 @@ def verify_login_code():
     if not isinstance(login_code, str):
         return {"error": "login_code must be a string"}, 400
     elif not validate_login_code(login_code, phone_number):
-        return {"error": "login_code is invalid"}, 400
+        return {"error": {'type': 'invalid', 'msg': 'The code entered is invalid'}}, 400
     else:
-        return {"message": "login_code is valid"}, 200
+        encoded_jwt = jwt.encode({"user": phone_number}, secret_key, algorithm='HS256')
+        return {"message": "login_code is valid", "token": encoded_jwt }, 200

@@ -1,19 +1,47 @@
 // Libraries
-import React from 'react'
-import MDEditor from '@uiw/react-md-editor/nohighlight';
+import React, { useEffect} from 'react'
 // Components
 import { ChatMessage, FetchingMessage } from '../Utils/Messages'
+// Actions
 // Styling
 import './ChatRoom.scss'
 import { IconOpenAI } from '../Utils/Icons';
 
+// clear messages once 'new conversation button is clicked'
 
-const ChatRoom = ({ ai, chat, response, isLoading }) => {
-	const checkAuthor = (type: string) => (type === 'ai') ? 'ai' : 'user'
+//////TODO
+//////////////
+	// if its not empty get last entry to conversation list and save to local sotrage
+	// if a conversation is clicked on the nav then save that to local storage
+	// if new conversation is made, save it to the localstorage
+
+function ChatRoom({ 
+	ai, 
+	messages, 
+	response, 
+	isLoading, 
+	user, 
+	conversations,
+	conversation
+}) {
+	useEffect(() => {
+	
+		// // Get recent conversation from localstorage
+		// const recent = getFromLocalStorage('recent_conversation')
+		// if(!recent){
+		// 	//Grab last conversation of the array and save it
+		// }
+		// setRecentConvo(recent)
+
+		// Get conversation from backend
+	},[])
+
+	
+	const checkAuthor = (type: string) => (type.toLowerCase() === 'ai') ? 'ai' : 'user'
 	return (
 		<div className="chatRoom">
 			{
-				(chat.length === 0) ?
+				(messages.length === 0) ?
 					<div className="chatRoomAIBox">
 						<div className='h-12 w-12 mb-2'>
 							<IconOpenAI className='' />
@@ -27,7 +55,7 @@ const ChatRoom = ({ ai, chat, response, isLoading }) => {
 						{(response.content) ?
 							<ChatMessage checkAuthor={checkAuthor} entry={response} /> : null}
 
-						{chat.map((entry, index) =>
+						{messages.map((entry, index) =>
 							<ChatMessage key={index} checkAuthor={checkAuthor} entry={entry} />
 						)}
 					</div>

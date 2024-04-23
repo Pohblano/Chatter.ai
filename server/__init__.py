@@ -1,11 +1,12 @@
 import os
-
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
+secret_key= 'WhatSecret?'
+
 app = Flask(__name__)
-CORS(app) # This will enable CORS for all routes
+CORS(app, resources=r'/api/*') # This will enable CORS for all routes
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
@@ -15,11 +16,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
 # create database
 db = SQLAlchemy(app)
 
-
 # import routes
-import server.routes.chat_gpt
 import server.routes.send_login_code
 import server.routes.verify_login_code
+import server.routes.get_conversations
+import server.routes.chat_gpt_web
+import server.routes.preflight_twilio
 
 
 # # Add Access-Control-Allow-Origin header to responses

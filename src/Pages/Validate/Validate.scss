@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	padding: 0 35px;
+	// padding: 0 35px;
 	height: 100vh;
 
 	.oneTimeWrapper{
@@ -25,7 +25,8 @@
 		}
 		.oneTimeBoxes {
 			margin: auto;
-			max-width: 340px;
+			max-width: 450px;
+			gap: 0;
 
 			.css-1tq8nf4-MuiFormControl-root-MuiTextField-root input{
 				z-index: 50;
@@ -41,6 +42,11 @@
 				box-shadow: inset 0px 0em 4px 1px rgba(0, 0, 0, 0.123);
 			}
 		}
+		.error_message{
+			position: relative;
+			bottom: 10px;
+			width: 435px;;
+		}
 		.oneTimeHeader{
 			margin: 0 0 20px 0;
 			font-size: 22px;
@@ -48,7 +54,7 @@
 		.oneTimeInfo{
 			margin: 60px 0 0 0;
 			max-width: 345px;
-			font-size: 14px;
+			font-size: 16px;
 		}
 		.oneTimeLink{
 			margin: 15px 0 0 0;

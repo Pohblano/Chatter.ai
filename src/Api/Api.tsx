@@ -5,10 +5,10 @@ const api = axios.create({
   baseURL: "http://127.0.0.1:5000/api",
   headers: {
     'Access-Control-Allow-Origin': "*",
+    // 'Access-Control-Allow-Methods':'*',
     'Access-Control-Allow-Credentials': 'true',
     'accept': 'application/json',
     'content-type': 'application/json',
-
    },
 });
 
