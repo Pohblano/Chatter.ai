@@ -15,8 +15,6 @@ main{
 
 .App-Wrapper {
   background-color: #8bcffd;
-  /* background: radial-gradient(#90CAF9 1%, #64B5F6, #42a5f5); */
-  /* background:radial-gradient(circle at 50% 100%, #90CAF9 19%, #64B5F6 71%, #42a5f5 72%, #90CAF9 32%); */
   /* background: radial-gradient(circle at 50% -190%, #90CAF9 19%, #64B5F6 71%, #42a5f5 65%, #2196F3 49%); */
   height: 100vh;
   display: flex;

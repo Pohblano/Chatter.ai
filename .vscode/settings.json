@@ -1,4 +1,7 @@
 {
 	"python.analysis.typeCheckingMode": "basic",
-	"tailwindCSS.emmetCompletions": true
+	"tailwindCSS.emmetCompletions": true,
+	"editor.quickSuggestions": {
+		"strings": "on"
+	}
 }

@@ -1,5 +1,6 @@
 // Node-modules
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	MuiTelInput,
 	MuiTelInputInfo,
@@ -12,8 +13,6 @@ import { ErrorMessage } from "../../components/Utils/Messages";
 import './Register.scss'
 // Api
 import { auth_api } from "../../Api/AuthApi";
-import { useNavigate } from "react-router-dom";
-
 
 
 interface Error {
@@ -27,25 +26,23 @@ function Register() {
 	const unknownFlag: MuiTelInputFlagElement = <i className="fas fa-globe-americas"></i>
 	const navigate = useNavigate()
 
+
 	const handleChange = (newValue: string, info: MuiTelInputInfo) => {
 		setPhoneNumber(newValue)
 	}
 
-	// TODO: make this sends a post request to the server (/api/send_registration_code) with phone_number in the body
-	// then display confirmation message ("Check your phone for a text message with a code to enter below.")
 	const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
 		e.preventDefault();
 		if (matchIsValidTel(phoneNumber)) {
 			// TODO: send a post request to the server
-			auth_api.register({phone_number: phoneNumber.replaceAll(" ", "")})
-			.then((response) => {
-				if (response.status === 200) {
-					console.log('success')
-					return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
-				}
-			})
+			auth_api.register({ phone_number: phoneNumber.replaceAll(" ", "") })
+				.then((response) => {
+					if (response.status === 200) {
+						return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
+					}
+				})
 		} else {
-			setError({type: 'invalid',msg: 'Sorry, that\'s and invalid number.'})
+			setError({ type: 'invalid', msg: 'Sorry, that\'s and invalid number.' })
 		}
 	}
 
@@ -64,15 +61,17 @@ function Register() {
 						unknownFlagElement={unknownFlag}
 						continents={['NA']} placeholder="Enter a mobile number."
 					/>
-						
+					<button className="registerButton hover:chatter_input_hover" type="submit">
+						<i className="fa-solid fa-arrow-up"></i>
+					</button>
+
 					{(error && error.type === 'invalid') ?
 						<ErrorMessage setError={setError}{...error} />
 						: null
 					}
 				</div>
 
-				
-				<p className='text-sm mt-12 font-bold text-end'>...or you can send a text to (626) 392-8591</p>
+				<p className='text-sm mt-12 font-bold text-end'>...or you can send a text to (844) 953-2146 </p>
 			</form>
 		</div>
 	)

@@ -33,6 +33,7 @@ def generate_login_code(phone_number: str) -> str:
     return otp
 
 
+
 @app.route("/api/send_login_code", methods=["POST"])
 def send_login_code():
     if not request.get_json(silent=True):
@@ -54,17 +55,23 @@ def send_login_code():
         return {"error": "phone_number must start with a country code"}, 400
 
     login_code = generate_login_code(phone_number)
+  
 
-    # send login code to phone number via twilio
-    account_sid = "AC1583468d0f68fae0d8e669747e4432da"
-    auth_token = "f90ab474320826eab751dbc6275a14f6"
-    client = Client(account_sid, auth_token)
-    client.messages.create(
-        **{
-            "from_": "+18449532146",
-            "body": f"Your login code is: {login_code}",
-            "to": phone_number,
-        }
-    )
+    # # send login code to phone number via twilio
+    # account_sid = "AC1583468d0f68fae0d8e669747e4432da"
+    # auth_token = "f90ab474320826eab751dbc6275a14f6"
+    # client = Client(account_sid, auth_token)
+    # client.messages.create(
+    #     **{
+    #         "from_": "+18449532146",
+    #         "body": f"Your login code is: {login_code}",
+    #         "to": phone_number,
+    #     }
+    # )
 
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200
+
+
+# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiKzE2MjYzOTI4NTkxIn0.agZCCS25rhK0Rb_5atSalhVNyHtWB8t6E3X8NMtm2iQ
+
+# jwtToken
