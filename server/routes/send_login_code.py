@@ -58,8 +58,7 @@ def send_login_code():
   
 
     # # send login code to phone number via twilio
-    # account_sid = "AC1583468d0f68fae0d8e669747e4432da"
-    # auth_token = "f90ab474320826eab751dbc6275a14f6"
+   
     # client = Client(account_sid, auth_token)
     # client.messages.create(
     #     **{

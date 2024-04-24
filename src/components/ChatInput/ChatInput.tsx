@@ -5,19 +5,21 @@ import { TextareaAutosize } from "@mui/base";
 import { chat_api } from '../../Api/ChatApi'
 // Styling
 import './ChatInput.scss'
+import { saveToLocalStorage } from '../../Actions/DashboardActions';
 
 
 function ChatInput({
 	setEntry,
 	setResponse,
 	setIsLoading,
+	setConversation,
 	setMessages,
 	user,
 	entry,
 	messages,
 	conversation,
 	initialEntry
- }) {
+}) {
 	// Handles text input changes
 	const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
 		// Grabbing input variable
@@ -36,15 +38,35 @@ function ChatInput({
 		}
 	};
 
+	const handleCreateConversation = () => {
+		const data = {
+			user_id: user,
+			conversation_id: conversation.id
+		}
+		// chat_api.create_conversation(data)
+		// 	.then(response => {
+		// 		// console.log(response.data)
+		// 		// const { recent_conversation } = response.data
+		// 		// console.log(recent_conversation)
+		// 		// saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
+		// 		// setConversation(prevState => ({
+		// 		// 	...prevState,
+		// 		// 	id: recent_conversation.id,
+		// 		// 	ai: recent_conversation.ai_id,
+		// 		// 	user_id: recent_conversation.user_phone_number,
+		// 		// 	user_phone_number: recent_conversation.user_phone_number,
+		// 		// }))
+		// 		// setMessages([])
+		// 	})
+		// 	.catch(err => console.log('There was an error creating a new conversation'))
+	}
+
+
 	// Submits form data to backend to be processed
 	const handleSubmit = async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
 		e.preventDefault();
 		setIsLoading(true)
 		if (entry.content) {
-			// Setting up user object 
-			// const date = new Date();
-			// entry.date = date.toDateString()
-			// entry.time = date.toTimeString()
 			entry.author_type = 'user'
 			entry.author_id = user
 			entry.conversation_id = conversation.id
@@ -109,7 +131,7 @@ function ChatInput({
 
 
 			} catch (error) {
-				console.log(error)
+				console.log("There was an erro while sending user message")
 			}
 
 		} else e.stopPropagation();
@@ -119,9 +141,9 @@ function ChatInput({
 	return (
 		<div className="chatInputWrapper">
 			<form className="chatInput" onSubmit={handleSubmit}>
-				<button className="chatNewButton hover:chatter_input_hover" type="submit">
+				<a className="chatNewButton hover:chatter_input_hover" onClick={()=> handleCreateConversation()}>
 					<i className="fa-solid fa-plus"></i>
-				</button>
+				</a>
 				<TextareaAutosize className='chatTextarea'
 					aria-label="empty textarea"
 					maxRows={4}
