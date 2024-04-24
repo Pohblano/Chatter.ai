@@ -19,9 +19,12 @@ db = SQLAlchemy(app)
 # import routes
 import server.routes.send_login_code
 import server.routes.verify_login_code
-import server.routes.get_conversations
+import server.routes.create_conversation
+import server.routes.get_conversational_data
+import server.routes.get_conversation
 import server.routes.chat_gpt_web
 import server.routes.preflight_twilio
+
 
 
 # # Add Access-Control-Allow-Origin header to responses

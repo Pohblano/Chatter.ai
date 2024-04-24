@@ -5,6 +5,8 @@ from server.models.message import Message
 from server.models.user import User
 from datetime import datetime, timezone
 from fastapi.encoders import jsonable_encoder # type: ignore
+
+
 # Format messages to match front-end requirements
 def format_messages(user_id, messages):
 	messages_data = []
@@ -27,8 +29,6 @@ def format_conversations(user_id, conversations):
 	for conversation in conversations:
 		conversation_data = {
 			'id': conversation.id,
-			'date': datetime.now(timezone.utc).strftime('%Y-%m-%d'),
-			'time': datetime.now(timezone.utc).strftime('%H:%M:%S'),
 			'ai_id': conversation.ai_id,
 			'ai': 'ChatGPT',
 			'user_id': conversation.user_phone_number,
@@ -38,8 +38,8 @@ def format_conversations(user_id, conversations):
 	return conversations_data
 	
 
-@app.route('/api/get_conversations', methods=['POST'])
-def get_conversations():
+@app.route('/api/get_conversational_data', methods=['POST'])
+def get_conversational_data():
 	if not request.get_json(silent=True):
 		return {"error": "missing valid JSON object in request body"}, 400
 	
@@ -72,9 +72,12 @@ def get_conversations():
 	# Returns the last convo in the conversations array to utlize as recent conversation
 	if not conversation_id:
 		conversation = conversations[-1]
+		print(conversation)
+
 		# Query messages for the given conversation_id
-		messages_data = Message.query.filter_by(conversation_id=conversation.id).all()
+		messages_data = Message.query.filter_by(conversation_id=conversation['id']).all()
 		messages = format_messages(phone_number, messages_data)
+		print(messages)
 
 		print('No conversation in the LocalStorage but the is Past conversations in DB')
 		return jsonify({
@@ -82,6 +85,7 @@ def get_conversations():
 			'conversations': jsonable_encoder(conversations),
 			'messages': jsonable_encoder(messages)
 			}), 200
+	
 	
 	# Query messages for the given conversation_id
 	messages_data = Message.query.filter_by(conversation_id=conversation_id).all()

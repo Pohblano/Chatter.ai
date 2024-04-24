@@ -9,11 +9,7 @@ import { IconOpenAI } from '../Utils/Icons';
 
 // clear messages once 'new conversation button is clicked'
 
-//////TODO
-//////////////
-	// if its not empty get last entry to conversation list and save to local sotrage
-	// if a conversation is clicked on the nav then save that to local storage
-	// if new conversation is made, save it to the localstorage
+
 
 function ChatRoom({ 
 	ai, 
@@ -24,19 +20,7 @@ function ChatRoom({
 	conversations,
 	conversation
 }) {
-	useEffect(() => {
-	
-		// // Get recent conversation from localstorage
-		// const recent = getFromLocalStorage('recent_conversation')
-		// if(!recent){
-		// 	//Grab last conversation of the array and save it
-		// }
-		// setRecentConvo(recent)
 
-		// Get conversation from backend
-	},[])
-
-	
 	const checkAuthor = (type: string) => (type.toLowerCase() === 'ai') ? 'ai' : 'user'
 	return (
 		<div className="chatRoom">

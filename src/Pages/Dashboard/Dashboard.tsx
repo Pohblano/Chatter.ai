@@ -78,7 +78,7 @@ function Dashboard() {
 		}
 
 		// Retrieves user conversations and is returned an array of conversation and the most recent conversation if one is not available in localStorage
-		chat_api.get_conversations(data)
+		chat_api.get_conversational_data(data)
 			.then((response) => {
 				const { recent_conversation, conversations, messages } = response.data
 				if (recent_conversation) {
@@ -91,12 +91,13 @@ function Dashboard() {
 						user_phone_number: recent_conversation.user_phone_number,
 					}))
 
-				}else setConversation(recent)
+				} else setConversation(recent)
+
 				setMessages(messages.reverse())
 				setConversations(conversations)
 				setUser(user)
 
-			}).catch(err =>{
+			}).catch(err => {
 				console.log('There was an error retrieving conversations')
 			})
 	}, [])
@@ -111,7 +112,13 @@ function Dashboard() {
 	return (
 		<div className='dashboardWrapper'>
 			{/* Main Navigation */}
-			<MainNav user={user_id} conversations={conversations} />
+			<MainNav
+				user={user_id}
+				conversation={conversation}
+				conversations={conversations}
+				setMessages={setMessages}
+				setConversation={setConversation} />
+
 			{/* Chat Room */}
 			<div className="chatWrapper">
 				<main className="mainChat">
@@ -134,6 +141,7 @@ function Dashboard() {
 							setEntry={setEntry}
 							setResponse={setResponse}
 							setIsLoading={setIsLoading}
+							setConversation={setConversation}
 							setMessages={setMessages}
 							entry={entry}
 							user={user_id}
