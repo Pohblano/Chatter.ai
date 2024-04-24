@@ -1,6 +1,7 @@
 from flask import request
 from twilio.rest import Client
 import random
+import os
 
 from server import app, db
 from server.models.confirmation import Confirmation
@@ -58,7 +59,7 @@ def send_login_code():
   
 
     # # send login code to phone number via twilio
-   
+    auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
     # client = Client(account_sid, auth_token)
     # client.messages.create(
     #     **{

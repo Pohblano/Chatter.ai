@@ -3,6 +3,10 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from logging.config import dictConfig
+from dotenv import load_dotenv
+
+# load environment variables from .env file
+load_dotenv()
 
 dictConfig({
     'version': 1,
