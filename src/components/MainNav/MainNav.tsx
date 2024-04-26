@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Components
-import { IconGear, IconList, IconMessage, IconOpenFile, IconQuestionCircle, IconSignOut } from '../Utils/Icons'
+import { IconGear, IconList, IconMessage, IconOpenFile, IconQuestionCircle, IconSignOut, IconX } from '../Utils/Icons'
 // Api
 import { chat_api } from '../../Api/ChatApi'
 // Actions
@@ -17,7 +17,8 @@ function MainNav({
 	conversation,
 	conversations,
 	setMessages,
-	setConversation }) {
+	setConversation,
+	setConversations }) {
 
 	const [isMenuVisible, setMenuVisible] = useState(false)
 	const navigate = useNavigate()
@@ -30,25 +31,43 @@ function MainNav({
 		deleteFromLocalStorage('jwtToken')
 		navigate('/register')
 	}
-
-	const handleChangeConversation = (conversation_id) => {
+	
+	const handleChangeConversation = (conversation_id) =>{
 		const data = {
 			user_id: user,
 			conversation_id: conversation_id
 		}
 		chat_api.get_conversation(data)
 			.then(response => {
-				const { conversation, messages } = response.data
+				const {conversation, messages} = response.data
 				saveToLocalStorage('recent_conversation', JSON.stringify(conversation))
-				setConversation(prevState => ({
+				setConversation( prevState => ({
 					...prevState,
 					id: conversation.id,
 					ai: conversation.ai_id,
 					user_id: conversation.user_phone_number,
-					user_phone_number: conversation.user_phone_number,
+					user_phone_number: conversation.user_phone_number
 				}))
 				setMessages(messages.reverse())
 			})
+	}
+
+	const handleDeleteConversation = (id) => {
+		const data = {
+			conversation_id: id,
+			user_id: user
+		}
+		const confirmed = (window.confirm('Are you sure you want to delete this conversation?'))
+		console.log(confirmed)
+		if(confirmed){
+			chat_api.delete_conversation(data)
+			.then( response => {
+				
+				const {conversations} = response.data
+				setConversations(conversations)
+			})
+		}
+		
 	}
 
 	const isConversationActive = (id) =>
@@ -77,19 +96,19 @@ function MainNav({
 							Chatter.ai
 						</a>
 					</div>
-					<div className="px-4 pb-6">
+					<div className="links px-4 pb-6">
 						<h3 className="mb-2 text-xs uppercase text-gray-500 font-medium text-start">CONVERSATIONS</h3>
-						<ul className="mb-8 text-sm font-medium overflow-y-auto">
+						<ul className="links_container mb-8 text-sm font-medium ">
 
-							{/* Add 'disabled text-white chatter_bg' to class name*/}
 							{conversations.reverse().map((convo, index) =>
 								<li id={convo.id} key={index} className='mb-2'>
-									<a className={`flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded`} href="#" onClick={() => handleChangeConversation(convo.id)}>
+									<button className={`shadow w-full flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded`} onClick={() => handleChangeConversation(convo.id)}>
 										<span className="inline-block mr-3 h-4 w-4">
 											<IconMessage />
 										</span>
 										<span>Conversation {convo.id}</span>
-									</a>
+										<a href="#" className='delete_icon hover:text-blue-500 '><IconX className='text-gray-400 shadow' onClick={() => handleDeleteConversation(convo.id)}/></a>
+									</button>
 								</li>
 							)}
 						</ul>

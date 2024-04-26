@@ -53,7 +53,7 @@ function Register() {
 			<form onSubmit={handleSubmit} className=''>
 
 				<div className='phoneInput'>
-					<h3 className="text-white mb-3 font-bold text-start" >To use our messenger</h3>
+					<h2 className="text-white mb-3 font-bold text-start" >Register <i className=" fa fa-right-to-bracket"></i></h2>
 					<MuiTelInput
 						className="shadow-lg"
 						value={phoneNumber}
@@ -71,7 +71,7 @@ function Register() {
 					}
 				</div>
 
-				<p className='text-sm mt-12 font-bold text-end'>...or you can send a text to (844) 953-2146 </p>
+				<p className='text-sm mt-12 font-bold text-gray-700 text-end'>...or you can send a text to (844) 953-2146 </p>
 			</form>
 		</div>
 	)
