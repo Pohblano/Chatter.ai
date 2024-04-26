@@ -43,22 +43,22 @@ function ChatInput({
 			user_id: user,
 			conversation_id: conversation.id
 		}
-		// chat_api.create_conversation(data)
-		// 	.then(response => {
-		// 		// console.log(response.data)
-		// 		// const { recent_conversation } = response.data
-		// 		// console.log(recent_conversation)
-		// 		// saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
-		// 		// setConversation(prevState => ({
-		// 		// 	...prevState,
-		// 		// 	id: recent_conversation.id,
-		// 		// 	ai: recent_conversation.ai_id,
-		// 		// 	user_id: recent_conversation.user_phone_number,
-		// 		// 	user_phone_number: recent_conversation.user_phone_number,
-		// 		// }))
-		// 		// setMessages([])
-		// 	})
-		// 	.catch(err => console.log('There was an error creating a new conversation'))
+		chat_api.create_conversation(data)
+			.then(response => {
+				console.log(response.data)
+				const { recent_conversation } = response.data
+				console.log(recent_conversation)
+				saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
+				setConversation(prevState => ({
+					...prevState,
+					id: recent_conversation.id,
+					ai: recent_conversation.ai_id,
+					user_id: recent_conversation.user_phone_number,
+					user_phone_number: recent_conversation.user_phone_number,
+				}))
+				setMessages([])
+			})
+			.catch(err => console.log('There was an error creating a new conversation'))
 	}
 
 
@@ -141,7 +141,7 @@ function ChatInput({
 	return (
 		<div className="chatInputWrapper">
 			<form className="chatInput" onSubmit={handleSubmit}>
-				<a className="chatNewButton hover:chatter_input_hover" onClick={()=> handleCreateConversation()}>
+				<a className="chatNewButton hover:chatter_input_hover" href='#' onClick={()=> handleCreateConversation()}>
 					<i className="fa-solid fa-plus"></i>
 				</a>
 				<TextareaAutosize className='chatTextarea'

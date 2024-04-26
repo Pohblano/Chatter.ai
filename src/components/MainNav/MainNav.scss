@@ -5,3 +5,12 @@
     right: 7px;
     border: none;
 }
+
+.links_container{
+    max-height: 38rem;
+    overflow-y: auto;
+    .delete_icon{
+        
+        float: right;
+    }
+}

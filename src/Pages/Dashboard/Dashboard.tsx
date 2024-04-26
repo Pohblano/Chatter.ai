@@ -76,7 +76,7 @@ function Dashboard() {
 			user_id: user,
 			conversation_id: (recent) ? recent.id : ''
 		}
-
+		
 		// Retrieves user conversations and is returned an array of conversation and the most recent conversation if one is not available in localStorage
 		chat_api.get_conversational_data(data)
 			.then((response) => {
@@ -101,7 +101,10 @@ function Dashboard() {
 				console.log('There was an error retrieving conversations')
 			})
 	}, [])
-
+	console.log(messages)
+		console.log(conversations)
+		console.log(conversation)
+		console.log()
 	// Handles AI selection button
 	const handleMenuClick = (menuItem: string) => {
 		return () => {
@@ -117,7 +120,8 @@ function Dashboard() {
 				conversation={conversation}
 				conversations={conversations}
 				setMessages={setMessages}
-				setConversation={setConversation} />
+				setConversation={setConversation}
+				setConversations={setConversations} />
 
 			{/* Chat Room */}
 			<div className="chatWrapper">

@@ -19,6 +19,14 @@ export const chat_api = {
         })
         return response
     },
+    create_conversation: async function(data) {
+        const response = await api.request({
+            url: '/create_conversation',
+            method: 'POST',
+            data
+        })
+        return response
+    },
     get_conversation: async function(data) {
         const response = await api.request({
             url: '/get_conversation',
@@ -27,9 +35,9 @@ export const chat_api = {
         })
         return response
     },
-    create_conversation: async function(data) {
+    delete_conversation: async function(data) {
         const response = await api.request({
-            url: '/create_conversation',
+            url: '/delete_conversation',
             method: 'POST',
             data
         })
