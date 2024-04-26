@@ -34,7 +34,6 @@ def generate_login_code(phone_number: str) -> str:
     return otp
 
 
-
 @app.route("/api/send_login_code", methods=["POST"])
 def send_login_code():
     if not request.get_json(silent=True):
@@ -56,7 +55,9 @@ def send_login_code():
         return {"error": "phone_number must start with a country code"}, 400
 
     login_code = generate_login_code(phone_number)
-  
+
+    if not login_code:
+        return {"error": "failed to generate login code"}, 500
 
     # # send login code to phone number via twilio
     auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
@@ -69,7 +70,7 @@ def send_login_code():
     #     }
     # )
 
-    app.logger.info(f"Sent login code {login_code} to {phone_number}")
+    print(f"Sent login code {login_code} to {phone_number}")
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200
 
 

@@ -3,7 +3,7 @@ from server import app, db
 from server.models.conversation import Conversation
 from server.models.message import Message
 from server.models.user import User
-from fastapi.encoders import jsonable_encoder
+
 
 @app.route('/api/create_conversation', methods=['POST'])
 def create_conversation():
