@@ -69,3 +69,8 @@ from server.models.message import Message
 # create database tables
 with app.app_context():
     db.create_all()
+
+# test page to make sure hosting is working
+@app.route('/api/', methods=['GET'])
+def home():
+    return "beep boop"
