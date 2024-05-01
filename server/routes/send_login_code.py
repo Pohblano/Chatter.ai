@@ -1,14 +1,18 @@
+# Library Imports
 from flask import request
-from twilio.rest import Client
 import random
 import os
 
+# Twilio client import
+from server.actions.twilio_client import client
+
+# Database imports
 from server import app, db
 from server.models.confirmation import Confirmation
 from server.models.user import User
 
 
-# TODO: make this generate a random code and store it in the database
+# Generate random 6 digit code for to verify user
 def generate_login_code(phone_number: str) -> str:
     otp = ""
     for _ in range(6):
@@ -33,7 +37,7 @@ def generate_login_code(phone_number: str) -> str:
 
     return otp
 
-
+# Sends verification code to user in order to access account
 @app.route("/api/send_login_code", methods=["POST"])
 def send_login_code():
     if not request.get_json(silent=True):
@@ -60,8 +64,6 @@ def send_login_code():
         return {"error": "failed to generate login code"}, 500
 
     # # send login code to phone number via twilio
-    auth_token = os.environ.get("TWILIO_AUTH_TOKEN")
-    # client = Client(account_sid, auth_token)
     # client.messages.create(
     #     **{
     #         "from_": "+18449532146",

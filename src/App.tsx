@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet, Link, Navigate } from 'rea
 // Styling 
 import './App.css';
 // Page Components
-import Loading from './components/loading/Loading'
+import Loading from './components/Loading/Loading'
 import Register from './Pages/Register/Register';
 import Validate from './Pages/Validate/Validate';
 import Dashboard from './Pages/Dashboard/Dashboard';

@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Components
 import { IconGear, IconList, IconMessage, IconOpenFile, IconQuestionCircle, IconSignOut, IconX } from '../Utils/Icons'
@@ -20,9 +20,13 @@ function MainNav({
 	setConversation,
 	setConversations }) {
 
+
 	const [isMenuVisible, setMenuVisible] = useState(false)
 	const navigate = useNavigate()
 
+	useEffect(()=> {
+
+	}, [conversations])
 	// Changes navigation display
 	const handleOpenMenu = () => setMenuVisible(!isMenuVisible)
 
@@ -52,7 +56,7 @@ function MainNav({
 			})
 	}
 
-	const handleDeleteConversation = (id) => {
+	async function handleDeleteConversation(id){
 		const data = {
 			conversation_id: id,
 			user_id: user
@@ -60,11 +64,16 @@ function MainNav({
 		const confirmed = (window.confirm('Are you sure you want to delete this conversation?'))
 		console.log(confirmed)
 		if(confirmed){
-			chat_api.delete_conversation(data)
+			await chat_api.delete_conversation(data)
 			.then( response => {
-				
 				const {conversations} = response.data
+				if(conversations.length === 0){
+					console.log('convos are empty')
+					deleteFromLocalStorage('recent_conversation')
+					navigate('/')
+				}
 				setConversations(conversations)
+	
 			})
 		}
 		
@@ -109,46 +118,14 @@ function MainNav({
 										<span>Conversation {convo.id}</span>
 										<a href="#" className='delete_icon hover:text-blue-500 '><IconX className='text-gray-400 shadow' onClick={() => handleDeleteConversation(convo.id)}/></a>
 									</button>
+									
 								</li>
 							)}
 						</ul>
 
-						{/* <h3 className="mb-2 text-xs uppercase text-gray-500 font-medium text-start">Secondary</h3>
-						<ul className="text-sm font-medium">
-							<li>
-								<a className="flex items-center pl-3 py-3 pr-2 text-gray-500 hover:chatter_hover rounded" href="#">
-									<span className="inline-block mr-3">
-										<IconQuestionCircle className='text-gray-600' />
-									</span>
-									<span>Support Center</span>
-								</a>
-							</li>
-							<li>
-								<a className="flex items-center pl-3 py-3 pr-4 text-gray-500 hover:chatter_hover rounded" href="#">
-									<span className="inline-block mr-3">
-										<IconOpenFile className='text-gray-600' />
-									</span>
-									<span>File Manager</span>
-								</a>
-							</li>
-							<li>
-								<a className="flex items-center pl-3 py-3 pr-4 text-gray-500 hover:chatter_hover rounded" href="#">
-									<span className="inline-block mr-3">
-										<IconList className='text-gray-600' />
-									</span>
-									<span>Data List</span>
-								</a>
-							</li>
-						</ul> */}
-
 						<div className="pt-8 text-sm font-medium">
 							<h3 className="mb-2 text-xs uppercase text-gray-500 font-medium text-start">OPTIONS</h3>
-							{/* <a className="flex items-center pl-3 py-3 pr-2 text-gray-500 hover:chatter_hover rounded" href="#">
-								<span className="inline-block mr-4">
-									<IconGear className='text-gray-600' />
-								</span>
-								<span>Settings</span>
-							</a> */}
+	
 							<a className="flex items-center pl-3 py-3 pr-2 text-gray-500 hover:chatter_hover rounded" href='#' onClick={handleLogOut}>
 								<span className="inline-block mr-4">
 									<IconSignOut className='text-gray-600' />

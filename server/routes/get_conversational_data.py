@@ -51,15 +51,19 @@ def get_conversational_data():
 	# Query conversations for the given user phone_number
 	conversations_data = Conversation.query.filter_by(user_phone_number=phone_number).all()
 	conversations = format_conversations(phone_number, conversations_data)
+
+	
+
 	# Creates new conversation if there is no recent convo or a history of convos
-	if not conversation_id and not conversations:
+	if not conversation_id and not conversations_data:
 		user = User.query.get(phone_number)
 		conversation = Conversation(
 			user_phone_number=phone_number, 
 			ai_id='chatGPT',
 			user=user
-		)  
-		user.conversations.append(conversation)
+		)
+		if(user.conversations):  
+			user.conversations.append(conversation)
 		db.session.add(conversation)
 		db.session.commit()
 		
@@ -76,11 +80,13 @@ def get_conversational_data():
 			}), 200
 	
 	# Returns the last convo in the conversations array to utlize as recent conversation
-	if not conversation_id:
+	if not conversation_id and conversations_data:
 		conversation = conversations[-1]
+		print(conversation)
+		convo_id = conversation['id']
 
 		# Query messages for the given conversation_id
-		messages_data = Message.query.filter_by(conversation_id=conversation_id).all()
+		messages_data = Message.query.filter_by(conversation_id=convo_id).all()
 		messages = format_messages(phone_number, messages_data)
 
 		print('No conversation in the LocalStorage but the is Past conversations in DB')
@@ -90,13 +96,14 @@ def get_conversational_data():
 			'messages': jsonable_encoder(messages)
 			}), 200
 	
+	if(conversation_id and conversations_data):
+		# Query messages for the given conversation_id
+		messages_data = Message.query.filter_by(conversation_id=conversation_id).all()
+		messages = format_messages(phone_number, messages_data)
+		print('Conversation in localstorate and list of past conversations')
+		return jsonify({
+			'conversations': jsonable_encoder(conversations),
+			'messages':  jsonable_encoder(messages)
+			}), 200
 	
-	# Query messages for the given conversation_id
-	messages_data = Message.query.filter_by(conversation_id=conversation_id).all()
-	messages = format_messages(phone_number, messages_data)
-	print('Conversation in localstorate and list of past conversations')
-	return jsonify({
-		'conversations': jsonable_encoder(conversations),
-		'messages':  jsonable_encoder(messages)
-		}), 200
-	
+	return {},200

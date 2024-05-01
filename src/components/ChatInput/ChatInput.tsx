@@ -13,6 +13,7 @@ function ChatInput({
 	setResponse,
 	setIsLoading,
 	setConversation,
+	setConversations,
 	setMessages,
 	user,
 	entry,
@@ -45,9 +46,8 @@ function ChatInput({
 		}
 		chat_api.create_conversation(data)
 			.then(response => {
-				console.log(response.data)
-				const { recent_conversation } = response.data
-				console.log(recent_conversation)
+				const { recent_conversation, conversations } = response.data
+				console.log(conversations, 'create convo')
 				saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
 				setConversation(prevState => ({
 					...prevState,
@@ -56,6 +56,7 @@ function ChatInput({
 					user_id: recent_conversation.user_phone_number,
 					user_phone_number: recent_conversation.user_phone_number,
 				}))
+				setConversations(conversations)
 				setMessages([])
 			})
 			.catch(err => console.log('There was an error creating a new conversation'))
@@ -66,6 +67,7 @@ function ChatInput({
 	const handleSubmit = async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
 		e.preventDefault();
 		setIsLoading(true)
+		console.log(entry, 'entry')
 		if (entry.content) {
 			entry.author_type = 'user'
 			entry.author_id = user
@@ -77,8 +79,11 @@ function ChatInput({
 			setEntry(initialEntry)
 
 			try {
+
+				const response = await chat_api.send_message_ollama(entry)
+				
 				// Fetching AI response. Expecting a stream
-				const response = await chat_api.send_message(entry)
+				// const response = await chat_api.send_message(entry)
 				// Create a new ReadableStream from the response data
 				const reader = response.body.getReader();
 				// Read data from the stream
