@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, Response
+import os
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.user import User
@@ -19,7 +20,7 @@ from langchain.callbacks.streaming_stdout_final_only import (
 
 
 llm = ChatOpenAI(
-    openai_api_key='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',
+    openai_api_key=os.environ.get("OPENAI_KEY"),
     temperature=0.9,
     model_name="gpt-3.5-turbo",
     streaming=True,  # ! important

@@ -27,11 +27,13 @@ def get_conversation():
 	
 	# data retrieved from request
 	data = request.json
+	print(data)
 	user_id = data.get('user_id')
 	conversation_id = data.get('conversation_id')
 
 	# retrieve data from database
 	conversation = Conversation.query.get(conversation_id)
+
 	messages_data = Message.query.filter_by(conversation_id=conversation_id).all()
 	messages = format_messages(user_id, messages_data)
 

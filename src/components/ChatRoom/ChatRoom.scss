@@ -81,28 +81,39 @@
 					padding: 8px 12px;
 					border-radius: 0px 16px 16px 16px;
 					word-break: break-word;
-					font-size: 14px;
+					color: #3f4a54;
 					font-weight: normal;
 					font-stretch: normal;
 					font-style: normal;
 					line-height: 1.43;
 					letter-spacing: normal;
 					text-align: left;
-
 				
 					#preview {
 						background-color: unset;
 
+						#preview-preview{
+							word-break: auto-phrase;
+						}
 						.md-editor-preview-wrapper {
 							padding: 0;
 							margin: 0;
 						}
 
 						pre {
+							max-width: inherit;
+							word-wrap: break-word;
 							margin: 0;
 							code {
 								font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
 								  monospace;
+
+								  .code-block{
+									// max-width: inherit;
+									>span{
+										word-wrap: break-word;
+									}
+								  }
 							  }
 							  
 							.md-editor-preview-wrapper {
@@ -193,7 +204,7 @@
 
 @media screen and (min-width: 992px) {
 	.chatRoom {
-		width: 60%;
+		width: 80%;
 	}
 }
 
@@ -210,4 +221,11 @@
 
 }
 
-@media screen and (max-width: 576px) {}
+@media screen and (max-width: 576px) {
+	.code-block{
+		max-width: 100%;
+	}
+	.entry_content{
+		max-width: 100%!important;
+	}
+}

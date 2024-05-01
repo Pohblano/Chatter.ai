@@ -81,6 +81,7 @@ function Dashboard() {
 		chat_api.get_conversational_data(data)
 			.then((response) => {
 				const { recent_conversation, conversations, messages } = response.data
+				console.log(response.data)
 				if (recent_conversation) {
 					saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
 					setConversation(prevState => ({
@@ -93,18 +94,17 @@ function Dashboard() {
 
 				} else setConversation(recent)
 
-				setMessages(messages.reverse())
+				setMessages(
+					(messages.length>0)?messages.reverse():[]
+				)
 				setConversations(conversations)
 				setUser(user)
 
 			}).catch(err => {
-				console.log('There was an error retrieving conversations')
+				console.log('There was an error retrieving conversations', err)
 			})
 	}, [])
-	console.log(messages)
-		console.log(conversations)
-		console.log(conversation)
-		console.log()
+
 	// Handles AI selection button
 	const handleMenuClick = (menuItem: string) => {
 		return () => {
@@ -146,6 +146,7 @@ function Dashboard() {
 							setResponse={setResponse}
 							setIsLoading={setIsLoading}
 							setConversation={setConversation}
+							setConversations={setConversations}
 							setMessages={setMessages}
 							entry={entry}
 							user={user_id}

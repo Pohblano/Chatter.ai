@@ -11,6 +11,16 @@ export const chat_api = {
         })
         return response
     },
+    send_message_ollama: async function (entry: Object) {
+        const response = await fetch('http://127.0.0.1:5000/api/ollama', {
+            method: 'POST',
+            body: JSON.stringify(entry),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+        return response
+    },
     get_conversational_data: async function (data) {
         const response = await api.request({
             url: '/get_conversational_data',

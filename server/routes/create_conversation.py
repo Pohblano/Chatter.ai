@@ -3,6 +3,7 @@ from server import app, db
 from server.models.conversation import Conversation
 from server.models.message import Message
 from server.models.user import User
+from server.actions.formats import format_conversations
 
 
 @app.route('/api/create_conversation', methods=['POST'])
@@ -17,6 +18,7 @@ def create_conversation():
 	
 	# updates database 
 	user = User.query.get(user_id)
+	
 	conversation = Conversation(
 		user_phone_number=user_id, 
 		ai_id='chatGPT',
@@ -25,6 +27,9 @@ def create_conversation():
 	user.conversations.append(conversation)
 	db.session.add(conversation)
 	db.session.commit()
+	conversations_data = Conversation.query.filter_by(user_phone_number=user_id).all()
+	conversations = format_conversations(user_id, conversations_data)
+
 
 	serialized_conversation = {
 		'id': conversation.id,
@@ -33,4 +38,4 @@ def create_conversation():
 		}
 	
 
-	return jsonify({'recent_conversation': serialized_conversation}), 200
+	return jsonify({'recent_conversation': serialized_conversation, 'conversations': conversations}), 200
