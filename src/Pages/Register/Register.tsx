@@ -1,5 +1,5 @@
 // Node-modules
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	MuiTelInput,
@@ -71,7 +71,7 @@ function Register() {
 					}
 				</div>
 
-				<p className='text-sm mt-12 font-bold text-gray-700 text-end'>...or you can send a text to (844) 953-2146 </p>
+				<p className='text-sm mt-2 font-bold text-gray-600 text-end'>...or you can send a text to (844) 953-2146 </p>
 			</form>
 		</div>
 	)

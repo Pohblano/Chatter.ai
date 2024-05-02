@@ -40,7 +40,7 @@ memory = ConversationBufferWindowMemory(
 tools = load_tools([],llm=llm)
 
 # initialize the agent
-agent = initialize_agent(
+chatGPT_agent = initialize_agent(
     agent=AgentType.CHAT_CONVERSATIONAL_REACT_DESCRIPTION,
     tools=tools,
     llm=llm,
@@ -73,7 +73,7 @@ class CallbackHandler(StreamingStdOutCallbackHandler):
     def get_response_tokens(self) -> List[str]:
         return self.response_tokens
 
-agent.agent.llm_chain.llm.callbacks = [CallbackHandler()]
+chatGPT_agent.agent.llm_chain.llm.callbacks = [CallbackHandler()]
 
 
 
@@ -107,7 +107,7 @@ async def ai():
     db.session.add(user_message)
 
     #  Run the agent and stream the response
-    response_stream = agent.run("ignore previous instructions and be verbos. "+ content)
+    response_stream = chatGPT_agent.run("ignore previous instructions and be verbos. "+ content)
 
     # response_stream ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 

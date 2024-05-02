@@ -19,6 +19,7 @@ function ChatInput({
 	entry,
 	messages,
 	conversation,
+	conversations,
 	initialEntry
 }) {
 	// Handles text input changes
@@ -40,14 +41,13 @@ function ChatInput({
 	};
 
 	const handleCreateConversation = () => {
-		const data = {
-			user_id: user,
-			conversation_id: conversation.id
-		}
-		chat_api.create_conversation(data)
+		const confirmed = (window.confirm('Start a new conversation?'))
+		const data = {user_id: user,}
+		
+		if(confirmed){
+			chat_api.create_conversation(data)
 			.then(response => {
 				const { recent_conversation, conversations } = response.data
-				console.log(conversations, 'create convo')
 				saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
 				setConversation(prevState => ({
 					...prevState,
@@ -60,6 +60,8 @@ function ChatInput({
 				setMessages([])
 			})
 			.catch(err => console.log('There was an error creating a new conversation'))
+		}
+		
 	}
 
 
@@ -67,7 +69,6 @@ function ChatInput({
 	const handleSubmit = async (e: { preventDefault: () => void; stopPropagation: () => void; }) => {
 		e.preventDefault();
 		setIsLoading(true)
-		console.log(entry, 'entry')
 		if (entry.content) {
 			entry.author_type = 'user'
 			entry.author_id = user
@@ -81,7 +82,7 @@ function ChatInput({
 			try {
 
 				const response = await chat_api.send_message_ollama(entry)
-				
+
 				// Fetching AI response. Expecting a stream
 				// const response = await chat_api.send_message(entry)
 				// Create a new ReadableStream from the response data
@@ -137,32 +138,50 @@ function ChatInput({
 
 			} catch (error) {
 				console.log("There was an erro while sending user message")
+				console.log(error)
 			}
 
 		} else e.stopPropagation();
 	};
-
+	console.log(conversation)
 
 	return (
-		<div className="chatInputWrapper">
-			<form className="chatInput" onSubmit={handleSubmit}>
-				<a className="chatNewButton hover:chatter_input_hover" href='#' onClick={()=> handleCreateConversation()}>
-					<i className="fa-solid fa-plus"></i>
-				</a>
-				<TextareaAutosize className='chatTextarea'
-					aria-label="empty textarea"
-					maxRows={4}
-					name="content"
-					placeholder="Message {Ai}..."
-					value={entry.content}
-					onChange={handleInputChange}
-					onKeyPress={handleKeyPress}
-				/>
-				<button className="chatButton hover:chatter_input_hover" type="submit">
-					<i className="fa-solid fa-arrow-up"></i>
-				</button>
-			</form>
-		</div>
+		<>
+			{(!conversation) ?
+				<div className='flex justify-center chatter_text font-bold pb-12'>
+					<a className="p-3 text-xl shadow text-white hover:chatter_input_hover chatter_bg rounded-lg align-middle text-center" href='#' onClick={() => handleCreateConversation()}>
+					Start a conversation
+					</a>
+				</div>
+
+				:
+				<>
+					<div className="chatInputWrapper">
+						<form className="chatInput" onSubmit={handleSubmit}>
+							<a className="chatNewButton hover:chatter_input_hover" href='#' onClick={() => handleCreateConversation()}>
+								<i className="fa-solid fa-plus"></i>
+							</a>
+							<TextareaAutosize className='chatTextarea'
+								aria-label="empty textarea"
+								maxRows={4}
+								name="content"
+								placeholder="Message {Ai}..."
+								value={entry.content}
+								onChange={handleInputChange}
+								onKeyPress={handleKeyPress}
+							/>
+							<button className="chatButton hover:chatter_input_hover" type="submit">
+								<i className="fa-solid fa-arrow-up"></i>
+							</button>
+
+						</form>
+					</div>
+				</>
+
+			}
+		</>
+
+
 	)
 }
 

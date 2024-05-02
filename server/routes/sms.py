@@ -1,12 +1,23 @@
-from flask import Flask
+# Library Imports
+from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 
+# Directory Imports
 from server import app
+from server.routes.chat_ollama_web import llama_llm
+from server.routes.chat_gpt_web import chatGPT_agent
+
 
 # https://www.twilio.com/docs/messaging/tutorials/how-to-receive-and-reply/python
 @app.route("/api/sms", methods=['GET', 'POST'])
 def sms_reply():
-    """Respond to incoming calls with a MMS message."""
+
+     # Get the message the user sent our Twilio number
+    print(request.values)
+    print(f'FROM {request.values.get('From')}')
+    print(f'TO {request.values.get('To')}')
+    body = request.values.get('Body', None)
+
     # Start our TwiML response
     resp = MessagingResponse()
 

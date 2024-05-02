@@ -76,12 +76,11 @@ function Dashboard() {
 			user_id: user,
 			conversation_id: (recent) ? recent.id : ''
 		}
-		
+		setUser(user)
 		// Retrieves user conversations and is returned an array of conversation and the most recent conversation if one is not available in localStorage
 		chat_api.get_conversational_data(data)
 			.then((response) => {
 				const { recent_conversation, conversations, messages } = response.data
-				console.log(response.data)
 				if (recent_conversation) {
 					saveToLocalStorage('recent_conversation', JSON.stringify(recent_conversation))
 					setConversation(prevState => ({
@@ -98,7 +97,7 @@ function Dashboard() {
 					(messages.length>0)?messages.reverse():[]
 				)
 				setConversations(conversations)
-				setUser(user)
+				
 
 			}).catch(err => {
 				console.log('There was an error retrieving conversations', err)
@@ -111,12 +110,15 @@ function Dashboard() {
 			setActive(menuItem)
 		};
 	};
-
+	console.log('conversations')
+	console.log(conversations)
+	console.log('recent-convo')
+	console.log(conversation)
 	return (
 		<div className='dashboardWrapper'>
 			{/* Main Navigation */}
 			<MainNav
-				user={user_id}
+				user_id={user_id}
 				conversation={conversation}
 				conversations={conversations}
 				setMessages={setMessages}
@@ -131,7 +133,6 @@ function Dashboard() {
 					</div>
 
 					<section className="chatBody">
-
 						<ChatRoom
 							user={user_id}
 							ai={active}
@@ -152,6 +153,7 @@ function Dashboard() {
 							user={user_id}
 							messages={messages}
 							conversation={conversation}
+							conversations={conversations}
 							initialEntry={initialEntry} />
 					</section>
 				</main>

@@ -1,23 +1,11 @@
+# Library Imports
 from flask import request, jsonify
+from fastapi.encoders import jsonable_encoder
+# Directory Imports
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.message import Message
-from fastapi.encoders import jsonable_encoder
-
-def format_messages(user_id, messages):
-	messages_data = []
-	for message in messages:
-		message_data = {
-			'id': message.id,
-			'content': message.content,
-			'date': message.created_at.strftime('%Y-%m-%d'),
-			'time':  message.created_at.strftime('%H-%M-%S'),
-			'author_id': user_id,
-			'author_type': message.author_type,
-			'conversation_id': message.conversation_id
-		}
-		messages_data.append(message_data)
-	return messages_data	
+from server.actions.formats import format_messages
 
 
 @app.route('/api/get_conversation', methods=['POST'])
