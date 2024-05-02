@@ -20,7 +20,7 @@ from langchain.callbacks.streaming_stdout_final_only import (
 
 
 llm = ChatOpenAI(
-    # openai_api_key=os.environ.get("OPENAI_KEY"),
+    openai_api_key='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',
     temperature=0.9,
     model_name="gpt-3.5-turbo",
     streaming=True,  # ! important
