@@ -27,7 +27,7 @@ dictConfig({
 secret_key= 'WhatSecret?'
 
 app = Flask(__name__)
-CORS(app, resources=r'/api/*') # This will enable CORS for all routes
+CORS(app, resources={r"/*": {"origins": "*"}}) # This will enable CORS for all routes
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
