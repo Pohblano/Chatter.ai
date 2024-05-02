@@ -47,13 +47,13 @@ function Register() {
 	}
 
 	return (
-		<div className="registerWrapper">
+		<div className="registerWrapper mx-10">
 			<h1 className="font-bold mb-7 mt-12
 			 text-white"><i className="fa-regular fa-comments"></i>  Chatter.ai</h1>
 			<form onSubmit={handleSubmit} className=''>
 
 				<div className='phoneInput'>
-					<h2 className="text-white mb-3 font-bold text-start" >Register <i className=" fa fa-right-to-bracket"></i></h2>
+					{/* <h2 className="text-white mb-3 font-bold text-start" >Register <i className=" fa fa-right-to-bracket"></i></h2> */}
 					<MuiTelInput
 						className="shadow-lg"
 						value={phoneNumber}
@@ -71,7 +71,10 @@ function Register() {
 					}
 				</div>
 
-				<p className='text-sm mt-2 font-bold text-gray-600 text-end'>...or you can send a text to (844) 953-2146 </p>
+				<p className='w-3/3 text-xs mt-6 pl-2 text-gray-600 text-center break-words'>By submitting this form, you agree to receive text messages from our chatbot and any personalized notifications from us at the cell number used. </p>
+				<p className="w-2/3 text-xs text-gray-600 mt-2">Reply <span className="font-bold text-white">HELP</span> for help and <span className="font-bold text-white">STOP</span> to cancel. Message frequency varies.
+				
+				Msg/data rates may apply.</p>
 			</form>
 		</div>
 	)

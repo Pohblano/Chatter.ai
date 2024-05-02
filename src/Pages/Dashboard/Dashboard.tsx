@@ -110,10 +110,7 @@ function Dashboard() {
 			setActive(menuItem)
 		};
 	};
-	console.log('conversations')
-	console.log(conversations)
-	console.log('recent-convo')
-	console.log(conversation)
+
 	return (
 		<div className='dashboardWrapper'>
 			{/* Main Navigation */}
