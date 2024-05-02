@@ -14,8 +14,6 @@ def sms_reply():
 
      # Get the message the user sent our Twilio number
     print(request.values)
-    print(f'FROM {request.values.get('From')}')
-    print(f'TO {request.values.get('To')}')
     body = request.values.get('Body', None)
 
     # Start our TwiML response
