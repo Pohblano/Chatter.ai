@@ -143,7 +143,6 @@ function ChatInput({
 
 		} else e.stopPropagation();
 	};
-	console.log(conversation)
 
 	return (
 		<>

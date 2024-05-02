@@ -64,13 +64,13 @@ def send_login_code():
         return {"error": "failed to generate login code"}, 500
 
     # # send login code to phone number via twilio
-    client.messages.create(
-        **{
-            "from_": "+18449532146",
-            "body": f"Your login code is: {login_code}",
-            "to": phone_number,
-        }
-    )
+    # client.messages.create(
+    #     **{
+    #         "from_": "+18449532146",
+    #         "body": f"Your login code is: {login_code}",
+    #         "to": phone_number,
+    #     }
+    # )
 
     print(f"Sent login code {login_code} to {phone_number}")
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200

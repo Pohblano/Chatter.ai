@@ -81,7 +81,7 @@ function MainNav({
 
 	const isConversationActive = (id) =>
 		(id === conversation.id) ? 'disabled text-white chatter_bg' : 'text-gray-500 hover:chatter_hover'
-	console.log(conversations)
+	
 	return (
 		<div>
 			{/* Mobile Menu */}

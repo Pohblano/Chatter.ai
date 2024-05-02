@@ -4,12 +4,13 @@
 	// max-width: 29rem;
 	align-content: center;
 	height: 100vh;
-	display: flex;
-	flex-flow: column;
-	gap: 275px;
+	// display: flex;
+	// flex-flow: column;
+	// gap: 275px;
 
 	>h1 {
-		font-size: revert;
+		font-size: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	>form {
@@ -59,11 +60,7 @@
 		border-radius: 8px;
 		z-index: 60;
 	}
-	// .registerButton:hover{
-	// 	background-color: rgba(0, 0, 0, 0.3);
-		
-	// }
-
+	
 
 
 	/* Utilities */
