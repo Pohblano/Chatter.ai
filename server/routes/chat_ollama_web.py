@@ -25,8 +25,6 @@ async def ai_ollama():
 	conversation_id = data.get('conversation_id')
 	user_id = data.get('author_id') #serve as both phone_number and user_id
 
-	print(data)
-
 	if not content:
 		return {"error": "Need user input."}, 400
 
