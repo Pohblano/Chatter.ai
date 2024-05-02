@@ -1,42 +1,16 @@
+# Library Imports
 from flask import request, jsonify
+from datetime import datetime, timezone
+from fastapi.encoders import jsonable_encoder # type: ignore
+
+# Directory Imports
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.message import Message
 from server.models.user import User
-from datetime import datetime, timezone
-from fastapi.encoders import jsonable_encoder # type: ignore
+from server.actions.formats import format_conversations, format_messages
 
 
-# Format messages to match front-end requirements
-def format_messages(user_id, messages):
-	messages_data = []
-	for message in messages:
-		message_data = {
-			'id': message.id,
-			'content': message.content,
-			'date': message.created_at.strftime('%Y-%m-%d'),
-			'time': message.created_at.strftime('%H:%M:%S'),
-			'author_id': user_id,
-			'author_type': message.author_type,
-			'conversation_id': message.conversation_id
-		}
-		messages_data.append(message_data)
-	return messages_data
-
-# Formats conversations to match fron-end requirements
-def format_conversations(user_id, conversations):
-	conversations_data = []
-	for conversation in conversations:
-		conversation_data = {
-			'id': conversation.id,
-			'ai_id': conversation.ai_id,
-			'ai': 'ChatGPT',
-			'user_id': conversation.user_phone_number,
-			'user_phone_number': conversation.user_phone_number
-		}
-		conversations_data.append(conversation_data)
-	return conversations_data
-	
 
 @app.route('/api/get_conversational_data', methods=['POST'])
 def get_conversational_data():
@@ -50,34 +24,34 @@ def get_conversational_data():
 
 	# Query conversations for the given user phone_number
 	conversations_data = Conversation.query.filter_by(user_phone_number=phone_number).all()
+	print(conversations_data)
 	conversations = format_conversations(phone_number, conversations_data)
 
-	
 
 	# Creates new conversation if there is no recent convo or a history of convos
-	if not conversation_id and not conversations_data:
-		user = User.query.get(phone_number)
-		conversation = Conversation(
-			user_phone_number=phone_number, 
-			ai_id='chatGPT',
-			user=user
-		)
-		if(user.conversations):  
-			user.conversations.append(conversation)
-		db.session.add(conversation)
-		db.session.commit()
+	# if not conversation_id and not conversations_data:
+	# 	user = User.query.get(phone_number)
+	# 	conversation = Conversation(
+	# 		user_phone_number=phone_number, 
+	# 		ai_id='chatGPT',
+	# 		user=user
+	# 	)
+	# 	if(user.conversations):  
+	# 		user.conversations.append(conversation)
+	# 	db.session.add(conversation)
+	# 	db.session.commit()
 		
-		serialized_conversation = {
-			'id': conversation.id,
-			'ai_id': conversation.ai_id,
-			'user_phone_number': conversation.user_phone_number
-			}
+	# 	serialized_conversation = {
+	# 		'id': conversation.id,
+	# 		'ai_id': conversation.ai_id,
+	# 		'user_phone_number': conversation.user_phone_number
+	# 		}
 
-		print('No conversation in the LocalStorage or Past converations in DB')
-		return jsonify({
-			'recent_conversation': serialized_conversation, 
-			'conversations': jsonable_encoder(conversations)
-			}), 200
+	# 	print('No conversation in the LocalStorage or Past converations in DB')
+	# 	return jsonify({
+	# 		'recent_conversation': serialized_conversation, 
+	# 		'conversations': jsonable_encoder(conversations)
+	# 		}), 200
 	
 	# Returns the last convo in the conversations array to utlize as recent conversation
 	if not conversation_id and conversations_data:
@@ -96,7 +70,7 @@ def get_conversational_data():
 			'messages': jsonable_encoder(messages)
 			}), 200
 	
-	if(conversation_id and conversations_data):
+	else:
 		# Query messages for the given conversation_id
 		messages_data = Message.query.filter_by(conversation_id=conversation_id).all()
 		messages = format_messages(phone_number, messages_data)
@@ -106,4 +80,3 @@ def get_conversational_data():
 			'messages':  jsonable_encoder(messages)
 			}), 200
 	
-	return {},200

@@ -8,21 +8,6 @@ from server.models.conversation import Conversation
 from server.models.message import Message
 from server.actions.formats import format_conversations, format_messages
 
-# # Formats conversations to match fron-end requirements
-# def format_conversations(user_id, conversations):
-# 	conversations_data = []
-# 	for conversation in conversations:
-# 		conversation_data = {
-# 			'id': conversation.id,
-# 			'ai_id': conversation.ai_id,
-# 			'ai': 'ChatGPT',
-# 			'user_id': conversation.user_phone_number,
-# 			'user_phone_number': conversation.user_phone_number
-# 		}
-# 		conversations_data.append(conversation_data)
-# 	return conversations_data
-	
-
 @app.route('/api/delete_conversation', methods=['POST'])
 async def delete_conversation():
 	if not request.get_json(silent=True):

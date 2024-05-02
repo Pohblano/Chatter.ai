@@ -1,7 +1,10 @@
+// Libraries
 import React, {useEffect } from "react";
+// Styling
 import './Loading.scss'
+
 function Loading() {
-	
+
 	useEffect(() => {
 		const checkbox = document.getElementById('checkBox')
 		checkbox.setAttribute('checked','')

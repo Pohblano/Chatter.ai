@@ -2,18 +2,18 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 // Components
-import { IconGear, IconList, IconMessage, IconOpenFile, IconQuestionCircle, IconSignOut, IconX } from '../Utils/Icons'
+import { IconMessage, IconSignOut, IconX } from '../Utils/Icons'
 // Api
 import { chat_api } from '../../Api/ChatApi'
 // Actions
-import { deleteFromLocalStorage, getFromLocalStorage, saveToLocalStorage } from '../../Actions/DashboardActions'
+import { deleteFromLocalStorage, saveToLocalStorage } from '../../Actions/DashboardActions'
 // Styling
 import './MainNav.scss'
 
 
 // When clicking on links to the conversation we must set clicked conversation as the recent conversation, save it to locastorage, and retrieve the messages attached to it
 function MainNav({
-	user,
+	user_id,
 	conversation,
 	conversations,
 	setMessages,
@@ -24,7 +24,7 @@ function MainNav({
 	const [isMenuVisible, setMenuVisible] = useState(false)
 	const navigate = useNavigate()
 
-	useEffect(()=> {
+	useEffect(() => {
 
 	}, [conversations])
 	// Changes navigation display
@@ -35,17 +35,18 @@ function MainNav({
 		deleteFromLocalStorage('jwtToken')
 		navigate('/register')
 	}
-	
-	const handleChangeConversation = (conversation_id) =>{
+
+	const handleChangeConversation = (conversation_id) => {
+		console.log('userID in MainNav ' + user_id)
 		const data = {
-			user_id: user,
+			user_id: user_id,
 			conversation_id: conversation_id
 		}
 		chat_api.get_conversation(data)
 			.then(response => {
-				const {conversation, messages} = response.data
+				const { conversation, messages } = response.data
 				saveToLocalStorage('recent_conversation', JSON.stringify(conversation))
-				setConversation( prevState => ({
+				setConversation(prevState => ({
 					...prevState,
 					id: conversation.id,
 					ai: conversation.ai_id,
@@ -56,32 +57,31 @@ function MainNav({
 			})
 	}
 
-	async function handleDeleteConversation(id){
+	function handleDeleteConversation(id) {
 		const data = {
 			conversation_id: id,
-			user_id: user
+			user_id: user_id
 		}
 		const confirmed = (window.confirm('Are you sure you want to delete this conversation?'))
 		console.log(confirmed)
-		if(confirmed){
-			await chat_api.delete_conversation(data)
-			.then( response => {
-				const {conversations} = response.data
-				if(conversations.length === 0){
-					console.log('convos are empty')
-					deleteFromLocalStorage('recent_conversation')
-					navigate('/')
-				}
-				setConversations(conversations)
-	
-			})
+		if (confirmed) {
+			chat_api.delete_conversation(data)
+				.then(response => {
+					const { conversations } = response.data
+					if (conversations.length === 0) {
+						deleteFromLocalStorage('recent_conversation')
+						// navigate('/')
+					}
+					setConversations(conversations)
+					setConversation({})
+				})
 		}
-		
+
 	}
 
 	const isConversationActive = (id) =>
 		(id === conversation.id) ? 'disabled text-white chatter_bg' : 'text-gray-500 hover:chatter_hover'
-
+	console.log(conversations)
 	return (
 		<div>
 			{/* Mobile Menu */}
@@ -107,25 +107,30 @@ function MainNav({
 					</div>
 					<div className="links px-4 pb-6">
 						<h3 className="mb-2 text-xs uppercase text-gray-500 font-medium text-start">CONVERSATIONS</h3>
-						<ul className="links_container mb-8 text-sm font-medium ">
+						{
+							(conversations.length === 0) ?
+								<p className='text-sm chatter_text font-semibold'>Create a conversation...</p>
+								:
+								<ul className="links_container mb-8 text-sm font-medium ">
 
-							{conversations.reverse().map((convo, index) =>
-								<li id={convo.id} key={index} className='mb-2'>
-									<button className={`shadow w-full flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded`} onClick={() => handleChangeConversation(convo.id)}>
-										<span className="inline-block mr-3 h-4 w-4">
-											<IconMessage />
-										</span>
-										<span>Conversation {convo.id}</span>
-										<a href="#" className='delete_icon hover:text-blue-500 '><IconX className='text-gray-400 shadow' onClick={() => handleDeleteConversation(convo.id)}/></a>
-									</button>
-									
-								</li>
-							)}
-						</ul>
+									{conversations.reverse().map((convo, index) =>
+										<li id={convo.id} key={index} className='mb-2'>
+											<button className={`shadow w-full flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded justify-between`} onClick={() => handleChangeConversation(convo.id)}>
+												<span className="inline-block mr-3 h-4 w-4">
+													<IconMessage />
+												</span>
+												<span>Conversation {convo.id}</span>
+												<a href="#" className='delete_icon hover:text-blue-500 '><IconX className='text-gray-400 shadow' onClick={() => handleDeleteConversation(convo.id)} /></a>
+											</button>
+
+										</li>
+									)}
+								</ul>
+						}
 
 						<div className="pt-8 text-sm font-medium">
 							<h3 className="mb-2 text-xs uppercase text-gray-500 font-medium text-start">OPTIONS</h3>
-	
+
 							<a className="flex items-center pl-3 py-3 pr-2 text-gray-500 hover:chatter_hover rounded" href='#' onClick={handleLogOut}>
 								<span className="inline-block mr-4">
 									<IconSignOut className='text-gray-600' />

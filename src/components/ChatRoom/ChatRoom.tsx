@@ -1,22 +1,19 @@
 // Libraries
-import React, { useEffect} from 'react'
+import React, { useEffect } from 'react'
 // Components
 import { ChatMessage, FetchingMessage } from '../Utils/Messages'
 // Actions
+
 // Styling
 import './ChatRoom.scss'
-import { IconOpenAI } from '../Utils/Icons';
+import { Brain, IconOpenAI } from '../Utils/Icons';
 
-// clear messages once 'new conversation button is clicked'
-
-
-
-function ChatRoom({ 
-	ai, 
-	messages, 
-	response, 
-	isLoading, 
-	user, 
+function ChatRoom({
+	ai,
+	messages,
+	response,
+	isLoading,
+	user,
 	conversations,
 	conversation
 }) {
@@ -27,22 +24,23 @@ function ChatRoom({
 			{
 				(messages.length === 0) ?
 					<div className="chatRoomAIBox">
-						<div className='h-12 w-12 mb-2'>
-							<IconOpenAI className='' />
-							</div>
-						<p>How can I assist you?</p>
+						<div className='mb-1 text-gray-700'>
+							{/* <IconOpenAI className='' /> */}
+							<Brain className='w-12 h-12'/>
+						</div>
+						<p>Chat with A.I.</p>
 					</div>
-					:
-					<div className="chat">
-						{(isLoading) ?
-							<FetchingMessage /> : null}
-						{(response.content) ?
-							<ChatMessage checkAuthor={checkAuthor} entry={response} /> : null}
+			:
+			<div className="chat">
+				{(isLoading) ?
+					<FetchingMessage /> : null}
+				{(response.content) ?
+					<ChatMessage checkAuthor={checkAuthor} entry={response} /> : null}
 
-						{messages.map((entry, index) =>
-							<ChatMessage key={index} checkAuthor={checkAuthor} entry={entry} />
-						)}
-					</div>
+				{messages.map((entry, index) =>
+					<ChatMessage key={index} checkAuthor={checkAuthor} entry={entry} />
+				)}
+			</div>
 			}
 		</div >
 	)
