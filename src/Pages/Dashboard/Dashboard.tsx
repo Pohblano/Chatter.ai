@@ -110,7 +110,7 @@ function Dashboard() {
 			setActive(menuItem)
 		};
 	};
-
+	
 	return (
 		<div className='dashboardWrapper'>
 			{/* Main Navigation */}
