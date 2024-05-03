@@ -28,12 +28,17 @@
 			max-width: 450px;
 			gap: 0;
 
-			.css-1tq8nf4-MuiFormControl-root-MuiTextField-root input{
+			.MuiInputBase-input{
 				z-index: 50;
 				font-weight: 600;
 				font-size: xx-large;
-				// width: 5rem;
 			}
+			// .css-1tq8nf4-MuiFormControl-root-MuiTextField-root input{
+			// 	z-index: 50;
+			// 	font-weight: 600;
+			// 	font-size: xx-large;
+			// 	// width: 5rem;
+			// }
 
 			.MuiOutlinedInput-notchedOutline{
 				width: 4.5rem;
