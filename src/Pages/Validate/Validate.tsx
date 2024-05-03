@@ -31,7 +31,6 @@ const Validate = () => {
     const query = new URLSearchParams(search);
     const number = query.get("phone_number")
     setPhoneNumber(number)
-    console.log('set number')
   }, [])
 
   // Event triggered as value in input changes
@@ -65,7 +64,6 @@ const Validate = () => {
         }
       }).catch(err => {
         const { error } = err.response.data
-          console.log(error)
           setError(error)
       })
   }
@@ -97,7 +95,7 @@ const Validate = () => {
 						: null
 					}
 
-        <p className='oneTimeInfo text-center'>A verification code was sent to <span className='font-bold'>{phoneNumber}</span>. Your code will expire in 60 sec.</p>
+        <p className='oneTimeInfo text-center'>A verification code was sent to:  <span className=' text-white'>{phoneNumber}</span></p>
         <Link className='oneTimeLink text-center' to='../register'> Didn't receive a code?</Link>
       </div>
     </div>

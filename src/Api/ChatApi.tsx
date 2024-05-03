@@ -1,7 +1,7 @@
 import api from './Api'
 
 export const chat_api = {
-    send_message: async function (entry: Object) {
+    send_message_chatGPT: async function (entry: Object) {
         const response = await fetch('http://127.0.0.1:5000/api/chatGPT', {
             method: 'POST',
             body: JSON.stringify(entry),
