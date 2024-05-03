@@ -37,9 +37,11 @@ function Register() {
 			// TODO: send a post request to the server
 			auth_api.register({ phone_number: phoneNumber.replaceAll(" ", "") })
 				.then((response) => {
-					if (response.status === 200) {
-						return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
-					}
+					const { error } = response
+					
+					if (error) setError({ type: 'twilio', msg: error.message })
+
+					else return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
 				})
 		} else {
 			setError({ type: 'invalid', msg: 'Sorry, that\'s and invalid number.' })
@@ -73,8 +75,8 @@ function Register() {
 
 				<p className='w-3/3 text-xs mt-6 pl-2 text-gray-600 text-center break-words'>By submitting this form, you agree to receive text messages from our chatbot and any personalized notifications from us at the cell number used. </p>
 				<p className="w-2/3 text-xs text-gray-600 mt-2">Reply <span className="font-bold text-white">HELP</span> for help and <span className="font-bold text-white">STOP</span> to cancel. Message frequency varies.
-				
-				Msg/data rates may apply.</p>
+
+					Msg/data rates may apply.</p>
 			</form>
 		</div>
 	)

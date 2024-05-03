@@ -5,6 +5,7 @@ import os
 
 # Twilio client import
 from server.actions.twilio_client import client
+from twilio.base.exceptions import TwilioRestException
 
 # Database imports
 from server import app, db
@@ -63,14 +64,23 @@ def send_login_code():
     if not login_code:
         return {"error": "failed to generate login code"}, 500
 
-    # send login code to phone number via twilio
-    client.messages.create(
-        **{
-            "from_": "+18449532146",
-            "body": f"Your login code is: {login_code}",
-            "to": phone_number,
-        }
-    )
+    
+
+     # your logic
+    try:
+        # send login code to phone number via twilio
+        client.messages.create(
+            **{
+                "from_": "+18449532146",
+                "body": f"Your login code is: {login_code}",
+                "to": phone_number,
+            }
+        )
+       
+    except TwilioRestException as e:
+        print('twilio error')
+        return {"error": "This number is invalid"},200
+
 
     print(f"Sent login code {login_code} to {phone_number}")
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200

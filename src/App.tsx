@@ -63,7 +63,7 @@ function LayoutComponent() {
 // Main app
 function App() {
   return (
-    <div className="App h-dvh">
+    <div className="App">
       <RouterProvider router={router} fallbackElement={<Loading/>} />
     </div>
   );
