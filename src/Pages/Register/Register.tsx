@@ -33,18 +33,20 @@ function Register() {
 
 	const handleSubmit = (e: React.SyntheticEvent<EventTarget>) => {
 		e.preventDefault();
-		if (matchIsValidTel(phoneNumber)) {
+		console.log(!phoneNumber)
+		if(!phoneNumber) {
+			setError({'type': 'invalid', 'msg':'Enter a mobile number'})
+		}else if(matchIsValidTel(phoneNumber)) {
 			// TODO: send a post request to the server
 			auth_api.register({ phone_number: phoneNumber.replaceAll(" ", "") })
 				.then((response) => {
 					const err = response.data
 					console.log(err)
-					if (err) {
-						setError(err)
+					if (err.hasOwnProperty('type'))setError(err)
+					else {
+					console.log('navigate')
+						navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
 					}
-						
-
-					else navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
 				})
 		} else {
 			setError({ type: 'invalid', msg: 'Sorry, that\'s and invalid number.' })
