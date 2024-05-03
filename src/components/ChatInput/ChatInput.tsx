@@ -81,10 +81,10 @@ function ChatInput({
 
 			try {
 
-				const response = await chat_api.send_message_ollama(entry)
+				// const response = await chat_api.send_message_ollama(entry)
 
 				// Fetching AI response. Expecting a stream
-				// const response = await chat_api.send_message(entry)
+				const response = await chat_api.send_message_chatGPT(entry)
 				// Create a new ReadableStream from the response data
 				const reader = response.body.getReader();
 				// Read data from the stream
