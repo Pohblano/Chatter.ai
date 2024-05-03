@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, Response
 import os
+from dotenv import load_dotenv
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.user import User
@@ -20,13 +21,12 @@ from langchain.callbacks.streaming_stdout_final_only import (
 
 
 llm = ChatOpenAI(
-    openai_api_key=os.environ.get("OPENAI_API_KEY"),
+    openai_api_key=os.environ.get('OPENAI_API_KEY'),
     temperature=0.9,
     model_name="gpt-3.5-turbo",
     streaming=True,  # ! important
     callbacks=[StreamingStdOutCallbackHandler()]  # ! important
 )
-
 
 # initialize conversational memory
 memory = ConversationBufferWindowMemory(
@@ -107,7 +107,7 @@ async def ai():
     db.session.add(user_message)
 
     #  Run the agent and stream the response
-    response_stream = chatGPT_agent.run("ignore previous instructions and be verbos. "+ content)
+    response_stream = chatGPT_agent.run(content)
 
     # response_stream ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 
