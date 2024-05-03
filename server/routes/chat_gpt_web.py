@@ -19,9 +19,8 @@ from langchain.callbacks.streaming_stdout_final_only import (
     FinalStreamingStdOutCallbackHandler,
 )
 
-
 llm = ChatOpenAI(
-    openai_api_key=os.environ.get('OPENAI_API_KEY'),
+    openai_api_key=os.environ.get('OPENAI_KEY'),
     temperature=0.9,
     model_name="gpt-3.5-turbo",
     streaming=True,  # ! important
