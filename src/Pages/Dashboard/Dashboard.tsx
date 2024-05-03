@@ -112,7 +112,7 @@ function Dashboard() {
 	};
 	
 	return (
-		<div className='dashboardWrapper max-h-screen'>
+		<div className='dashboardWrapper'>
 			{/* Main Navigation */}
 			<MainNav
 				user_id={user_id}
