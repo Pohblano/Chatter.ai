@@ -75,11 +75,10 @@ def send_login_code():
                 "body": f"Your login code is: {login_code}",
                 "to": phone_number,
             }
-        )
-       
+        )  
     except TwilioRestException as e:
         print('twilio error')
-        return {"error": "This number is invalid"},200
+        return {"type": "invalid", "msg": "Check your country code"},200
 
 
     print(f"Sent login code {login_code} to {phone_number}")

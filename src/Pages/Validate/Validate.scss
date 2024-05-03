@@ -1,21 +1,21 @@
-.confirmationWrapper{
+.confirmationWrapper {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	// padding: 0 35px;
 	height: 100vh;
+	width: 100%;
 
-	.oneTimeWrapper{
+	.oneTimeWrapper {
 		display: flex;
 		flex-flow: column;
 		align-items: center;
-		
+		width: 100%;
 
-		> div > h1{
-			font-size: 3rem;
+		>div{
+			width: 100%;
 		}
-
-		.oneTimeReturnLink{
+		.oneTimeReturnLink {
 			text-decoration: none;
 			color: white;
 			font-size: 40px;
@@ -23,65 +23,65 @@
 			left: 40px;
 			top: 30px;
 		}
-		.oneTimeBoxes {
-			margin: auto;
-			max-width: 450px;
-			gap: 0;
 
-			.MuiInputBase-input{
+		.MuiBox-root {
+			margin: auto;
+			max-width: 400px;
+			justify-content: space-evenly;
+			gap: unset;
+		}
+
+		.MuiInputBase-formControl {
+			width: 3.275rem;
+
+			.MuiInputBase-input {
 				z-index: 50;
 				font-weight: 600;
 				font-size: xx-large;
+				width: 3.275rem;
+				height: 2.3rem;
 			}
-			// .css-1tq8nf4-MuiFormControl-root-MuiTextField-root input{
-			// 	z-index: 50;
-			// 	font-weight: 600;
-			// 	font-size: xx-large;
-			// 	// width: 5rem;
-			// }
 
-			.MuiOutlinedInput-notchedOutline{
-				width: 4.5rem;
+			.MuiOutlinedInput-notchedOutline {
+				width: 3.275rem;
 				border: 2.5px rgb(191, 230, 255) solid;
 				background-color: white;
 				border-radius: 12px;
 				box-shadow: inset 0px 0em 4px 1px rgba(0, 0, 0, 0.123);
 			}
-			// .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
-			// 	width: 4.5rem;
-			// 	border: 2.5px rgb(191, 230, 255) solid;
-			// 	background-color: white;
-			// 	border-radius: 12px;
-			// 	box-shadow: inset 0px 0em 4px 1px rgba(0, 0, 0, 0.123);
-			// }
 		}
-		.error_message{
+
+
+		.error_message {
 			position: relative;
 			bottom: 10px;
-			width: 435px;;
+			width: 435px;
+			;
 		}
-		.oneTimeHeader{
-			margin: 0 0 20px 0;
+
+		.oneTimeHeader {
+			margin: 0 0 10px 0;
 			font-size: 22px;
 		}
-		.oneTimeInfo{
-			margin: 60px 0 0 0;
+
+		.oneTimeInfo {
+			margin: 30px 0 0 0;
 			max-width: 345px;
 			font-size: 16px;
+			color: black;
 		}
-		.oneTimeLink{
-			margin: 15px 0 0 0;
+
+		.oneTimeLink {
+			margin: 10px 0 0 0;
 			/* font-size: 16px; */
-			font-size:small;
+			font-size: small;
 			color: #1565c0;
 			text-decoration: none;
 		}
 	}
-	
+
 }
 
-@media screen and (max-width: 768px) {
-	.oneTimeWrapper > div > h1{
-		font-size: 2rem!important;
-	}
+@media screen and (max-width: 568px) {
+	
 }

@@ -37,12 +37,12 @@ function MainNav({
 	}
 
 	const handleChangeConversation = (conversation_id) => {
-		console.log('userID in MainNav ' + user_id)
 		const data = {
 			user_id: user_id,
 			conversation_id: conversation_id
 		}
-		chat_api.get_conversation(data)
+		if(conversation_id !== conversation.id){
+			chat_api.get_conversation(data)
 			.then(response => {
 				const { conversation, messages } = response.data
 				saveToLocalStorage('recent_conversation', JSON.stringify(conversation))
@@ -54,23 +54,25 @@ function MainNav({
 					user_phone_number: conversation.user_phone_number
 				}))
 				setMessages(messages.reverse())
-			})
+
+			}).catch(err => console.log(err))
+		}
+		
 	}
 
 	function handleDeleteConversation(id) {
 		const data = {
-			conversation_id: id,
+			conversation_id: (id)? id: '',
 			user_id: user_id
 		}
 		const confirmed = (window.confirm('Are you sure you want to delete this conversation?'))
-		console.log(confirmed)
 		if (confirmed) {
 			chat_api.delete_conversation(data)
 				.then(response => {
 					const { conversations } = response.data
 					if (conversations.length === 0) {
 						deleteFromLocalStorage('recent_conversation')
-						// navigate('/')
+						navigate('/')
 					}
 					setConversations(conversations)
 					setConversation({})

@@ -79,7 +79,7 @@ const Validate = () => {
         <Link to='/register' className='oneTimeReturnLink' ><i className="fa-solid fa-arrow-left"></i></Link>
 
         <div className='chatter_bg z-30'>
-          <h1 className="text-white  mb-7 font-bold text-center" >Enter Verification Code</h1>
+          <h1 className="text-white mb-5 font-bold text-center" >Enter Verification Code</h1>
           <MuiOtpInput
             className='oneTimeBoxes'
             value={one_time}
@@ -95,8 +95,8 @@ const Validate = () => {
 						: null
 					}
 
-        <p className='oneTimeInfo text-center'>A verification code was sent to:  <span className=' text-white'>{phoneNumber}</span></p>
-        <Link className='oneTimeLink text-center' to='../register'> Didn't receive a code?</Link>
+        <p className='oneTimeInfo text-center text-sm'>A verification code was sent to: <span className=' text-white'>{phoneNumber}</span></p>
+        <Link className='oneTimeLink text-center text-xs' to='../register'> Didn't receive a code?</Link>
       </div>
     </div>
   )
