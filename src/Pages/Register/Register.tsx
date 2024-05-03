@@ -54,7 +54,7 @@ function Register() {
 	}
 	
 	return (
-		<div className="registerWrapper mx-10">
+		<div className="registerWrapper mx-10 h-dvh">
 			<h1 className="font-bold mb-7 mt-12
 			 text-white"><i className="fa-regular fa-comments"></i>  Chatter.ai</h1>
 			<form onSubmit={handleSubmit} className=''>
