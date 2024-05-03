@@ -74,7 +74,7 @@ const Validate = () => {
   };
 
   return (
-    <div className='confirmationWrapper'>
+    <div className='confirmationWrapper h-dvh'>
       <div className='oneTimeWrapper'>
         <Link to='/register' className='oneTimeReturnLink' ><i className="fa-solid fa-arrow-left"></i></Link>
 

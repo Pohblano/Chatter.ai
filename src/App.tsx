@@ -54,7 +54,7 @@ function PrivateRoute({ children }) {
 // Site layout
 function LayoutComponent() {
   return (
-    <div className='App-Wrapper h-screen'>
+    <div className='App-Wrapper'>
       <Outlet/>
     </div>
   );
