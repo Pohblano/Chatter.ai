@@ -83,8 +83,3 @@ def send_login_code():
 
     print(f"Sent login code {login_code} to {phone_number}")
     return {"message": f"Registration code successfully sent to {phone_number}"}, 200
-
-
-# eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiKzE2MjYzOTI4NTkxIn0.agZCCS25rhK0Rb_5atSalhVNyHtWB8t6E3X8NMtm2iQ
-
-# jwtToken
