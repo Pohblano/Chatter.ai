@@ -96,7 +96,7 @@ function Dashboard() {
 				setMessages(
 					(messages.length>0)?messages.reverse():[]
 				)
-				setConversations(conversations)
+				setConversations(conversations.reverse())
 				
 
 			}).catch(err => {
@@ -126,7 +126,7 @@ function Dashboard() {
 			<div className="chatWrapper">
 				<main className="mainChat">
 					<div className="chatHeader">
-						<AiSelect handleMenuClick={handleMenuClick} />
+						{/* <AiSelect handleMenuClick={handleMenuClick} /> */}
 					</div>
 
 					<section className="chatBody">

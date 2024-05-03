@@ -15,7 +15,7 @@ def get_conversation():
 	
 	# data retrieved from request
 	data = request.json
-	print(data)
+	# print(data)
 	user_id = data.get('user_id')
 	conversation_id = data.get('conversation_id')
 

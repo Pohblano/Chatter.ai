@@ -24,9 +24,11 @@ async def delete_conversation():
 	conversations_data = Conversation.query.filter_by(user_phone_number=user_id).all()
 	conversations = format_conversations(user_id, conversations_data)
 	if(conversations):
-		conversation = conversations_data[-1]
+		conversation = conversations[-1]
 		
 		convo_id = conversation['id']
+		print(conversation)
+		print(convo_id)
 
 		# Query messages for the given conversation_id
 		messages_data = Message.query.filter_by(conversation_id=convo_id).all()
