@@ -37,17 +37,20 @@ function Register() {
 			// TODO: send a post request to the server
 			auth_api.register({ phone_number: phoneNumber.replaceAll(" ", "") })
 				.then((response) => {
-					const { error } = response
-					
-					if (error) setError({ type: 'twilio', msg: error.message })
+					const err = response.data
+					console.log(err)
+					if (err) {
+						setError(err)
+					}
+						
 
-					else return navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
+					else navigate('/validate?phone_number=' + encodeURIComponent(phoneNumber))
 				})
 		} else {
 			setError({ type: 'invalid', msg: 'Sorry, that\'s and invalid number.' })
 		}
 	}
-
+	
 	return (
 		<div className="registerWrapper mx-10">
 			<h1 className="font-bold mb-7 mt-12
@@ -61,7 +64,7 @@ function Register() {
 						value={phoneNumber}
 						onChange={handleChange}
 						unknownFlagElement={unknownFlag}
-						continents={['NA']} placeholder="Enter a mobile number."
+						continents={['NA']} placeholder="Mobile number"
 					/>
 					<button className="registerButton hover:chatter_input_hover" type="submit">
 						<i className="fa-solid fa-arrow-up"></i>

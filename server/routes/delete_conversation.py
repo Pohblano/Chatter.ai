@@ -23,23 +23,21 @@ async def delete_conversation():
 
 	conversations_data = Conversation.query.filter_by(user_phone_number=user_id).all()
 	conversations = format_conversations(user_id, conversations_data)
-	# if(conversations):
-	# 	conversation = conversations_data[-1]
-	# 	convo_id = conversation.id
-	# 	messages_data = Message.query.filter_by(conversation_id=convo_id)
-	# 	print(messages_data)
-	# 	messages = format_messages(user_id, messages_data)
-	# 	serialized_conversation = {
-	# 		'id': conversation.id,
-	# 		'ai_id': conversation.ai_id,
-	# 		'user_phone_number': conversation.user_phone_number
-	# 	}
+	if(conversations):
+		conversation = conversations_data[-1]
+		
+		convo_id = conversation['id']
 
-	# 	return jsonify({
-	# 		'conversations': conversations,
-	# 		'messages': messages,
-	# 		'recent_conversation': serialized_conversation
-	# 	}),200
+		# Query messages for the given conversation_id
+		messages_data = Message.query.filter_by(conversation_id=convo_id).all()
+		messages = format_messages(user_id, messages_data)
+
+		print('No conversation in the LocalStorage but the is Past conversations in DB')
+		return jsonify({
+			'recent_conversation':jsonable_encoder(conversation), 
+			'conversations': jsonable_encoder(conversations),
+			'messages': jsonable_encoder(messages)
+			}), 200
 
 	
 	app.logger.info(f"Conversation delete")
