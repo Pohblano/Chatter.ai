@@ -56,7 +56,7 @@ function ChatInput({
 					user_id: recent_conversation.user_phone_number,
 					user_phone_number: recent_conversation.user_phone_number,
 				}))
-				setConversations(conversations)
+				setConversations(conversations.reverse())
 				setMessages([])
 			})
 			.catch(err => console.log('There was an error creating a new conversation'))
@@ -82,7 +82,6 @@ function ChatInput({
 			try {
 
 				// const response = await chat_api.send_message_ollama(entry)
-
 				// Fetching AI response. Expecting a stream
 				const response = await chat_api.send_message_chatGPT(entry)
 				// Create a new ReadableStream from the response data

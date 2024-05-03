@@ -64,8 +64,6 @@ def send_login_code():
     if not login_code:
         return {"error": "failed to generate login code"}, 500
 
-    
-
      # your logic
     try:
         # send login code to phone number via twilio

@@ -108,8 +108,6 @@ async def ai():
     #  Run the agent and stream the response
     response_stream = chatGPT_agent.run(content)
 
-    # response_stream ="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-
     # # create ai message and add to conversation
     ai_message = Message(
         content = response_stream, 
@@ -126,6 +124,9 @@ async def ai():
     def generate_response():
         for chunk in response_stream:
             yield chunk  # Add newline character between chunks
-  
     # Return a Response object with the generated response
-    return Response(generate_response(), content_type='text/event-stream', status=200)
+    response = Response(generate_response(), content_type='text/event-stream', status=200)
+    response.headers["Cache-Control"] = "no-cache"  # Prevent client cache
+    response.headers["X-Accel-Buffering"] = "no"  # Allow streaming over NGINX server
+    
+    return response

@@ -54,6 +54,7 @@ function MainNav({
 					user_phone_number: conversation.user_phone_number
 				}))
 				setMessages(messages.reverse())
+				setMenuVisible(false)
 
 			}).catch(err => console.log(err))
 		}
@@ -69,20 +70,22 @@ function MainNav({
 		if (confirmed) {
 			chat_api.delete_conversation(data)
 				.then(response => {
-					const { conversations } = response.data
+					console.log(response.data)
+					const { conversations, recent_conversation, messages } = response.data
 					if (conversations.length === 0) {
 						deleteFromLocalStorage('recent_conversation')
-						navigate('/')
+						// navigate('/')
 					}
-					setConversations(conversations)
-					setConversation({})
+					setConversations(conversations.reverse())
+					setConversation(recent_conversation)
+					setMessages(messages)
 				})
 		}
 
 	}
 
 	const isConversationActive = (id) =>
-		(id === conversation.id) ? 'disabled text-white chatter_bg' : 'text-gray-500 hover:chatter_hover'
+		(id === conversation.id) ? 'disabled text-white chatter_bg shadow' : 'text-gray-500 hover:chatter_hover'
 	
 	return (
 		<div>
@@ -100,11 +103,11 @@ function MainNav({
 
 			{/* Regular Nav */}
 			<div className={`${isMenuVisible ? 'block' : 'hidden'} lg:block navbar-menu relative z-50`}>
-				<div className="navbar-backdrop fixed lg:hidden inset-0 bg-gray-800 opacity-10"></div>
+				<div className="navbar-backdrop fixed lg:hidden inset-0 bg-gray-800 opacity-10" onClick={() => setMenuVisible(false)}></div>
 				<nav className="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
 					<div className="flex items-center px-6 pb-6 mb-6 lg:border-b border-black-50 text-center">
-						<a className="font-semibold chatter_text">
-							Chatter.ai
+						<a className="font-semibold chatter_text text-3xl">
+						<i className="fa-regular fa-comments mr-2"></i> Chatter.ai
 						</a>
 					</div>
 					<div className="links px-4 pb-6">
@@ -115,9 +118,9 @@ function MainNav({
 								:
 								<ul className="links_container mb-8 text-sm font-medium ">
 
-									{conversations.reverse().map((convo, index) =>
+									{conversations.map((convo, index) =>
 										<li id={convo.id} key={index} className='mb-2'>
-											<button className={`shadow w-full flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded justify-between`} onClick={() => handleChangeConversation(convo.id)}>
+											<button className={` w-full flex items-center pl-3 py-3 pr-4 ${isConversationActive(convo.id)} rounded justify-between`} onClick={() => handleChangeConversation(convo.id)}>
 												<span className="inline-block mr-3 h-4 w-4">
 													<IconMessage />
 												</span>
