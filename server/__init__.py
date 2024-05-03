@@ -48,8 +48,7 @@ import server.routes.chat_gpt_web
 import server.routes.chat_ollama_web
 import server.routes.preflight_twilio
 import server.routes.sms
-print('open api key')
-print(os.environ.get('OPENAI_KEY'))
+
 
 # Add Access-Control-Allow-Origin header to responses
 @app.after_request
