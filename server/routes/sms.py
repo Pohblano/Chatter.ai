@@ -67,7 +67,6 @@ def sms_reply():
                conversation_id = conversation_id,
                author_type = AuthorType.USER,
                conversation = conversation)
-          conversation.messages.append(user_message)
           db.session.add(user_message)
           db.commit()
           
