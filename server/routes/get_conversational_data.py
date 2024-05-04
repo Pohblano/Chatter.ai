@@ -15,11 +15,6 @@ from server.actions.formats import format_conversations, format_messages
 
 @app.route('/api/get_conversational_data', methods=['POST'])
 def get_conversational_data():
-	#for all records
-	db.session.query(User).delete()
-	db.session.query(Conversation).delete()
-	db.session.query(Message).delete()
-	db.session.commit()
 
 	if not request.get_json(silent=True):
 		return {"error": "missing valid JSON object in request body"}, 400
