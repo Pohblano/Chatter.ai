@@ -60,35 +60,36 @@ def sms_reply():
                    ai_id='chatGPT') 
                db.session.add(conversation)
                db.session.commit()
-               try:
-                    # create user message and add to conversation record and db
-                    user_message = Message(
-                         content = body, 
-                         conversation_id = conversation_id,
-                         author_type = AuthorType.USER,
-                         conversation = conversation)
-                    conversation.messages.append(user_message)
-                    db.session.add(user_message)
-                    db.commit()
-                    
-                    # Calls AI to generate response
-                    ai_response = chatGPT_agent.run(body)
-                    print(f'chatGPT response: {ai_response}')
-
-                    # create ai message and add to conversation record and db
-                    ai_message = Message(
-                         content = ai_response, 
-                         conversation_id = conversation_id,
-                         author_type = AuthorType.AI,
-                         conversation = conversation
-                    )
-                    conversation.messages.append(ai_message)
-                    db.session.add(ai_message)
-                    db.session.commit()
-
-                    resp.message(ai_response)
-                    return str(resp)
                
-               except TwilioRestException as e:
-                    print(f"TWILIO ERROR: {e}")
-                    return 
+          try:
+               # create user message and add to conversation record and db
+               user_message = Message(
+                    content = body, 
+                    conversation_id = conversation_id,
+                    author_type = AuthorType.USER,
+                    conversation = conversation)
+               conversation.messages.append(user_message)
+               db.session.add(user_message)
+               db.commit()
+               
+               # Calls AI to generate response
+               ai_response = chatGPT_agent.run(body)
+               print(f'chatGPT response: {ai_response}')
+
+               # create ai message and add to conversation record and db
+               ai_message = Message(
+                    content = ai_response, 
+                    conversation_id = conversation_id,
+                    author_type = AuthorType.AI,
+                    conversation = conversation
+               )
+               conversation.messages.append(ai_message)
+               db.session.add(ai_message)
+               db.session.commit()
+
+               resp.message(ai_response)
+               return str(resp)
+          
+          except TwilioRestException as e:
+               print(f"TWILIO ERROR: {e}")
+               return 
