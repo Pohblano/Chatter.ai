@@ -27,6 +27,11 @@ def sms_reply():
     print(f'{phone_number} said: \"{body}\"')
      # Start our TwiML response
     resp = MessagingResponse()
+    ai_response = chatGPT_text_llm.invoke(body)
+    a_response = chatGPT_agent.run(body)
+
+    print(f'AI response: {ai_response}')
+    print(f'A reposnse: {a_response}')
 
      # Find or create user
     user = User.query.get(phone_number)
@@ -72,7 +77,6 @@ def sms_reply():
           
           # Calls AI to generate response
           # ai_response = chatGPT_agent.run(body)
-          ai_response = chatGPT_text_llm.invoke(body)
           print(f'chatGPT response: {ai_response}')
 
           # create ai message and add to conversation record and db
