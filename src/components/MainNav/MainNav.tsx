@@ -104,17 +104,7 @@ function MainNav({
 
 			{/* Regular Nav */}
 
-			<Transition
-				show={isMenuVisible}
-				enter="transition ease-in-out duration-300 transform"
-				enterFrom="-translate-x-full"
-				enterTo="translate-x-0"
-				leave="transition ease-in-out duration-300 transform"
-				leaveFrom="translate-x-0"
-				leaveTo="-translate-x-full">
-			
-			
-			<div className={`lg:block navbar-menu relative z-50`}>
+			<div className={`${isMenuVisible ? 'block' : 'hidden'} lg:block navbar-menu relative z-50`}>
 				<div className="navbar-backdrop fixed lg:hidden inset-0 bg-gray-800 opacity-10" onClick={() => setMenuVisible(false)}></div>
 				<nav className="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
 					<div className="flex items-center px-6 pb-6 mb-6 lg:border-b border-black-50 text-center">
@@ -158,7 +148,6 @@ function MainNav({
 					</div>
 				</nav>
 			</div>
-			</Transition>
 			<div className="mx-auto lg:ml-80"></div>
 		</div>
 	)

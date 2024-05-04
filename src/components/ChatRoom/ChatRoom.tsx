@@ -22,7 +22,7 @@ function ChatRoom({
 	return (
 		<div className="chatRoom">
 			{
-				(messages.length === 0) ?
+				(!messages.length) ?
 					<div className="chatRoomAIBox">
 						<div className='mb-1 text-gray-700'>
 							{/* <IconOpenAI className='' /> */}
