@@ -30,6 +30,7 @@ def sms_reply():
 
      # Find or create user
     user = User.query.get(phone_number)
+    
   
      # Conditions for different messages
     if not user and match(body,r'JOIN'):
