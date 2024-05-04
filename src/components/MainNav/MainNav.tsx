@@ -8,6 +8,7 @@ import { chat_api } from '../../Api/ChatApi'
 // Actions
 import { deleteFromLocalStorage, saveToLocalStorage } from '../../Actions/DashboardActions'
 // Styling
+import { Transition } from '@headlessui/react'
 import './MainNav.scss'
 
 
@@ -41,29 +42,29 @@ function MainNav({
 			user_id: user_id,
 			conversation_id: conversation_id
 		}
-		if(conversation_id !== conversation.id){
+		if (conversation_id !== conversation.id) {
 			chat_api.get_conversation(data)
-			.then(response => {
-				const { conversation, messages } = response.data
-				saveToLocalStorage('recent_conversation', JSON.stringify(conversation))
-				setConversation(prevState => ({
-					...prevState,
-					id: conversation.id,
-					ai: conversation.ai_id,
-					user_id: conversation.user_phone_number,
-					user_phone_number: conversation.user_phone_number
-				}))
-				setMessages(messages.reverse())
-				setMenuVisible(false)
+				.then(response => {
+					const { conversation, messages } = response.data
+					saveToLocalStorage('recent_conversation', JSON.stringify(conversation))
+					setConversation(prevState => ({
+						...prevState,
+						id: conversation.id,
+						ai: conversation.ai_id,
+						user_id: conversation.user_phone_number,
+						user_phone_number: conversation.user_phone_number
+					}))
+					setMessages(messages.reverse())
+					setMenuVisible(false)
 
-			}).catch(err => console.log(err))
+				}).catch(err => console.log(err))
 		}
-		
+
 	}
 
 	function handleDeleteConversation(id) {
 		const data = {
-			conversation_id: (id)? id: '',
+			conversation_id: (id) ? id : '',
 			user_id: user_id
 		}
 		const confirmed = (window.confirm('Are you sure you want to delete this conversation?'))
@@ -86,7 +87,7 @@ function MainNav({
 
 	const isConversationActive = (id) =>
 		(id === conversation.id) ? 'disabled text-white chatter_bg shadow' : 'text-gray-500 hover:chatter_hover'
-	
+
 	return (
 		<div>
 			{/* Mobile Menu */}
@@ -102,12 +103,23 @@ function MainNav({
 			</nav>
 
 			{/* Regular Nav */}
-			<div className={`${isMenuVisible ? 'block' : 'hidden'} lg:block navbar-menu relative z-50`}>
+
+			<Transition
+				show={isMenuVisible}
+				enter="transition ease-in-out duration-300 transform"
+				enterFrom="-translate-x-full"
+				enterTo="translate-x-0"
+				leave="transition ease-in-out duration-300 transform"
+				leaveFrom="translate-x-0"
+				leaveTo="-translate-x-full">
+			
+			
+			<div className={`lg:block navbar-menu relative z-50`}>
 				<div className="navbar-backdrop fixed lg:hidden inset-0 bg-gray-800 opacity-10" onClick={() => setMenuVisible(false)}></div>
 				<nav className="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
 					<div className="flex items-center px-6 pb-6 mb-6 lg:border-b border-black-50 text-center">
 						<a className="font-semibold chatter_text text-3xl">
-						<i className="fa-regular fa-comments mr-2"></i> Chatter.ai
+							<i className="fa-regular fa-comments mr-2"></i> Chatter.ai
 						</a>
 					</div>
 					<div className="links px-4 pb-6">
@@ -146,6 +158,7 @@ function MainNav({
 					</div>
 				</nav>
 			</div>
+			</Transition>
 			<div className="mx-auto lg:ml-80"></div>
 		</div>
 	)

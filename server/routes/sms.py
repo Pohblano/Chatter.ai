@@ -27,8 +27,6 @@ def sms_reply():
     print(f'{phone_number} said: \"{body}\"')
      # Start our TwiML response
     resp = MessagingResponse()
-#     ai_response = chatGPT_text_llm.invoke(body)
-#     ai_response = chatGPT_agent.run(body)
 
      # Find or create user
     user = User.query.get(phone_number)
@@ -42,12 +40,13 @@ def sms_reply():
     
      # If its users first time and his text 
     elif not user:
-          # Add a picture message
-          resp.media("../images/Chatter_logo.png")
           # Add text
-          resp.message(u"Hi! \U0001F917 \n First time? No worries. Reply with **\"JOIN\"** to start texting with an AI agent")
+          msg = resp.message(u"Hi! \U0001F917 \n First time? No worries. Reply with **\"JOIN\"** to start texting with an AI agent")
+           # Add a picture message
+          msg.media("../images/Chatter_logo.png")
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
+         
     else:
           ai_response = chatGPT_agent.run(body)
           # # Using user phone number as their own id and conversation id
