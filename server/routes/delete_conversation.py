@@ -32,7 +32,12 @@ async def delete_conversation():
 
 		# Query messages for the given conversation_id
 		messages_data = Message.query.filter_by(conversation_id=convo_id).all()
-		messages = format_messages(user_id, messages_data)
+		print("messages_data")
+		print(messages_data)
+		if messages_data:
+			messages = format_messages(user_id, messages_data)
+		else:
+			messages=[]
 
 		print('No conversation in the LocalStorage but the is Past conversations in DB')
 		return jsonify({
@@ -43,4 +48,4 @@ async def delete_conversation():
 
 	
 	app.logger.info(f"Conversation delete")
-	return {'conversations': conversations}, 200
+	return {'conversations': conversations, 'messages':[]}, 200

@@ -73,12 +73,13 @@ function MainNav({
 				.then(response => {
 					console.log(response.data)
 					const { conversations, recent_conversation, messages } = response.data
-					if (conversations.length === 0) {
+					if (!conversations.length) {
 						deleteFromLocalStorage('recent_conversation')
 						// navigate('/')
 					}
 					setConversations(conversations.reverse())
 					setConversation(recent_conversation)
+					
 					setMessages(messages)
 				})
 		}
