@@ -9,7 +9,7 @@ from server.models.conversation import Conversation
 from server.models.message import Message, AuthorType
 from server.models.user import User
 from server.routes.chat_ollama_web import llama_llm
-from server.routes.chat_gpt_web import chatGPT_agent
+from server.routes.chat_gpt_web import chatGPT_agent, chatGPT_text_llm
 
 # Actions
 from server.routes.send_login_code import generate_login_code
@@ -60,7 +60,7 @@ def sms_reply():
                    ai_id='chatGPT') 
                db.session.add(conversation)
                db.session.commit()
-               
+
           try:
                # create user message and add to conversation record and db
                user_message = Message(
@@ -73,7 +73,8 @@ def sms_reply():
                db.commit()
                
                # Calls AI to generate response
-               ai_response = chatGPT_agent.run(body)
+               # ai_response = chatGPT_agent.run(body)
+               ai_response = chatGPT_text_llm.invoke(body)
                print(f'chatGPT response: {ai_response}')
 
                # create ai message and add to conversation record and db
