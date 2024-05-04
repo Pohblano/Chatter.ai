@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 # load environment variables from .env file
 load_dotenv()
 
+# ##########CAUSING INFINITE LOOP IN PYTHON ANYWHERE
 # dictConfig({
 #     'version': 1,
 #     'formatters': {'default': {
