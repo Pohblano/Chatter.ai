@@ -27,6 +27,12 @@ llm = ChatOpenAI(
     callbacks=[StreamingStdOutCallbackHandler()]  # ! important
 )
 
+chatGPT_text_llm =ChatOpenAI(
+    openai_api_key=os.environ.get('OPENAI_KEY'),
+    temperature=0.9,
+    model_name="gpt-3.5-turbo",
+)
+
 # initialize conversational memory
 memory = ConversationBufferWindowMemory(
     memory_key="chat_history",
