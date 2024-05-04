@@ -30,19 +30,19 @@ def sms_reply():
 
      # Find or create user
     user = User.query.get(phone_number)
-    
+
   
      # Conditions for different messages
     if not user and match(body,r'JOIN'):
           generate_login_code(phone_number)
-          resp.message(u'Thank you. You are now free to text with AI \U0001F916 \n Ask him anything! \U0001F389 ')
+          resp.message(u'Thank you. You are now free to text with \U0001F916 \n\nAsk him anything! \U0001F389 ')
           print(f'{phone_number} NOT REGISTERED BUT REPLIED WITH \'JOIN\'')
           return str(resp)
     
      # If its users first time and his text 
     elif not user:
           # Add text
-          msg = resp.message(u"Hi! \U0001F917 \n First time? No worries. Reply with **\"JOIN\"** to start texting with an AI agent")
+          msg = resp.message(u"Hi! \U0001F917 \n\n First time? No worries. Reply with \"JOIN\" to start texting with an AI agent")
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
          
