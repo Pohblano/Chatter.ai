@@ -3,7 +3,7 @@ from server import app, db
 from server.models.conversation import Conversation
 from server.models.message import Message
 from server.models.user import User
-from server.actions.formats import format_conversations
+from server.actions.formats import format_conversations, phone_number_to_integer
 
 
 @app.route('/api/create_conversation', methods=['POST'])
@@ -22,6 +22,7 @@ def create_conversation():
 		user_phone_number=user_id, 
 		ai_id='chatGPT',
 	)  
+	print(conversation)
 	# conversation = Conversation.query.get(conversation_id)
 	db.session.add(conversation)
 	db.session.commit()

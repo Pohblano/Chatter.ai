@@ -1,3 +1,5 @@
+import re
+
 # Formats conversations to match fron-end requirements
 def format_conversations(user_id, conversations):
 	conversations_data = []
@@ -27,3 +29,31 @@ def format_messages(user_id, messages):
 		}
 		messages_data.append(message_data)
 	return messages_data	
+
+# Check string for regex match
+def match(string, pattern):
+    # Use re.search to find the pattern in the string
+    match = re.search(pattern, string)
+    if match: 
+        return True
+    else:
+        return False
+    
+# Parses a phone number to an integer
+def phone_number_to_integer(string):
+    # Check if the string starts with '+'
+    if string.startswith('+'):
+        # Remove the '+' character from the string
+        number_string = string[1:]
+    else:
+        # If no '+' character is present, use the original string
+        number_string = string
+
+    # Parse the string into an integer
+    try:
+        parsed_integer = int(number_string)
+        return parsed_integer
+    except ValueError:
+        # Handle the case where the string cannot be parsed into an integer
+        print(f"Error: '{string}' is not a valid integer representation.")
+        return None
