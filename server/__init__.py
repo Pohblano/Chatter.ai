@@ -67,6 +67,12 @@ from server.models.conversation import Conversation
 from server.models.message import Message
 
 
+#for all records
+db.session.query(User).delete()
+db.session.query(Conversation).delete()
+db.session.query(Message).delete()
+db.session.commit()
+
 # create database tables
 with app.app_context():
     db.create_all()
