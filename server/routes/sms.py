@@ -27,16 +27,12 @@ def sms_reply():
     print(f'{phone_number} said: \"{body}\"')
      # Start our TwiML response
     resp = MessagingResponse()
-    ai_response = chatGPT_text_llm.invoke(body)
-    a_response = chatGPT_agent.run(body)
-
-    print(f'AI response: {ai_response}')
-    print(f'A reposnse: {a_response}')
+#     ai_response = chatGPT_text_llm.invoke(body)
+#     ai_response = chatGPT_agent.run(body)
 
      # Find or create user
     user = User.query.get(phone_number)
   
-    
      # Conditions for different messages
     if not user and match(body,r'JOIN'):
           generate_login_code(phone_number)
@@ -53,42 +49,43 @@ def sms_reply():
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
     else:
-          # Using user phone number as their own id and conversation id
-          conversation_id = phone_number_to_integer(phone_number)
-          conversation = Conversation.query.get(conversation_id)
+          ai_response = chatGPT_agent.run(body)
+          # # Using user phone number as their own id and conversation id
+          # conversation_id = phone_number_to_integer(phone_number)
+          # conversation = Conversation.query.get(conversation_id)
 
-          print(f'CONVERSATION: {conversation}')
-          if(not conversation):
-               conversation = Conversation(
-                   id=conversation_id, 
-                   user_phone_number=phone_number, 
-                   ai_id='chatGPT') 
-               db.session.add(conversation)
-               db.session.commit()
+          # print(f'CONVERSATION: {conversation}')
+          # if(not conversation):
+          #      conversation = Conversation(
+          #          id=conversation_id, 
+          #          user_phone_number=phone_number, 
+          #          ai_id='chatGPT') 
+          #      db.session.add(conversation)
+          #      db.session.commit()
 
-          # create user message and add to conversation record and db
-          user_message = Message(
-               content = body, 
-               conversation_id = conversation_id,
-               author_type = AuthorType.USER,
-               conversation = conversation)
-          db.session.add(user_message)
-          db.commit()
+          # # create user message and add to conversation record and db
+          # user_message = Message(
+          #      content = body, 
+          #      conversation_id = conversation_id,
+          #      author_type = AuthorType.USER,
+          #      conversation = conversation)
+          # db.session.add(user_message)
+          # db.commit()
           
-          # Calls AI to generate response
-          # ai_response = chatGPT_agent.run(body)
-          print(f'chatGPT response: {ai_response}')
+          # # Calls AI to generate response
+          # # ai_response = chatGPT_agent.run(body)
+          # print(f'chatGPT response: {ai_response}')
 
-          # create ai message and add to conversation record and db
-          ai_message = Message(
-               content = ai_response, 
-               conversation_id = conversation_id,
-               author_type = AuthorType.AI,
-               conversation = conversation
-          )
-          conversation.messages.append(ai_message)
-          db.session.add(ai_message)
-          db.session.commit()
+          # # create ai message and add to conversation record and db
+          # ai_message = Message(
+          #      content = ai_response, 
+          #      conversation_id = conversation_id,
+          #      author_type = AuthorType.AI,
+          #      conversation = conversation
+          # )
+          # conversation.messages.append(ai_message)
+          # db.session.add(ai_message)
+          # db.session.commit()
 
           resp.message(ai_response)
           return str(resp)
