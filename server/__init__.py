@@ -73,6 +73,8 @@ db.session.query(Conversation).delete()
 db.session.query(Message).delete()
 db.session.commit()
 
+
+
 # create database tables
 with app.app_context():
     db.create_all()
