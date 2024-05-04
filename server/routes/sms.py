@@ -42,8 +42,6 @@ def sms_reply():
     elif not user:
           # Add text
           msg = resp.message(u"Hi! \U0001F917 \n First time? No worries. Reply with **\"JOIN\"** to start texting with an AI agent")
-           # Add a picture message
-          msg.media("../images/Chatter_logo.png")
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
          
