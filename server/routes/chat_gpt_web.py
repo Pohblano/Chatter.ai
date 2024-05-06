@@ -84,7 +84,7 @@ chatGPT_agent.agent.llm_chain.llm.callbacks = [CallbackHandler()]
 
 
 @app.route('/api/chatGPT', methods=['POST'])
-async def ai():
+def ai():
     if not request.get_json(silent=True):
         return {"error": "missing valid JSON object in request body"}, 400
     
@@ -131,8 +131,8 @@ async def ai():
         for chunk in response_stream:
             yield chunk  # Add newline character between chunks
     # Return a Response object with the generated response
-    response = Response(generate_response(), content_type='text/event-stream', status=200)
+    response = Response(generate_response(), content_type='text/event-stream')
     response.headers["Cache-Control"] = "no-cache"  # Prevent client cache
     response.headers["X-Accel-Buffering"] = "no"  # Allow streaming over NGINX server
     
-    return response
+    return response, 200
