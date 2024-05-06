@@ -79,7 +79,7 @@ function MainNav({
 					}
 					setConversations(conversations.reverse())
 					setConversation(recent_conversation)
-					
+
 					setMessages(messages)
 				})
 		}
@@ -127,7 +127,19 @@ function MainNav({
 												<span className="inline-block mr-3 h-4 w-4">
 													<IconMessage />
 												</span>
-												<span>Conversation {convo.id}</span>
+												<span>
+													{
+														(convo.id === conversation.id) ?
+															(<span className="relative  h-3 w-3 mr-3">
+																<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+																<span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+															</span>) : null
+													}
+
+													Conversation {convo.id}
+
+												</span>
+
 												<a href="#" className='delete_icon hover:text-blue-500 '><IconX className='text-gray-400 shadow' onClick={() => handleDeleteConversation(convo.id)} /></a>
 											</button>
 
