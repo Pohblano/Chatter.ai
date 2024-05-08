@@ -39,7 +39,7 @@ def render_ai_image(content):
 	data = response.json()
 
 	for i, image in enumerate(data["artifacts"]):
-		with open(f"./out/v1_txt2img_{i}.png", "wb") as f:
+		with open(f"../images/renders/v1_txt2img_{i}.png", "wb") as f:
 			f.write(base64.b64decode(image["base64"]))
 
 	return data
