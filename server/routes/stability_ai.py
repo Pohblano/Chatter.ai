@@ -26,8 +26,8 @@ def render_ai_image(content):
 				}
 			],
 			"cfg_scale": 7,
-			"height": 1024,
-			"width": 1024,
+			"height": 320,
+			"width": 320,
 			"samples": 1,
 			"steps": 30,
 		},
@@ -37,9 +37,10 @@ def render_ai_image(content):
 		raise Exception("Non-200 response: " + str(response.text))
 
 	data = response.json()
+	
 
-	for i, image in enumerate(data["artifacts"]):
-		with open(f"../images/renders/v1_txt2img_{i}.png", "wb") as f:
-			f.write(base64.b64decode(image["base64"]))
+	# for i, image in enumerate(data["artifacts"]):
+	# 	with open(f"../images/renders/v1_txt2img_{i}.png", "wb") as f:
+	# 		f.write(base64.b64decode(image["base64"]))
 
 	return data

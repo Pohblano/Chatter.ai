@@ -68,8 +68,6 @@ from server.models.conversation import Conversation
 from server.models.message import Message
 
 
-
-
 # create database tables
 with app.app_context():
     db.create_all()
