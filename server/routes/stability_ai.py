@@ -5,7 +5,7 @@ import os
 import requests
 import logging
 import boto3
-from botocore.exceptions import ClientError
+
 
 def render_ai_image(content):
 	# engine_id = "stable-diffusion-v1-6"
@@ -80,8 +80,8 @@ def render_ai_image(content):
 		print(url)
 		
 		
-	except ClientError as e:
-		print('Error uploading file to S3', e)
+	except:
+		print('Error uploading file to S3')
 	
 	
 

@@ -110,7 +110,7 @@ def ai():
         author_type = AuthorType.USER,
         conversation = conversation
     )
-    conversation.messages.append(user_message)
+    # conversation.messages.append(user_message)
     db.session.add(user_message)
 
     #  Run the agent and stream the response
