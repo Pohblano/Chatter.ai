@@ -3,9 +3,6 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from twilio.base.exceptions import TwilioRestException
 
-import base64
-import os
-import requests
 from server.routes.stability_ai import render_ai_image
 # Directory Imports
 from server import app, db
@@ -37,7 +34,7 @@ def sms_reply():
 
   
      # Conditions for different messages
-    if not user and match(body,r'(?i)JOIN'):
+    if not user and match(body,r'(?i)join'):
           generate_login_code(phone_number)
           resp.message(u'Thank you. You are now free to text with \U0001F916 \n\nAsk him anything! \U0001F389 ')
           print(f'{phone_number} NOT REGISTERED BUT REPLIED WITH \'JOIN\'')
@@ -51,10 +48,20 @@ def sms_reply():
           return str(resp)
     
     elif user and match(body,r'(?i)IMG:'):  #image generation route
-            image = render_ai_image(body)
-            print(image)
-            print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
-            return {}, 200
+            # image = render_ai_image(body)
+            # print(image)
+            # print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
+            # return {}, 200
+
+            # Add a text message
+            msg = resp.message("The Robots are coming! Head for the hills!")
+
+            # Add a picture message
+            msg.media(
+                  "https://www.dropbox.com/scl/fi/ulat4ewhkyeaw7iox3olq/image.jpg?rlkey=5diqh58nkuw0j2t223gubtpqk&dl=1"
+            )
+
+            return str(resp)
 
     else:
           ai_response = chatGPT_agent.run(body)
