@@ -19,6 +19,8 @@ from langchain.callbacks.streaming_stdout_final_only import (
     FinalStreamingStdOutCallbackHandler,
 )
 
+
+from server.routes.stability_ai import render_ai_image
 llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_KEY'),
     temperature=0.9,
@@ -113,6 +115,7 @@ def ai():
 
     #  Run the agent and stream the response
     response_stream = chatGPT_agent.run(content)
+    # response_stream='Hi there'
 
     # # create ai message and add to conversation
     ai_message = Message(
@@ -123,8 +126,13 @@ def ai():
     )
     conversation.messages.append(ai_message)
     db.session.add(ai_message)
-
     db.session.commit()
+
+
+
+    # render_ai_image('help')
+
+
 
     # Stream the response
     def generate_response():
@@ -135,4 +143,17 @@ def ai():
     response.headers["Cache-Control"] = "no-cache"  # Prevent client cache
     response.headers["X-Accel-Buffering"] = "no"  # Allow streaming over NGINX server
     
+
+
+
+
+
+
+
+
+
+
+
+
+
     return response, 200
