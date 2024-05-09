@@ -61,7 +61,7 @@ def sms_reply():
                   .create(
                         body=f'Here is your image',
                         from_='+18449532146',
-                        media_url=["https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg"],
+                        media_url=["https://chatter.ai.images.s3.amazonaws.com/image.jpg"],
                         to=phone_number
                   )
             print(message.sid)
