@@ -59,9 +59,7 @@ def sms_reply():
             msg = resp.message("Here's your image.")
 
             # Add a picture message
-            msg.media(
-                  "https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg"
-            )
+            msg.media("https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg")
 
             return str(resp)
           except TwilioRestException as e:
