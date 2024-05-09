@@ -49,29 +49,27 @@ def sms_reply():
           return str(resp)
     
     elif user and match(body,r'(?i)IMG:'):  #image generation route    
-          print('attempting to send MMS')
+            print('attempting to send MMS')
             # image = render_ai_image(body)
             # print(image)
             # print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
-            # return {}, 200
 
-          try:
-            
-            message = client.messages \
-                  .create(
-                        body=f'Here is your image',
-                        from_='+18449532146',
-                        media_url=["https://chatter.ai.images.s3.amazonaws.com/image.jpg"],
-                        to=phone_number
-                  )
-            print(message.sid)
-            return {}, 200
+            try:
+                  
+                  message = client.messages \
+                        .create(
+                              body=f'Here is your image',
+                              from_='+18449532146',
+                              media_url=["https://chatter.ai.images.s3.amazonaws.com/image.jpg"],
+                              to=phone_number
+                        )
+                  print(message.sid)
+                  return {},200
 
 
-          except TwilioRestException as e:
-               print(e)
-               print('PROBLEM SENDING MMS')
-               return e.code
+            except TwilioRestException as e:
+                  print('PROBLEM SENDING MMS')
+                  return {},200
 
     else:
           ai_response = chatGPT_agent.run(body)
