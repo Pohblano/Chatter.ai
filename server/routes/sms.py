@@ -53,7 +53,8 @@ def sms_reply():
             # print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
             # return {}, 200
 
-            # Add a text message
+          try:
+                  # Add a text message
             msg = resp.message("The Robots are coming! Head for the hills!")
 
             # Add a picture message
@@ -62,6 +63,9 @@ def sms_reply():
             )
 
             return str(resp)
+          except TwilioRestException as e:
+               print(e)
+               return e.code
 
     else:
           ai_response = chatGPT_agent.run(body)
