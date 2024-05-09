@@ -4,7 +4,7 @@ import base64
 import os
 import requests
 import logging
-import boto3
+# import boto3
 
 
 def render_ai_image(content):
@@ -59,29 +59,29 @@ def render_ai_image(content):
 
 	# return data
 
-	# decodes base 64 image
-	base64_img=os.environ.get('EXAMPLE_IMG')
-	image_data = base64.b64decode(base64_img)
+	# # decodes base 64 image
+	# base64_img=os.environ.get('EXAMPLE_IMG')
+	# image_data = base64.b64decode(base64_img)
 	
-	# Write the binary data to a file
-	file_name = 'image.jpg'
-	file_path = f'./uploads/{file_name}'  #set it to conversation id
-	with open(file_path, 'wb') as f:
-		f.write(image_data)
+	# # Write the binary data to a file
+	# file_name = 'image.jpg'
+	# file_path = f'./uploads/{file_name}'  #set it to conversation id
+	# with open(file_path, 'wb') as f:
+	# 	f.write(image_data)
 
-	#upload file to S3 Bucket
-	bucket_name='chatter.ai.images'
-	s3_client = boto3.client('s3', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get
-	('AWS_SECRET_KEY'))
+	# #upload file to S3 Bucket
+	# bucket_name='chatter.ai.images'
+	# s3_client = boto3.client('s3', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get
+	# ('AWS_SECRET_KEY'))
 
-	try:
-		response=s3_client.upload_file(file_path, bucket_name, file_name, ExtraArgs={'ACL': 'public-read'})
-		url =f'https://s3.us-east-2.amazonaws.com/{bucket_name}/{file_name}'
-		print(url)
+	# try:
+	# 	response=s3_client.upload_file(file_path, bucket_name, file_name, ExtraArgs={'ACL': 'public-read'})
+	# 	url =f'https://s3.us-east-2.amazonaws.com/{bucket_name}/{file_name}'
+	# 	print(url)
 		
 		
-	except:
-		print('Error uploading file to S3')
+	# except:
+	# 	print('Error uploading file to S3')
 	
 	
 

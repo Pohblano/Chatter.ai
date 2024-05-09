@@ -65,6 +65,7 @@ def sms_reply():
                         to=phone_number
                   )
             print(message.sid)
+            return {}, 200
 
 
           except TwilioRestException as e:
