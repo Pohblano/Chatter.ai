@@ -47,24 +47,26 @@ def sms_reply():
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
     
-    elif user and match(body,r'(?i)IMG:'):  #image generation route
+    elif user and match(body,r'(?i)IMG:'):  #image generation route    
+          print('attempting to send MMS')
             # image = render_ai_image(body)
             # print(image)
             # print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
             # return {}, 200
 
           try:
-                  # Add a text message
-            msg = resp.message("The Robots are coming! Head for the hills!")
+            # Add a text message
+            msg = resp.message("Here's your image.")
 
             # Add a picture message
             msg.media(
-                  "https://www.dropbox.com/scl/fi/ulat4ewhkyeaw7iox3olq/image.jpg?rlkey=5diqh58nkuw0j2t223gubtpqk&dl=1"
+                  "https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg"
             )
 
             return str(resp)
           except TwilioRestException as e:
                print(e)
+               print('PROBLEM SENDING MMS')
                return e.code
 
     else:
