@@ -3,6 +3,9 @@ from server import app, db
 import base64
 import os
 import requests
+import logging
+import boto3
+from botocore.exceptions import ClientError
 
 def render_ai_image(content):
 	# engine_id = "stable-diffusion-v1-6"
@@ -63,40 +66,24 @@ def render_ai_image(content):
 	# Write the binary data to a file
 	file_name = 'image.jpg'
 	file_path = f'./uploads/{file_name}'  #set it to conversation id
-	with open(file_name, 'wb') as f:
+	with open(file_path, 'wb') as f:
 		f.write(image_data)
 
-	#  Upload the file to Dropbox
-	token='sl.B00sycMGLVFdjy9XW8omLRvAdNyy3bDrFMinQHqKjCSgONIE0SR8pyrEMzACTdXNLrru-xjitgSRszS5Bf4HzzAX_6uUWzcUA5Ib7TUUW5yGn7VyH-LxuaZK6Ejsq5j7WOmiOM5pjtNBqOWkbN7tarM'
-	url = "https://content.dropboxapi.com/2/files/upload"
-	headers = {
-		"Authorization": f"Bearer {token}",
-		"Content-Type": "application/octet-stream",
-		"Dropbox-API-Arg": '{"path":"/' + file_name + '","mode":"add","autorename":true,"mute":false}'
-	}
-	data = open(file_name, "rb").read()
+	#upload file to S3 Bucket
+	bucket_name='chatter.ai.images'
+	s3_client = boto3.client('s3', aws_access_key_id=os.environ.get('AWS_ACCESS_KEY'), aws_secret_access_key=os.environ.get
+	('AWS_SECRET_KEY'))
 
-	response = requests.post(url, headers=headers, data=data)
-
-	if response.status_code == 200:
-		print("File uploaded successfully!")
-		 # Get the shared link of the uploaded file
-		url = "https://api.dropboxapi.com/2/sharing/create_shared_link_with_settings"
-		headers = {
-			"Authorization": "Bearer " + token,
-			"Content-Type": "application/json"
-		}
-		data = {
-			"path": "/" + file_name
-		}
-		response = requests.post(url, headers=headers, json=data)
-		if response.status_code == 200:
-			shared_link = response.json()["url"]
-			print("Shared link:", shared_link)
-		else:
-			print("Error getting shared link:", response.text)
+	try:
+		response=s3_client.upload_file(file_path, bucket_name, file_name, ExtraArgs={'ACL': 'public-read'})
+		url =f'https://s3.us-east-2.amazonaws.com/{bucket_name}/{file_name}'
+		print(url)
 		
-	else:
-		print("Error uploading file:", response.text)
+		
+	except ClientError as e:
+		print('Error uploading file to S3', e)
+	
+	
+
 
 	return {}, 200
