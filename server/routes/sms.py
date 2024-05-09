@@ -2,6 +2,7 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from twilio.base.exceptions import TwilioRestException
+from server.actions.twilio_client import client
 
 from server.routes.stability_ai import render_ai_image
 # Directory Imports
@@ -55,13 +56,17 @@ def sms_reply():
             # return {}, 200
 
           try:
-            # Add a text message
-            msg = resp.message("Here's your image.")
+            
+            message = client.messages \
+                  .create(
+                        body=f'Here is your image',
+                        from_='+18449532146',
+                        media_url=["https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg"],
+                        to=phone_number
+                  )
+            print(message.sid)
 
-            # Add a picture message
-            msg.media("https://s3.us-east-2.amazonaws.com/chatter.ai.images/image.jpg")
 
-            return str(resp)
           except TwilioRestException as e:
                print(e)
                print('PROBLEM SENDING MMS')
