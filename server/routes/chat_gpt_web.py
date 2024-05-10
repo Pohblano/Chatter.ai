@@ -117,6 +117,7 @@ def ai():
 
     #  Run the agent and stream the response
     response_stream = chatGPT_agent.run(content)
+    # render_ai_sms_image(content)
     # response_stream='Hi there'
 
     # # create ai message and add to conversation
@@ -129,7 +130,6 @@ def ai():
     conversation.messages.append(ai_message)
     db.session.add(ai_message)
     db.session.commit()
-
 
     # Stream the response
     def generate_response():
