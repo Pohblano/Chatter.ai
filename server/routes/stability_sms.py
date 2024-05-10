@@ -43,8 +43,8 @@ def render_ai_sms_image(content):
 		# Decode and upload files to directory
 		for i, image in enumerate(data["artifacts"]):
 			images.append(f"v1_txt2img_{i}.png")
-			paths.append(f"./uploads/v1_txt2img_{i}.png")
-			with open(f"./uploads/v1_txt2img_{i}.png", "wb") as f:
+			paths.append(f"/home/chatterai/Chatter.ai/server/uploads/v1_txt2img_{i}.png")
+			with open(f"/home/chatterai/Chatter.ai/server/uploads/v1_txt2img_{i}.png", "wb") as f:
 				f.write(base64.b64decode(image["base64"]))
 			
 		# #upload file to S3 Bucket
