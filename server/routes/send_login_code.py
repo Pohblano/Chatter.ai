@@ -4,7 +4,7 @@ import random
 import os
 
 # Twilio client import
-from server.actions.twilio_client import client
+from server.actions.clients import twilio_client
 from twilio.base.exceptions import TwilioRestException
 
 # Database imports
@@ -67,7 +67,7 @@ def send_login_code():
      # your logic
     try:
         # send login code to phone number via twilio
-        client.messages.create(
+        twilio_client.messages.create(
             **{
                 "from_": "+18449532146",
                 "body": f"Your login code is: {login_code}",

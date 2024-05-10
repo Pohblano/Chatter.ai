@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, Response
 import os
 from dotenv import load_dotenv
+
+
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.user import User
@@ -19,8 +21,8 @@ from langchain.callbacks.streaming_stdout_final_only import (
     FinalStreamingStdOutCallbackHandler,
 )
 
+from server.routes.stability_sms import render_ai_sms_image
 
-from server.routes.stability_ai import render_ai_image
 llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_KEY'),
     temperature=0.9,
@@ -109,7 +111,7 @@ def ai():
         conversation_id = conversation_id,
         author_type = AuthorType.USER,
         conversation = conversation
-    )
+)
     # conversation.messages.append(user_message)
     db.session.add(user_message)
 
@@ -127,11 +129,6 @@ def ai():
     conversation.messages.append(ai_message)
     db.session.add(ai_message)
     db.session.commit()
-
-
-
-    # render_ai_image('help')
-
 
 
     # Stream the response
