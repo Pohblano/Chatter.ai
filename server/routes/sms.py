@@ -52,7 +52,7 @@ def sms_reply():
             urls = render_ai_sms_image(body)
             message ="Here's your image:"
             for url in urls:
-                  message += f" \n url"
+                  message += f" \n {url}"
 
             resp.message(message)
             return str(resp)
