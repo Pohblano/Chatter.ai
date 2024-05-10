@@ -2,9 +2,8 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from twilio.base.exceptions import TwilioRestException
-from server.actions.twilio_client import client
 
-from server.routes.stability_ai import render_ai_image
+
 # Directory Imports
 from server import app, db
 from server.models.conversation import Conversation
@@ -12,11 +11,11 @@ from server.models.message import Message, AuthorType
 from server.models.user import User
 from server.routes.chat_ollama_web import llama_llm
 from server.routes.chat_gpt_web import chatGPT_agent, chatGPT_text_llm
-
+from server.actions.clients import twilio_client
 # Actions
 from server.routes.send_login_code import generate_login_code
 from server.actions.formats import match, phone_number_to_integer
-
+from server.routes.stability_sms import render_ai_sms_image
 
 @app.route("/api/sms", methods=['GET', 'POST'])
 def sms_reply():
@@ -49,27 +48,14 @@ def sms_reply():
           return str(resp)
     
     elif user and match(body,r'(?i)IMG:'):  #image generation route    
-            print('attempting to send MMS')
-            # image = render_ai_image(body)
-            # print(image)
-            # print(f'{phone_number} IS REQUESTING TO GENERATE AN IMAGE')
+            
+            urls = render_ai_sms_image(body)
+            message ="Here's your image:"
+            for url in urls:
+                  message += f" \n url"
 
-            try:
-                  
-                  message = client.messages \
-                        .create(
-                              body=f'Here is your image',
-                              from_='+18449532146',
-                              media_url=["https://chatter.ai.images.s3.amazonaws.com/image.jpg"],
-                              to=phone_number
-                        )
-                  print(message.sid)
-                  return {},200
-
-
-            except TwilioRestException as e:
-                  print('PROBLEM SENDING MMS')
-                  return {},200
+            resp.message(message)
+            return str(resp)
 
     else:
           ai_response = chatGPT_agent.run(body)
