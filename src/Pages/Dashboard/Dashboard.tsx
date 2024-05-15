@@ -31,7 +31,8 @@ interface Conversation {
 	ai_id?: String,
 	ai?: String,
 	user_id?: String,
-	user_phone_number?: String
+	user_phone_number?: String,
+	created_at?: String
 }
 
 function Dashboard() {
@@ -49,7 +50,8 @@ function Dashboard() {
 		ai_id: '',
 		ai: '',
 		user_id: '',
-		user_phone_number: ''
+		user_phone_number: '',
+		created_at: ''
 	}
 
 	const [user_id, setUser] = useState<String>('')
@@ -89,6 +91,7 @@ function Dashboard() {
 						ai: recent_conversation.ai_id,
 						user_id: recent_conversation.user_phone_number,
 						user_phone_number: recent_conversation.user_phone_number,
+						created_at: recent_conversation.created_at,
 					}))
 
 				} else setConversation(recent)

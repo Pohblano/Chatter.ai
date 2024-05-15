@@ -9,7 +9,8 @@ def format_conversations(user_id, conversations):
 			'ai_id': conversation.ai_id,
 			'ai': 'ChatGPT',
 			'user_id': conversation.user_phone_number,
-			'user_phone_number': conversation.user_phone_number
+			'user_phone_number': conversation.user_phone_number,
+			'created_at': conversation.created_at.strftime('%B %d, %Y'),
 		}
 		conversations_data.append(conversation_data)
 	return conversations_data
