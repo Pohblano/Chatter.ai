@@ -136,7 +136,7 @@ function MainNav({
 															</span>) : null
 													}
 
-													Conversation {convo.id}
+													{convo.created_at}
 
 												</span>
 

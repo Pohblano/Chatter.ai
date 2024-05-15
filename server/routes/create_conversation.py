@@ -33,7 +33,8 @@ def create_conversation():
 	serialized_conversation = {
 		'id': conversation.id,
 		'ai_id': conversation.ai_id,
-		'user_phone_number': conversation.user_phone_number
+		'user_phone_number': conversation.user_phone_number,
+		'created_at': conversation.created_at,
 	}
 	
 	print(serialized_conversation)

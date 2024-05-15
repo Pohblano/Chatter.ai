@@ -55,6 +55,7 @@ function ChatInput({
 					ai: recent_conversation.ai_id,
 					user_id: recent_conversation.user_phone_number,
 					user_phone_number: recent_conversation.user_phone_number,
+					created_at: recent_conversation.created_at,
 				}))
 				setConversations(conversations.reverse())
 				setMessages([])
