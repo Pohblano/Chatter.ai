@@ -14,10 +14,6 @@
 	background-color: #c6e6fc;
 }
 
-.invalid_feedback{
-
-}
-
 .hover\:chatter_input_hover:hover{
 	box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 3px 1px;
 	background-color: rgba(0, 0, 0, 0.3);

@@ -55,9 +55,7 @@
 				font-size: 12px;
 				font-weight: bold;
 				font-style: normal;
-				// line-height: 1;
 				letter-spacing: normal;
-				// width: 100%;
 			}
 
 			>.entry_content {
@@ -109,7 +107,6 @@
 								  monospace;
 
 								  .code-block{
-									// max-width: inherit;
 									>span{
 										word-wrap: break-word;
 									}
@@ -212,13 +209,6 @@
 	.mainNav {
 		display: none;
 	}
-
-
-	.entry_content {
-		// max-width: 23rem!important;
-	}
-
-
 }
 
 @media screen and (max-width: 576px) {

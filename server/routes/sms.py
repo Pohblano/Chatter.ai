@@ -1,20 +1,14 @@
 # Library Imports
-from flask import Flask, request
+from flask import request
 from twilio.twiml.messaging_response import MessagingResponse
-from twilio.base.exceptions import TwilioRestException
-
-
 # Directory Imports
-from server import app, db
-from server.models.conversation import Conversation
-from server.models.message import Message, AuthorType
+from server import app
 from server.models.user import User
-from server.routes.chat_ollama_web import llama_llm
-from server.routes.chat_gpt_web import chatGPT_agent, chatGPT_text_llm
-from server.actions.clients import twilio_client
+from server.routes.chat_gpt_web import chatGPT_agent
+
 # Actions
 from server.routes.send_login_code import generate_login_code
-from server.actions.formats import match, phone_number_to_integer
+from server.actions.formats import match
 from server.routes.stability_sms import render_ai_sms_image
 
 @app.route("/api/sms", methods=['GET', 'POST'])
@@ -44,57 +38,23 @@ def sms_reply():
     elif not user:
           # Add text
           msg = resp.message(u"Hi! \U0001F917 \n\n First time? No worries. Reply with \"JOIN\" to start texting with an AI agent")
+
           print(f'{phone_number} NOT REGISTERED AND THEIR FIRST TIME TEXTING')
           return str(resp)
     
     elif user and match(body,r'(?i)IMG:'):  #image generation route    
-            print(F'COMPOSING USER IMAGE BASED ON PROMPT: {body}')
             urls = render_ai_sms_image(body)
             message ="Here's your image:"
             for url in urls:
                   message += f" \n {url}"
 
             resp.message(message)
+
+            print(F'COMPOSING USER IMAGE BASED ON PROMPT: {body}')
             return str(resp)
 
     else:
           ai_response = chatGPT_agent.run(body)
-          # # Using user phone number as their own id and conversation id
-          # conversation_id = phone_number_to_integer(phone_number)
-          # conversation = Conversation.query.get(conversation_id)
-
-          # print(f'CONVERSATION: {conversation}')
-          # if(not conversation):
-          #      conversation = Conversation(
-          #          id=conversation_id, 
-          #          user_phone_number=phone_number, 
-          #          ai_id='chatGPT') 
-          #      db.session.add(conversation)
-          #      db.session.commit()
-
-          # # create user message and add to conversation record and db
-          # user_message = Message(
-          #      content = body, 
-          #      conversation_id = conversation_id,
-          #      author_type = AuthorType.USER,
-          #      conversation = conversation)
-          # db.session.add(user_message)
-          # db.commit()
-          
-          # # Calls AI to generate response
-          # # ai_response = chatGPT_agent.run(body)
-          # print(f'chatGPT response: {ai_response}')
-
-          # # create ai message and add to conversation record and db
-          # ai_message = Message(
-          #      content = ai_response, 
-          #      conversation_id = conversation_id,
-          #      author_type = AuthorType.AI,
-          #      conversation = conversation
-          # )
-          # conversation.messages.append(ai_message)
-          # db.session.add(ai_message)
-          # db.session.commit()
 
           resp.message(ai_response)
           return str(resp)

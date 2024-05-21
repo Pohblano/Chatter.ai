@@ -20,7 +20,6 @@ const Validate = () => {
   const { search } = useLocation()
   const [phoneNumber, setPhoneNumber] = useState<string>('')
   const [one_time, setOneTime] = useState<string>('')
-  // const [timer, setTimer] = useState<number>()
   const [error, setError] = useState<Error>({
     type: '',
     msg: ''

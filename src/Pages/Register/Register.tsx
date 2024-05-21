@@ -60,7 +60,6 @@ function Register() {
 			<form onSubmit={handleSubmit} className=''>
 
 				<div className='phoneInput'>
-					{/* <h2 className="text-white mb-3 font-bold text-start" >Register <i className=" fa fa-right-to-bracket"></i></h2> */}
 					<MuiTelInput
 						className="shadow-lg"
 						value={phoneNumber}

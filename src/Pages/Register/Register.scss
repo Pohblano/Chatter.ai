@@ -1,12 +1,7 @@
 .registerWrapper {
 	text-align: -webkit-center;
-	// height: 30rem;
-	// max-width: 29rem;
 	align-content: center;
 	height: 100vh;
-	// display: flex;
-	// flex-flow: column;
-	// gap: 275px;
 
 	>h1 {
 		font-size: 3rem;
@@ -15,7 +10,6 @@
 
 	>form {
 		max-width: 29rem;
-		// width: fit-content;
 	}
 
 	.MuiOtpInput-Box {
@@ -64,7 +58,6 @@
 
 	/* Utilities */
 	.error_message {
-		// width: ;
 		align-self: center;
 		position: relative;
 		bottom: 10px;

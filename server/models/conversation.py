@@ -1,6 +1,5 @@
 from server import db
 
-
 class Conversation(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
