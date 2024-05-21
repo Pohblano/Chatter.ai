@@ -4,14 +4,12 @@ from server import secret_key
 from server import app
 from server.models.user import User
 
-
 def validate_login_code(code: str, phone_number: str) -> bool: 
     user = User.query.get(phone_number)
     if not user:
         return False
     
     return user.confirmation_code == code
-
 
 @app.route("/api/verify_login_code", methods=["POST"])
 def verify_login_code():
@@ -21,7 +19,6 @@ def verify_login_code():
     data = request.json
     phone_number = data.get("phone_number")
     login_code = data.get("login_code")
-
 
     # make sure phone_number and login_code are provided
     if not phone_number:

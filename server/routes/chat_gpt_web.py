@@ -2,26 +2,16 @@ from flask import Flask, request, jsonify, Response
 import os
 from dotenv import load_dotenv
 
-
 from server import app, db
 from server.models.conversation import Conversation
 from server.models.user import User
 from server.models.message import Message, AuthorType
-from fastapi.encoders import jsonable_encoder # type: ignore
-
 
 from typing import List
 from langchain_openai import ChatOpenAI
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
-from langchain.schema import HumanMessage
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.agents import load_tools, AgentType, initialize_agent
-from langchain.agents import AgentExecutor
-from langchain.callbacks.streaming_stdout_final_only import (
-    FinalStreamingStdOutCallbackHandler,
-)
-
-from server.routes.stability_sms import render_ai_sms_image
 
 llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_KEY'),
@@ -117,8 +107,8 @@ def ai():
 
     #  Run the agent and stream the response
     response_stream = chatGPT_agent.run(content)
-    # render_ai_sms_image(content)
-    # response_stream='Hi there'
+    print(response_stream)
+
 
     # # create ai message and add to conversation
     ai_message = Message(
@@ -135,6 +125,7 @@ def ai():
     def generate_response():
         for chunk in response_stream:
             yield chunk  # Add newline character between chunks
+
     # Return a Response object with the generated response
     response = Response(generate_response(), content_type='text/event-stream')
     response.headers["Cache-Control"] = "no-cache"  # Prevent client cache

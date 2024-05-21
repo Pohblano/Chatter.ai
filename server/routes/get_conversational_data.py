@@ -29,32 +29,6 @@ def get_conversational_data():
 	print(conversations_data)
 	conversations = format_conversations(phone_number, conversations_data)
 
-
-	# Creates new conversation if there is no recent convo or a history of convos
-	# if not conversation_id and not conversations_data:
-	# 	user = User.query.get(phone_number)
-	# 	conversation = Conversation(
-	# 		user_phone_number=phone_number, 
-	# 		ai_id='chatGPT',
-	# 		user=user
-	# 	)
-	# 	if(user.conversations):  
-	# 		user.conversations.append(conversation)
-	# 	db.session.add(conversation)
-	# 	db.session.commit()
-		
-	# 	serialized_conversation = {
-	# 		'id': conversation.id,
-	# 		'ai_id': conversation.ai_id,
-	# 		'user_phone_number': conversation.user_phone_number
-	# 		}
-
-	# 	print('No conversation in the LocalStorage or Past converations in DB')
-	# 	return jsonify({
-	# 		'recent_conversation': serialized_conversation, 
-	# 		'conversations': jsonable_encoder(conversations)
-	# 		}), 200
-	
 	# Returns the last convo in the conversations array to utlize as recent conversation
 	if not conversation_id and conversations_data:
 		conversation = conversations[-1]

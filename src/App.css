@@ -2,7 +2,6 @@
   font-family: sans-serif;
 }
 .App {
-  /* text-align: center; */
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -15,8 +14,6 @@ main{
 
 .App-Wrapper {
   background-color: #8bcffd;
-  /* background: radial-gradient(circle at 50% -190%, #90CAF9 19%, #64B5F6 71%, #42a5f5 65%, #2196F3 49%); */
-  /* height: 100svh; */
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -1,12 +1,9 @@
 # Library Imports
-from flask import request
 import base64
 import os
 import requests
-import mimetypes
 import botocore
 # Directory imports
-from server import app, db
 from server.actions.clients import s3_client
 
 def render_ai_sms_image(content):
@@ -27,10 +24,12 @@ def render_ai_sms_image(content):
 		json={
 			"text_prompts": [{"text": content}],
 			"cfg_scale": 7,
-			"height": 320,
-			"width": 320,
+			"height": 500,
+			"width": 500,
+			"sampler": "K_DPMPP_2M",
 			"samples": 1,
-			"steps": 30,
+			"steps": 50,
+			"style_preset": "digital-art"
 		},
 	)
 

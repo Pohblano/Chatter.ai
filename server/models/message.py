@@ -2,11 +2,9 @@ import enum
 from datetime import datetime, timezone
 from server import db
 
-
 class AuthorType(enum.Enum):
     USER = "User"
     AI = "AI"
-
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

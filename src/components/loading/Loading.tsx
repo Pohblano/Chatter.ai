@@ -15,10 +15,6 @@ function Loading() {
 			<div className="power-switch animate-ping">
 				<input id="checkBox" type="checkbox" />
 				<div className="button">
-					{/* <svg className="power-off">
-						<use href="#line" className="line" />
-						<use href="#circle" className="circle" />
-					</svg> */}
 					<svg className="power-on">
 						<use href="#line" className="line" />
 						<use href="#circle" className="circle" />

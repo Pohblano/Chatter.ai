@@ -26,4 +26,5 @@ yarn-error.log*
 
 *.db
 
+.env
 server/.env

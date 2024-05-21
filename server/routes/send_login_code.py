@@ -2,11 +2,9 @@
 from flask import request
 import random
 import os
-
 # Twilio client import
 from server.actions.clients import twilio_client
 from twilio.base.exceptions import TwilioRestException
-
 # Database imports
 from server import app, db
 from server.models.confirmation import Confirmation
@@ -29,8 +27,6 @@ def generate_login_code(phone_number: str) -> str:
 
     # associate confirmation code with user
     user.confirmation = confirmation
-
-    # TODO: delete old confirmations when adding a new one
 
     db.session.add(confirmation)
     db.session.add(user)
