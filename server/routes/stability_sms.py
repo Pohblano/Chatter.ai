@@ -6,7 +6,7 @@ import botocore
 # Directory imports
 from server.actions.clients import s3_client
 
-def render_ai_sms_image(content):
+def render_ai_sms_image(file_id, content):
 	engine_id = "stable-diffusion-v1-6"
 	api_host = "https://api.stability.ai"
 	api_key = os.getenv("STABILITY_KEY")
@@ -40,9 +40,9 @@ def render_ai_sms_image(content):
 
 		# Decode and upload files to directory
 		for i, image in enumerate(data["artifacts"]):
-			images.append(f"v1_txt2img_{i}.png")
-			paths.append(f"/home/chatterai/Chatter.ai/server/uploads/v1_txt2img_{i}.png")
-			with open(f"/home/chatterai/Chatter.ai/server/uploads/v1_txt2img_{i}.png", "wb") as f:
+			images.append(f"v1_{file_id}_{i}.png")
+			paths.append(f"/home/chatterai/Chatter.ai/server/uploads/v1_{file_id}_{i}.png")
+			with open(f"/home/chatterai/Chatter.ai/server/uploads/v1_{file_id}_{i}.png", "wb") as f:
 				f.write(base64.b64decode(image["base64"]))
 			
 		# #upload file to S3 Bucket

@@ -67,3 +67,4 @@ def drop_database():
     with app.app_context():
         db.drop_all()
         return jsonify({"message": "Database dropped successfully"}), 200
+    

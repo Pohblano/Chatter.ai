@@ -44,7 +44,9 @@ def sms_reply():
           return str(resp)
     
     elif user and match(body,r'(?i)IMG:'):  #image generation route    
-            urls = render_ai_sms_image(body)
+            print(F'COMPOSING USER IMAGE BASED ON PROMPT: {body}')
+            file_id = body[5:15].replace(" ", "")
+            urls = render_ai_sms_image(file_id,body)
             message ="Here's your image:"
             for url in urls:
                   message += f" \n {url}"
