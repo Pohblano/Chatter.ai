@@ -5,6 +5,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 from server import app
 from server.models.user import User
 from server.routes.chat_gpt_web import chatGPT_agent
+from server.routes.chat_ollama_web import llama_llm
 
 # Actions
 from server.routes.send_login_code import generate_login_code
@@ -54,7 +55,8 @@ def sms_reply():
             return str(resp)
 
     else:
-          ai_response = chatGPT_agent.run(body)
+      #     ai_response = chatGPT_agent.run(body)
+          ai_response = llama_llm.invoke(body)
 
           resp.message(ai_response)
           return str(resp)

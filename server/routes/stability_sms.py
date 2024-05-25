@@ -29,7 +29,6 @@ def render_ai_sms_image(content):
 			"sampler": "K_DPMPP_2M",
 			"samples": 1,
 			"steps": 50,
-			"style_preset": "digital-art"
 		},
 	)
 

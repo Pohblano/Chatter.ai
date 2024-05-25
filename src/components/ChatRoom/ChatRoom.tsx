@@ -1,21 +1,17 @@
 // Libraries
-import React, { useEffect } from 'react'
+import React from 'react'
 // Components
 import { ChatMessage, FetchingMessage } from '../Utils/Messages'
 // Actions
 
 // Styling
 import './ChatRoom.scss'
-import { Brain, IconOpenAI } from '../Utils/Icons';
+import { Brain} from '../Utils/Icons';
 
 function ChatRoom({
-	ai,
 	messages,
 	response,
 	isLoading,
-	user,
-	conversations,
-	conversation
 }) {
 
 	const checkAuthor = (type: string) => (type.toLowerCase() === 'ai') ? 'ai' : 'user'

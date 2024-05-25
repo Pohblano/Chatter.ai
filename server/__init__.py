@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from logging.config import dictConfig
@@ -11,7 +11,7 @@ load_dotenv()
 secret_key= 'WhatSecret?'
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}}) # This will enable CORS for all routes
+# CORS(app, resources={r"/*": {"origins": "*"}}) # This will enable CORS for all routes
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
@@ -50,6 +50,7 @@ from server.models.confirmation import Confirmation
 from server.models.conversation import Conversation
 from server.models.message import Message
 
+# db.drop_all()
 
 # create database tables
 with app.app_context():
@@ -59,3 +60,10 @@ with app.app_context():
 @app.route('/api/', methods=['GET'])
 def home():
     return "beep boop"
+
+@app.route('/api/drop_database', methods=['POST'])
+def drop_database():
+    print('Database drop accessed')
+    with app.app_context():
+        db.drop_all()
+        return jsonify({"message": "Database dropped successfully"}), 200

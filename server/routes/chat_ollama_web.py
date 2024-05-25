@@ -10,7 +10,8 @@ from server.models.conversation import Conversation
 from server.models.user import User
 from server.models.message import Message, AuthorType
 
-llama_llm = Ollama(model="llama2", temperature=0.9)
+ngrok_url = 'https://6dd1-2806-2f0-1140-bad8-41a-4a68-142f-81de.ngrok-free.app'
+llama_llm = Ollama(base_url= ngrok_url, model="llama2:latest", temperature=0.9)
 
 
 @app.route('/api/ollama', methods=['POST'])

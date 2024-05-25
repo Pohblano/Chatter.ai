@@ -12,7 +12,10 @@ export const chat_api = {
         return response
     },
     send_message_ollama: async function (entry: Object) {
-        const response = await fetch('http://127.0.0.1:5000/api/ollama', {
+        // Ollama ran locally
+        const response = await fetch(process.env.REACT_APP_IS_PRODUCTION === "yes" ? "http://chatterai.pythonanywhere.com/api/ollama" : "http://127.0.0.1:5000/api/ollama", {
+        // Ollama tunneled to web using ngrok 
+        // const response = await fetch('https://e001-2806-2f0-1140-bad8-41a-4a68-142f-81de.ngrok-free.app/api/chat', {
             method: 'POST',
             body: JSON.stringify(entry),
             headers: {

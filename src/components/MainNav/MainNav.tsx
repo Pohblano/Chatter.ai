@@ -8,7 +8,6 @@ import { chat_api } from '../../Api/ChatApi'
 // Actions
 import { deleteFromLocalStorage, saveToLocalStorage } from '../../Actions/DashboardActions'
 // Styling
-import { Transition } from '@headlessui/react'
 import './MainNav.scss'
 
 
