@@ -21,16 +21,10 @@ llm = ChatOpenAI(
     callbacks=[StreamingStdOutCallbackHandler()]  # ! important
 )
 
-chatGPT_text_llm =ChatOpenAI(
-    openai_api_key=os.environ.get('OPENAI_KEY'),
-    temperature=0.9,
-    model_name="gpt-3.5-turbo",
-)
-
 # initialize conversational memory
 memory = ConversationBufferWindowMemory(
     memory_key="chat_history",
-    k=1,
+    k=2,
     return_messages=True,
     output_key="output"
 )
@@ -45,7 +39,7 @@ chatGPT_agent = initialize_agent(
     llm=llm,
     memory=memory,
     verbose=True,
-    max_iterations=1,
+    max_iterations=4,
     early_stopping_method="generate",
     return_intermediate_steps=False,
     streaming=True,
