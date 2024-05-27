@@ -16,7 +16,7 @@ from langchain.agents import load_tools, AgentType, initialize_agent
 llm = ChatOpenAI(
     openai_api_key=os.environ.get('OPENAI_KEY'),
     temperature=0.9,
-    model_name="gpt-3.5-turbo",
+    model_name="gpt-4o",
     streaming=True,  # ! important
     callbacks=[StreamingStdOutCallbackHandler()]  # ! important
 )
