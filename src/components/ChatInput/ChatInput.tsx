@@ -82,10 +82,10 @@ function ChatInput({
 
 			try {
 				// Send Message using ollama
-				const response = await chat_api.send_message_ollama(entry)
+				// const response = await chat_api.send_message_ollama(entry)
 
 				// Send Message using ChatGPT
-				// const response = await chat_api.send_message_chatGPT(entry)
+				const response = await chat_api.send_message_chatGPT(entry)
 
 
 				// Create a new ReadableStream from the response data

@@ -57,8 +57,8 @@ def sms_reply():
             return str(resp)
 
     else:
-      #     ai_response = chatGPT_agent.run(body)
-          ai_response = llama_llm.invoke(body)
+          ai_response = chatGPT_agent.run(body)
+      #     ai_response = llama_llm.invoke(body)
 
           resp.message(ai_response)
           return str(resp)
