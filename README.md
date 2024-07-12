@@ -1,18 +1,23 @@
 # Chatter.ai
 
 ## What is chatter.ai?
-It is a way to incorporate Ai through text messages. It also serves as a web application to talk to various Ai's.
+It is a way to incorporate Ai through text messages. It also serves as a web application to talk to AI
 
-///Run front-end
-npm start
+## Web-App
+* Front-End
+    React
+* Back-End
+    Python
+* APIs
+    ChatGPT
+    Stable Diffusion
+    Twilio
 
-///Run server
-cd server
-.venv\Scripts\activate
-flask run
+## How to Start
+-Run front-end
+  npm start
 
-/// Drop database
-/api/drop_database
-
-
-When restarting Ngrok change the url in chat_ollama_web.py
+-Run server
+  cd server
+  .venv\Scripts\activate
+  flask run
