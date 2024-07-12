@@ -9,10 +9,10 @@ It is a way to incorporate Ai through text messages. It also serves as a web app
 * APIs: ChatGPT, Stable Diffusion, Twilio
 
 ## How to Start
--Run front-end
-  npm start
+* Front-End: `npm start`
+* Back-End: `cd server` -> `.venv\Scripts\activate` -> `flask run`
 
--Run server
-  cd server
-  .venv\Scripts\activate
-  flask run
+  
+  
+
+ 
