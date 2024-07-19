@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: 'validate',
+        path: '/validate',
         element: <Validate />,
       },
     

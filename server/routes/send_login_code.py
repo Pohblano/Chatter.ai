@@ -60,20 +60,21 @@ def send_login_code():
     if not login_code:
         return {"error": "failed to generate login code"}, 500
 
-     # your logic
-    try:
-        # send login code to phone number via twilio
-        twilio_client.messages.create(
-            **{
-                "from_": "+18449532146",
-                "body": f"Your login code is: {login_code}",
-                "to": phone_number,
-            }
-        )  
-    except TwilioRestException as e:
-        print('twilio error')
-        return {"type": "invalid", "msg": "Check your country code"},200
+    #  # your logic
+    # try:
+    #     # send login code to phone number via twilio
+    #     twilio_client.messages.create(
+    #         **{
+    #             "from_": "+18449532146",
+    #             "body": f"Your login code is: {login_code}",
+    #             "to": phone_number,
+    #         }
+    #     )  
+    # except TwilioRestException as e:
+    #     print('twilio error')
+    #     print(e)
+    #     return {"type": "invalid", "msg": "Check your country code"},200
 
 
     print(f"Sent login code {login_code} to {phone_number}")
-    return {"message": f"Registration code successfully sent to {phone_number}"}, 200
+    return {"message": f"Registration code successfully sent to {phone_number}", "code": login_code}, 200

@@ -11,8 +11,8 @@ import './Validate.scss'
 
 
 interface Error {
-	type?: string,
-	msg?: string
+  type?: string,
+  msg?: string
 }
 
 
@@ -20,6 +20,7 @@ const Validate = () => {
   const { search } = useLocation()
   const [phoneNumber, setPhoneNumber] = useState<string>('')
   const [one_time, setOneTime] = useState<string>('')
+  const [displayCode, setDisplayCode] = useState<string>('')
   const [error, setError] = useState<Error>({
     type: '',
     msg: ''
@@ -29,6 +30,12 @@ const Validate = () => {
   useEffect(() => {
     const query = new URLSearchParams(search);
     const number = query.get("phone_number")
+    const code = query.get("code")
+    setDisplayCode(code)
+    if (!number || !code) {
+      navigate('/register')
+    }
+
     setPhoneNumber(number)
   }, [])
 
@@ -63,7 +70,7 @@ const Validate = () => {
         }
       }).catch(err => {
         const { error } = err.response.data
-          setError(error)
+        setError(error)
       })
   }
 
@@ -88,14 +95,19 @@ const Validate = () => {
             autoFocus
             length={6}
           />
+
         </div>
         {(error && error.type === 'invalid') ?
-						<ErrorMessage setError={setError}{...error} />
-						: null
-					}
+          <ErrorMessage setError={setError}{...error} />
+          : null
+        }
 
-        <p className='oneTimeInfo text-center text-sm'>A verification code was sent to: <span className=' text-white'>{phoneNumber}</span></p>
-        <Link className='oneTimeLink text-center text-xs' to='../register'> Didn't receive a code?</Link>
+        <p className='oneTimeInfo text-center text-lg font-bold '>Your Code: <span className=' text-blue-700 font-extrabold'>{displayCode}</span></p>
+        <p className=' text-center text-sm'>Our texting feature is currently disabled.
+        </p>
+
+        {/* <p className='oneTimeInfo text-center text-sm'>A verification code was sent to: <span className=' text-white'>{phoneNumber}</span></p>
+        <Link className='oneTimeLink text-center text-xs' to='../register'> Didn't receive a code?</Link> */}
       </div>
     </div>
   )
